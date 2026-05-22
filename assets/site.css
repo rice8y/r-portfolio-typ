@@ -1168,3 +1168,8 @@ article.prose .link-preview-copy,
     width: 100% !important;
   }
 }
+
+/* Add spacing between a publication list and the next category heading. */
+article.prose :where(ul, ol) + :where(h2, h3, h4) {
+  margin-top: 1.65rem !important;
+}
