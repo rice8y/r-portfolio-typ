@@ -208,10 +208,10 @@
 #let giscus-block() = elem("div", attrs: (class: "animate", style: "margin-top: 3.5rem;"))[
   #elem("script", attrs: (
     src: "https://giscus.app/client.js",
-    "data-repo": "rice8y/r-portfolio",
-    "data-repo-id": "R_kgDOPmTTJw",
+    "data-repo": "rice8y/r-portfolio-typ",
+    "data-repo-id": "R_kgDOSk_qMw",
     "data-category": "Announcements",
-    "data-category-id": "DIC_kwDOPmTTJ84C25yk",
+    "data-category-id": "DIC_kwDOSk_qM84C9n1w",
     "data-mapping": "pathname",
     "data-strict": "0",
     "data-reactions-enabled": "1",
