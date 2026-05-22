@@ -282,13 +282,13 @@
       #section-title("Recent projects", href: "/projects/", label: "See all projects")
       #card-list(projects, "projects", limit: profile.num_projects_on_homepage)
     ]
-    #elem("section", attrs: (class: "animate stack-6"))[
+    #elem("section", attrs: (class: "animate stack-4"))[
       #section-title("Awards")
-      #elem("article", attrs: (class: "prose"))[#awards-body]
+      #elem("article", attrs: (class: "prose home-compact-prose"))[#awards-body]
     ]
-    #elem("section", attrs: (class: "animate stack-6"))[
+    #elem("section", attrs: (class: "animate stack-4"))[
       #section-title("Publications")
-      #elem("article", attrs: (class: "prose"))[#publications-body]
+      #elem("article", attrs: (class: "prose home-compact-prose"))[#publications-body]
     ]
     #elem("section", attrs: (class: "animate stack-4"))[
       #elem("h5", attrs: (class: "section-title"))[Contact]
