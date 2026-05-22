@@ -1,0 +1,7 @@
+dist/
+content/_generated.typ
+content/_build/
+.DS_Store
+.bin/
+.cache/
+.vercel/
