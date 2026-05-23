@@ -3,6 +3,7 @@
 #let entry = project(
   title: "molchemist",
   description: "A Typst package for rendering chemical structures directly from Molfile (.mol) and Structure-Data File (.sdf) formats.",
+  languages: ("Typst", "Rust"),
   published: "2026/03/03",
   updated: "2026/05/23",
   repo-url: "https://github.com/rice8y/molchemist",

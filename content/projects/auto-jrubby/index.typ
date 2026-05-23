@@ -3,6 +3,7 @@
 #let entry = project(
   title: "auto-jrubby",
   description: "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.",
+  languages: ("Typst", "Rust"),
   published: "2026/01/02",
   updated: "2026/2/20",
   repo-url: "https://github.com/rice8y/auto-jrubby",

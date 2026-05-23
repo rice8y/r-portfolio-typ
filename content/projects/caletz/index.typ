@@ -3,6 +3,7 @@
 #let entry = project(
   title: "CaleTZ",
   description: "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives.",
+  languages: ("Typst", "Rust"),
   published: "2025/10/22",
   repo-url: "https://github.com/rice8y/caletz",
   links: ((label: "Typst Universe", url: "https://typst.app/universe/package/caletz"),),

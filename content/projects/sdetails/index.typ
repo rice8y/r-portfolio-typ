@@ -3,6 +3,7 @@
 #let entry = project(
   title: "SDetails",
   description: "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources.",
+  languages: ("Python",),
   published: "2025/8/29",
   repo-url: "https://github.com/rice8y/sdetails",
 )[

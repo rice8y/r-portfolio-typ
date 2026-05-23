@@ -3,6 +3,7 @@
 #let entry = project(
   title: "Typixel",
   description: "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps.",
+  languages: ("Typst", "Rust"),
   published: "2026/02/20",
   repo-url: "https://github.com/rice8y/typixel",
   links: ((label: "Typst Universe", url: "https://typst.app/universe/package/typixel"),),

@@ -3,6 +3,7 @@
 #let entry = project(
   title: "FracTeX",
   description: "A comprehensive 2D fractal visualization package for LaTeX.",
+  languages: ("TeX",),
   published: "2025/8/29",
   repo-url: "https://github.com/rice8y/FracTeX",
 )[

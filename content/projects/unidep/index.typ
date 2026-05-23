@@ -3,6 +3,7 @@
 #let entry = project(
   title: "unidep",
   description: "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ.",
+  languages: ("Typst", "Rust"),
   published: "2026/02/27",
   updated: "2026/03/04",
   repo-url: "https://github.com/rice8y/unidep",

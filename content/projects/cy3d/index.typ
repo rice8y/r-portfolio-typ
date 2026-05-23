@@ -3,6 +3,7 @@
 #let entry = project(
   title: "CY3d",
   description: "A LaTeX package for drawing Calabi-Yau manifold.",
+  languages: ("TeX",),
   published: "2025/8/29",
   repo-url: "https://github.com/rice8y/cy3d",
 )[

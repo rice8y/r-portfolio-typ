@@ -3,6 +3,7 @@
 #let entry = project(
   title: "glotter",
   description: "A Typst package for detecting the language of text fragments and applying language-aware settings to content.",
+  languages: ("Typst", "Rust"),
   published: "2026/05/23",
   repo-url: "https://github.com/rice8y/glotter",
   links: ((label: "Typst Universe", url: "https://typst.app/universe/package/glotter/"),),

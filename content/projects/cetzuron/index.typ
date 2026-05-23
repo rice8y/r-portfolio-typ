@@ -3,6 +3,7 @@
 #let entry = project(
   title: "CeTZuron",
   description: "A Typst package for drawing neural network diagrams.",
+  languages: ("Typst",),
   published: "2025/8/30",
   repo-url: "https://github.com/rice8y/cetzuron",
 )[

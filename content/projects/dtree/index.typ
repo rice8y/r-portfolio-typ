@@ -3,6 +3,7 @@
 #let entry = project(
   title: "dtree",
   description: "A Typst package for visualizing directory trees and file structures using indented text.",
+  languages: ("Typst",),
   published: "2026/02/20",
   repo-url: "https://github.com/rice8y/dtree",
   links: ((label: "Typst Universe", url: "https://typst.app/universe/package/dtree"),),

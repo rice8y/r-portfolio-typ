@@ -3,6 +3,7 @@
 #let entry = project(
   title: "typshade",
   description: "A Typst package for visualizing multiple-sequence alignments in bioinformatics.",
+  languages: ("Typst",),
   published: "2026/05/23",
   repo-url: "https://github.com/rice8y/typshade",
   links: ((label: "Typst Universe", url: "https://typst.app/universe/package/typshade/"),),

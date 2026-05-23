@@ -3,6 +3,7 @@
 #let entry = project(
   title: "SSJ",
   description: "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection.",
+  languages: ("Python",),
   published: "2025/8/29",
   repo-url: "https://github.com/rice8y/ssj",
 )[

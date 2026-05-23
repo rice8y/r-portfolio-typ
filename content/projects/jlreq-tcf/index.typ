@@ -3,6 +3,7 @@
 #let entry = project(
   title: "jlreq-tcf",
   description: "A LaTeX package providing two-column footnotes compatible with the jlreq class.",
+  languages: ("TeX",),
   published: "2026/02/20",
   repo-url: "https://github.com/rice8y/jlreq-tcf",
 )[
