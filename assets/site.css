@@ -1169,7 +1169,822 @@ article.prose .link-preview-copy,
   }
 }
 
+/* Project language filters and badges ------------------------------------ */
+.card-title-row {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.card-title-row .card-title {
+  min-width: 0;
+  flex: 0 1 auto;
+  line-height: 1.25;
+}
+.language-badges {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 0 1 auto;
+  overflow: hidden;
+  line-height: 1;
+}
+.language-badge {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.32rem;
+  max-width: 7.5rem;
+  height: 1.25rem;
+  padding: 0 0.48rem 0 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  color: var(--muted);
+  font-family: var(--sans) !important;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.language-badge-icon {
+  width: 0.86rem;
+  height: 0.86rem;
+  display: inline-grid;
+  place-items: center;
+  color: currentColor;
+  line-height: 0;
+}
+.language-badge-icon iconify-icon {
+  display: block;
+  width: 0.86rem;
+  height: 0.86rem;
+  color: currentColor;
+  line-height: 1;
+  vertical-align: -0.125em;
+}
+.language-badge-label {
+  min-width: 0;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1;
+}
+.language-badge[data-language="Rust"] .language-badge-icon { color: #000000; }
+html.dark .language-badge[data-language="Rust"] .language-badge-icon { color: #ffffff; }
+.language-badge[data-language="Python"] .language-badge-icon { color: #3776ab; }
+.language-badge[data-language="Perl"] .language-badge-icon { color: #39457e; }
+.language-badge[data-language="Shell"] .language-badge-icon { color: #4eaa25; }
+.language-badge[data-language="TeX"] .language-badge-icon { color: #008080; }
+.language-badge[data-language="Typst"] .language-badge-icon { color: #239dad; }
+.language-badge[data-language="Lua"] .language-badge-icon { color: #2c2d72; }
+.language-badge[data-language="Julia"] .language-badge-icon { color: #9558b2; }
+.language-badge[data-language="JavaScript"] .language-badge-icon { color: #b59b00; }
+.language-badge[data-language="TypeScript"] .language-badge-icon { color: #3178c6; }
+.language-badge[data-language="HTML"] .language-badge-icon { color: #e34f26; }
+.language-badge[data-language="CSS"] .language-badge-icon { color: #663399; }
+.language-badge[data-language="C"] .language-badge-icon,
+.language-badge[data-language="C++"] .language-badge-icon,
+.language-badge[data-language="C#"] .language-badge-icon { color: #659ad2; }
+.language-badge[data-language="Go"] .language-badge-icon { color: #00add8; }
+.language-badge[data-language="Java"] .language-badge-icon { color: #e76f00; }
+.language-badge[data-language="Kotlin"] .language-badge-icon { color: #7f52ff; }
+.language-badge[data-language="Swift"] .language-badge-icon { color: #f05138; }
+.language-badge[data-language="Ruby"] .language-badge-icon { color: #cc342d; }
+.language-badge[data-language="R"] .language-badge-icon { color: #276dc3; }
+.language-badge[data-language="Dart"] .language-badge-icon { color: #0175c2; }
+.language-badge[data-language="Scala"] .language-badge-icon { color: #dc322f; }
+.language-badge[data-language="OCaml"] .language-badge-icon { color: #ec6813; }
+.language-badge[data-language="Node.js"] .language-badge-icon { color: #5fa04e; }
+.language-badge[data-language="Astro"] .language-badge-icon { color: #bc52ee; }
+.language-badge[data-language="Other"] .language-badge-icon { color: var(--muted); }
+
+.project-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
+.project-filter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.34rem 0.72rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--muted);
+  font: 0.86rem/1 var(--sans);
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+.project-filter-button:hover,
+.project-filter-button.is-active {
+  border-color: var(--line-hover);
+  background: var(--surface-hover);
+  color: var(--fg-strong);
+}
+.project-filter-button .language-badge {
+  height: 1rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  column-gap: 0.42rem;
+}
+.project-filter-button .language-badge-icon {
+  width: 1rem;
+  height: 1rem;
+  color: currentColor;
+}
+.project-filter-button .language-badge-icon iconify-icon {
+  width: 1rem;
+  height: 1rem;
+}
+.project-filter-button .language-badge-label {
+  line-height: 1;
+}
+.project-filter-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Home compact prose: Awards / Publications. */
+.home-compact-prose {
+  line-height: 1.8 !important;
+}
+.home-compact-prose > * {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.home-compact-prose > * + * {
+  margin-top: 0.5rem !important;
+}
+.home-compact-prose :where(h1, h2, h3, h4, h5, h6) {
+  margin-top: 0 !important;
+  margin-bottom: 0.35rem !important;
+  font-size: 1rem !important;
+  line-height: 1.5 !important;
+}
+.home-compact-prose :where(ul, ol) {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-left: 1.25rem !important;
+}
+.home-compact-prose :where(li) {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  line-height: 1.8 !important;
+}
+article.prose :where(ul, ol) + :where(h2, h3, h4) {
+  margin-top: 2.25rem !important;
+}
+
+@media (max-width: 640px) {
+  .card-title-row {
+    flex-wrap: wrap;
+    row-gap: 0.3rem;
+  }
+  .language-badges {
+    flex-basis: 100%;
+  }
+}
+
+/* Project language badge alignment hardening -------------------------------
+   Iconify custom elements do not share the same text baseline as normal inline
+   text in all browsers. Treat each badge as a tiny flex row and center both the
+   icon box and the label explicitly, rather than relying on baseline alignment. */
+.card-title-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+.card-title-row .card-title {
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+.card-title-row .card-title,
+.card-title-row .card-title * {
+  vertical-align: middle !important;
+}
+.language-badges {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  overflow: hidden !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+.language-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.38rem !important;
+  max-width: 7.5rem !important;
+  height: 1.32rem !important;
+  padding: 0 0.55rem !important;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent) !important;
+  border-radius: 9999px !important;
+  background: color-mix(in srgb, var(--bg) 72%, transparent) !important;
+  color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+.language-badge-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+  min-width: 0.9rem !important;
+  min-height: 0.9rem !important;
+  flex: 0 0 0.9rem !important;
+  color: currentColor;
+  line-height: 0 !important;
+  vertical-align: middle !important;
+}
+.language-badge-icon iconify-icon {
+  display: block !important;
+  width: 0.9rem !important;
+  height: 0.9rem !important;
+  min-width: 0.9rem !important;
+  min-height: 0.9rem !important;
+  font-size: 0.9rem !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+.language-badge-label {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1 !important;
+  transform: translateY(0.005em) !important;
+}
+.project-filter-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  min-height: 2rem !important;
+  line-height: 1 !important;
+}
+.project-filter-button .language-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.45rem !important;
+  height: auto !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+}
+.project-filter-button .language-badge-icon,
+.project-filter-button .language-badge-icon iconify-icon {
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  min-height: 1rem !important;
+  flex-basis: 1rem !important;
+  font-size: 1rem !important;
+}
+.project-filter-button .language-badge-label {
+  line-height: 1 !important;
+  transform: translateY(0.005em) !important;
+}
+
+@media (max-width: 640px) {
+  .card-title-row {
+    flex-wrap: wrap !important;
+    row-gap: 0.35rem !important;
+  }
+  .language-badges {
+    flex-basis: 100% !important;
+  }
+}
+
+/* Project language badge final alignment -----------------------------------
+   Do not rely on iconify-icon's inline baseline. The icon is absolutely
+   positioned inside the badge and the label is laid out from a fixed left
+   inset, so icon/label spacing and vertical centering are deterministic. */
+.card-title-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+.card-title-row .card-title {
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  display: block !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+.language-badges {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  overflow: hidden !important;
+  line-height: 1 !important;
+  vertical-align: middle !important;
+}
+.language-badge {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 0 !important;
+  max-width: 7.5rem !important;
+  height: 1.32rem !important;
+  padding: 0 0.55rem 0 1.48rem !important;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent) !important;
+  border-radius: 9999px !important;
+  background: color-mix(in srgb, var(--bg) 72%, transparent) !important;
+  color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+.language-badge-icon {
+  position: absolute !important;
+  left: 0.43rem !important;
+  top: 50% !important;
+  display: block !important;
+  width: 0.86rem !important;
+  height: 0.86rem !important;
+  min-width: 0.86rem !important;
+  min-height: 0.86rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateY(-50%) !important;
+  color: currentColor;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+  vertical-align: top !important;
+}
+.language-badge-label {
+  display: block !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+.project-filter-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 2rem !important;
+  line-height: 1 !important;
+}
+.project-filter-button .language-badge {
+  height: 1.18rem !important;
+  padding: 0 0 0 1.42rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+  max-width: none !important;
+}
+.project-filter-button .language-badge-icon {
+  left: 0 !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  min-height: 1rem !important;
+  font-size: 1rem !important;
+}
+.project-filter-button .language-badge-label {
+  line-height: 1 !important;
+}
+
+/* Project language badge overflow fix --------------------------------------
+   Keep icons absolutely positioned for stable vertical centering, but make
+   the badge itself size to its label. This prevents the label from being laid
+   outside of the pill in browsers where iconify-icon reports an unstable
+   intrinsic inline size. */
+.card-title-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+.card-title-row .card-title {
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  display: block !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+.language-badges {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  overflow: visible !important;
+  line-height: 1 !important;
+}
+.language-badge {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  box-sizing: border-box !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  height: 1.34rem !important;
+  padding: 0 0.58rem 0 1.55rem !important;
+  overflow: visible !important;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent) !important;
+  border-radius: 9999px !important;
+  background: color-mix(in srgb, var(--bg) 72%, transparent) !important;
+  color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+.language-badge-icon {
+  position: absolute !important;
+  left: 0.43rem !important;
+  top: 50% !important;
+  display: block !important;
+  width: 0.88rem !important;
+  height: 0.88rem !important;
+  min-width: 0.88rem !important;
+  min-height: 0.88rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateY(-50%) !important;
+  color: currentColor;
+  font-size: 0.88rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+.language-badge-label {
+  display: inline-block !important;
+  flex: 0 0 auto !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  transform: none !important;
+}
+.project-filter-button .language-badge {
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  height: 1.18rem !important;
+  padding: 0 0 0 1.45rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+  overflow: visible !important;
+}
+.project-filter-button .language-badge-icon {
+  left: 0 !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  min-height: 1rem !important;
+  font-size: 1rem !important;
+}
+.project-filter-button .language-badge-label {
+  min-width: max-content !important;
+}
+@media (max-width: 640px) {
+  .card-title-row {
+    flex-wrap: wrap !important;
+    row-gap: 0.35rem !important;
+  }
+  .language-badges {
+    flex-basis: 100% !important;
+  }
+}
+
+
+/* Project language badge definitive layout ---------------------------------
+   Use the badge's data-language attribute for the visible label. This avoids
+   Iconify custom element intrinsic sizing/baseline differences and prevents
+   the text from escaping the pill. */
+.card-title-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+.card-title-row .card-title {
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  display: block !important;
+  line-height: 1.25 !important;
+  white-space: nowrap !important;
+}
+.language-badges {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  min-width: 0 !important;
+  flex: 0 1 auto !important;
+  overflow: visible !important;
+  line-height: 1 !important;
+}
+.language-badge {
+  position: relative !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: 1.34rem !important;
+  padding: 0 0.58rem 0 1.55rem !important;
+  overflow: visible !important;
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent) !important;
+  border-radius: 9999px !important;
+  background: color-mix(in srgb, var(--bg) 72%, transparent) !important;
+  color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.75rem !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+  vertical-align: middle !important;
+}
+.language-badge::after {
+  content: attr(data-language) !important;
+  display: block !important;
+  flex: 0 0 auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  overflow: visible !important;
+  color: currentColor !important;
+  font: inherit !important;
+  line-height: 1 !important;
+  white-space: nowrap !important;
+}
+.language-badge-label {
+  display: none !important;
+}
+.language-badge-icon {
+  position: absolute !important;
+  left: 0.43rem !important;
+  top: 50% !important;
+  display: block !important;
+  width: 0.88rem !important;
+  height: 0.88rem !important;
+  min-width: 0.88rem !important;
+  min-height: 0.88rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateY(-50%) !important;
+  color: currentColor;
+  font-size: 0.88rem !important;
+  line-height: 1 !important;
+  pointer-events: none !important;
+}
+.project-filter-button .language-badge {
+  height: 1.18rem !important;
+  padding: 0 0 0 1.45rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-size: 0.86rem !important;
+  line-height: 1 !important;
+  max-width: none !important;
+}
+.project-filter-button .language-badge-icon {
+  left: 0 !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  min-width: 1rem !important;
+  min-height: 1rem !important;
+  font-size: 1rem !important;
+}
+.project-filter-button .language-badge::after {
+  font-size: inherit !important;
+}
+@media (max-width: 640px) {
+  .card-title-row {
+    flex-wrap: wrap !important;
+    row-gap: 0.35rem !important;
+  }
+  .language-badges {
+    flex-basis: 100% !important;
+  }
+}
+
+/* Project language badges: Shields.io version -----------------------------
+   Use Shields.io SVGs instead of custom-element icons. This removes browser-
+   dependent baseline/width calculations from Iconify and keeps badges stable. */
+.card-title-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.6rem !important;
+  min-width: 0 !important;
+}
+
+.card-title-row .card-title {
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  line-height: 1.25 !important;
+}
+
+.language-badges {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  flex: 0 1 auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  line-height: 0 !important;
+}
+
+.language-badge,
+.project-filter-button .language-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  line-height: 0 !important;
+  vertical-align: middle !important;
+  position: static !important;
+  overflow: visible !important;
+}
+
+.language-badge::before,
+.language-badge::after,
+.language-badge-label,
+.language-badge-icon,
+.language-badge iconify-icon {
+  display: none !important;
+  content: none !important;
+}
+
+.language-shield {
+  display: block !important;
+  width: auto !important;
+  height: 1.25rem !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  object-fit: contain !important;
+}
+
+.project-filter-button {
+  min-height: 2rem !important;
+  padding: 0.34rem 0.72rem !important;
+  gap: 0.35rem !important;
+}
+
+.project-filter-button .language-shield {
+  height: 1.35rem !important;
+}
+
+@media (max-width: 640px) {
+  .card-title-row {
+    flex-wrap: wrap !important;
+    row-gap: 0.35rem !important;
+  }
+  .language-badges {
+    flex-basis: 100% !important;
+  }
+}
+
 /* Add spacing between a publication list and the next category heading. */
 article.prose :where(ul, ol) + :where(h2, h3, h4) {
   margin-top: 1.65rem !important;
+}
+
+/* Project filter buttons: use Shields.io badges as the button surface.
+   The previous version placed a Shields badge inside another rounded button,
+   which made the language filters look like a badge floating in a mismatched
+   shell and made the All button a different height.  Here, every filter uses
+   the same Shields SVG height, including All. */
+.project-filter {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 0.55rem !important;
+}
+
+.project-filter-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: 1.65rem !important;
+  min-height: 1.65rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0.35rem !important;
+  background: transparent !important;
+  color: inherit !important;
+  line-height: 0 !important;
+  opacity: 0.72 !important;
+  box-shadow: none !important;
+  transition: opacity .18s ease, filter .18s ease, transform .18s ease, box-shadow .18s ease !important;
+}
+
+.project-filter-button:hover,
+.project-filter-button.is-active {
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  opacity: 1 !important;
+  filter: saturate(1.05) contrast(1.02) !important;
+}
+
+.project-filter-button:hover {
+  transform: translateY(-1px) !important;
+}
+
+.project-filter-button.is-active {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--fg-strong) 18%, transparent) !important;
+}
+
+.project-filter-button .language-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  height: 1.65rem !important;
+  min-height: 1.65rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  line-height: 0 !important;
+}
+
+.project-filter-button .language-shield {
+  display: block !important;
+  width: auto !important;
+  height: 1.65rem !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Keep card badges compact. */
+.card .language-shield {
+  height: 1.25rem !important;
 }

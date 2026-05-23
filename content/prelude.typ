@@ -76,6 +76,7 @@
   description: "",
   published: none,
   updated: none,
+  languages: (),
   repo-url: none,
   links: (),
   reading-time: "1 min read",
@@ -90,7 +91,7 @@
     links: all-links,
     reading-time: reading-time,
     body,
-  )
+  ) + (languages: languages)
 }
 
 #let favorite(

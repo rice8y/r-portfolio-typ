@@ -151,14 +151,113 @@
   #if entry.updated_date != none { elem("span")[Updated: #entry.updated_date] }
 ]
 
-#let card(entry, href) = elem("a", attrs: (href: href, class: "card", title: entry.description))[
-  #elem("div", attrs: (class: "card-body"))[
-    #elem("div", attrs: (class: "card-title"))[#entry.title]
-    #card-meta(entry)
-    #elem("div", attrs: (class: "card-summary", title: entry.description))[#entry.description]
-  ]
-  #icon-arrow-right()
+#let language-shield-src(language) = {
+  let shields = (
+    "All": "https://img.shields.io/badge/All-6b7280?style=flat",
+    "Typst": "https://img.shields.io/badge/Typst-239dad?style=flat&logo=typst&logoColor=white",
+    "Rust": "https://img.shields.io/badge/Rust-000000?style=flat&logo=rust&logoColor=white",
+    "Python": "https://img.shields.io/badge/Python-3776ab?style=flat&logo=python&logoColor=white",
+    "Perl": "https://img.shields.io/badge/Perl-39457e?style=flat&logo=perl&logoColor=white",
+    "Shell": "https://img.shields.io/badge/Shell-4eaa25?style=flat&logo=gnubash&logoColor=white",
+    "TeX": "https://img.shields.io/badge/TeX-008080?style=flat&logo=latex&logoColor=white",
+    "Lua": "https://img.shields.io/badge/Lua-2c2d72?style=flat&logo=lua&logoColor=white",
+    "Julia": "https://img.shields.io/badge/Julia-9558b2?style=flat&logo=julia&logoColor=white",
+    "JavaScript": "https://img.shields.io/badge/JavaScript-f7df1e?style=flat&logo=javascript&logoColor=000000",
+    "TypeScript": "https://img.shields.io/badge/TypeScript-3178c6?style=flat&logo=typescript&logoColor=white",
+    "HTML": "https://img.shields.io/badge/HTML-e34f26?style=flat&logo=html5&logoColor=white",
+    "CSS": "https://img.shields.io/badge/CSS-663399?style=flat&logo=css&logoColor=white",
+    "C": "https://img.shields.io/badge/C-659ad2?style=flat&logo=c&logoColor=white",
+    "C++": "https://img.shields.io/badge/C%2B%2B-00599c?style=flat&logo=cplusplus&logoColor=white",
+    "C#": "https://img.shields.io/badge/C%23-512bd4?style=flat&logo=sharp&logoColor=white",
+    "Go": "https://img.shields.io/badge/Go-00add8?style=flat&logo=go&logoColor=white",
+    "Java": "https://img.shields.io/badge/Java-e76f00?style=flat&logo=openjdk&logoColor=white",
+    "Kotlin": "https://img.shields.io/badge/Kotlin-7f52ff?style=flat&logo=kotlin&logoColor=white",
+    "Swift": "https://img.shields.io/badge/Swift-f05138?style=flat&logo=swift&logoColor=white",
+    "Ruby": "https://img.shields.io/badge/Ruby-cc342d?style=flat&logo=ruby&logoColor=white",
+    "R": "https://img.shields.io/badge/R-276dc3?style=flat&logo=r&logoColor=white",
+    "Dart": "https://img.shields.io/badge/Dart-0175c2?style=flat&logo=dart&logoColor=white",
+    "Scala": "https://img.shields.io/badge/Scala-dc322f?style=flat&logo=scala&logoColor=white",
+    "OCaml": "https://img.shields.io/badge/OCaml-ec6813?style=flat&logo=ocaml&logoColor=white",
+    "Node.js": "https://img.shields.io/badge/Node.js-5fa04e?style=flat&logo=nodedotjs&logoColor=white",
+    "Astro": "https://img.shields.io/badge/Astro-bc52ee?style=flat&logo=astro&logoColor=white",
+    "Other": "https://img.shields.io/badge/Other-6b7280?style=flat",
+  )
+  shields.at(str(language), default: "https://img.shields.io/badge/Other-6b7280?style=flat")
+}
+
+#let entry-languages(entry) = {
+  let languages = entry.at("languages", default: ())
+  if languages == none or languages.len() == 0 {
+    ("Other",)
+  } else {
+    languages
+  }
+}
+
+#let join-languages(languages) = {
+  let out = ""
+  for pair in languages.enumerate() {
+    if pair.at(0) > 0 { out += "||" }
+    out += str(pair.at(1))
+  }
+  out
+}
+
+#let language-badge(language) = elem("span", attrs: (class: "language-badge", "data-language": str(language), "aria-label": str(language)))[
+  #void("img", attrs: (class: "language-shield", src: language-shield-src(language), alt: str(language), loading: "lazy", decoding: "async"))
 ]
+
+#let language-badges(entry) = {
+  let languages = entry-languages(entry)
+  if languages.len() > 0 {
+    elem("span", attrs: (class: "language-badges", "aria-label": "Implementation languages"))[
+      #for language in languages { language-badge(language) }
+    ]
+  }
+}
+
+#let project-languages(projects) = {
+  let out = ()
+  for project in as-array(projects) {
+    for language in entry-languages(project) {
+      if not (language in out) { out.push(language) }
+    }
+  }
+  out
+}
+
+#let project-filter(projects) = {
+  let languages = project-languages(projects)
+  if languages.len() > 0 {
+    elem("div", attrs: (class: "project-filter animate", "aria-label": "Filter projects by implementation language"))[
+      #elem("button", attrs: ("type": "button", class: "project-filter-button is-active", "data-language-filter": "all"))[#language-badge("All")]
+      #for language in languages {
+        elem("button", attrs: ("type": "button", class: "project-filter-button", "data-language-filter": str(language)))[#language-badge(language)]
+      }
+    ]
+  }
+}
+
+#let card(entry, href) = {
+  let is-project = entry.at("collection", default: "") == "projects"
+  let languages = if is-project { entry-languages(entry) } else { () }
+  let attrs = if is-project {
+    (href: href, class: "card", title: entry.description, "data-project-card": "true", "data-languages": join-languages(languages))
+  } else {
+    (href: href, class: "card", title: entry.description)
+  }
+  elem("a", attrs: attrs)[
+    #elem("div", attrs: (class: "card-body"))[
+      #elem("div", attrs: (class: "card-title-row"))[
+        #elem("div", attrs: (class: "card-title"))[#entry.title]
+        #if is-project { language-badges(entry) }
+      ]
+      #card-meta(entry)
+      #elem("div", attrs: (class: "card-summary", title: entry.description))[#entry.description]
+    ]
+    #icon-arrow-right()
+  ]
+}
 
 #let card-list(entries, collection, limit: none) = {
   let items = as-array(entries)
@@ -208,10 +307,10 @@
 #let giscus-block() = elem("div", attrs: (class: "animate", style: "margin-top: 3.5rem;"))[
   #elem("script", attrs: (
     src: "https://giscus.app/client.js",
-    "data-repo": "rice8y/r-portfolio-typ",
-    "data-repo-id": "R_kgDOSk_qMw",
+    "data-repo": "rice8y/r-portfolio",
+    "data-repo-id": "R_kgDOPmTTJw",
     "data-category": "Announcements",
-    "data-category-id": "DIC_kwDOSk_qM84C9n1w",
+    "data-category-id": "DIC_kwDOPmTTJ84C25yk",
     "data-mapping": "pathname",
     "data-strict": "0",
     "data-reactions-enabled": "1",
@@ -302,6 +401,17 @@
   ]
 ]
 
+#let projects-page(profile, projects, site-url: "") = layout(profile, "projects", "Projects", profile.projects_description, "projects", site-url: site-url)[
+  #elem("div", attrs: (class: "stack-10"))[
+    #elem("div", attrs: (class: "animate page-title"))[Projects]
+    #elem("div", attrs: (class: "stack-4"))[
+      #project-filter(projects)
+      #card-list(projects, "projects")
+      #elem("p", attrs: (class: "project-filter-empty hidden"))[No projects match this language.]
+    ]
+  ]
+]
+
 #let list-page(profile, current, title, description, entries, collection, site-url: "") = layout(profile, current, title, description, current, site-url: site-url)[
   #elem("div", attrs: (class: "stack-10"))[
     #elem("div", attrs: (class: "animate page-title"))[#title]
@@ -351,7 +461,7 @@
     let post = find-by-slug(posts, slug)
     if post == none { not-found-page(profile, site-url: site-url) } else { article-page(profile, "blog", "/blog/", "Back to blog", post, "blog", site-url: site-url) }
   } else if page == "projects" {
-    list-page(profile, "projects", "Projects", profile.projects_description, projects, "projects", site-url: site-url)
+    projects-page(profile, projects, site-url: site-url)
   } else if page == "project" {
     let project = find-by-slug(projects, slug)
     if project == none { not-found-page(profile, site-url: site-url) } else { article-page(profile, "projects", "/projects/", "Back to projects", project, "projects", site-url: site-url) }

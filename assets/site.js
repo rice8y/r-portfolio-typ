@@ -6,6 +6,7 @@ function initPortfolio() {
   initCollapse();
   initNoCopyEmail();
   initCodeCopyButtons();
+  initProjectLanguageFilter();
 
   const backToTop = document.getElementById("back-to-top");
   backToTop?.addEventListener("click", (event) => scrollToTop(event));
@@ -148,6 +149,59 @@ async function copyText(text) {
   catch (_) { ok = false; }
   textarea.remove();
   return ok;
+}
+
+function initProjectLanguageFilter() {
+  const filter = document.querySelector(".project-filter");
+  if (!filter || filter.dataset.filterReady) return;
+  filter.dataset.filterReady = "true";
+
+  const buttons = Array.from(filter.querySelectorAll("[data-language-filter]"));
+  const cards = Array.from(document.querySelectorAll("[data-project-card]"));
+  const empty = document.querySelector(".project-filter-empty");
+  const params = new URLSearchParams(window.location.search);
+
+  const setActive = (language, updateUrl = true) => {
+    let visible = 0;
+
+    buttons.forEach((button) => {
+      const active = button.dataset.languageFilter === language;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    cards.forEach((card) => {
+      const languages = (card.dataset.languages || "Other")
+        .split("||")
+        .map((value) => value.trim())
+        .filter(Boolean);
+      const show = language === "all" || languages.includes(language);
+      const item = card.closest("li") || card;
+      item.hidden = !show;
+      if (show) visible += 1;
+    });
+
+    empty?.classList.toggle("hidden", visible !== 0);
+
+    if (updateUrl) {
+      const next = new URL(window.location.href);
+      if (language === "all") next.searchParams.delete("language");
+      else next.searchParams.set("language", language);
+      window.history.replaceState({}, "", next);
+    }
+  };
+
+  buttons.forEach((button) => {
+    button.setAttribute("aria-pressed", button.classList.contains("is-active") ? "true" : "false");
+    button.addEventListener("click", () => setActive(button.dataset.languageFilter || "all"));
+  });
+
+  const initial = params.get("language");
+  if (initial && buttons.some((button) => button.dataset.languageFilter === initial)) {
+    setActive(initial, false);
+  } else {
+    setActive("all", false);
+  }
 }
 
 function initNoCopyEmail() {
