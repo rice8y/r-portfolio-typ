@@ -4,8 +4,9 @@
   title: "molchemist",
   description: "A Typst package for rendering chemical structures directly from Molfile (.mol) and Structure-Data File (.sdf) formats.",
   published: "2026/03/03",
-  updated: "2026/03/20",
+  updated: "2026/05/23",
   repo-url: "https://github.com/rice8y/molchemist",
+  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/molchemist/"),),
 )[
 *molchemist* is a Typst package for rendering chemical structures directly from Molfile (`.mol`) and Structure-Data File (`.sdf`) formats. 
 
