@@ -7,6 +7,7 @@ A Typst HTML exporter implementation of [`r-portfolio`](https://github.com/rice8
 - Uses Typst `0.14.x` experimental HTML export for page rendering.
 - Builds clean URLs such as `/blog/<slug>/` and `/projects/<slug>/`.
 - Keeps content authoring simple with one `index.typ` per entry.
+- Supports implementation-language badges and filtering on the Projects page.
 - Supports light, dark, and system themes.
 - Ships as static assets in `dist/`, suitable for Vercel and other static hosts.
 
@@ -112,6 +113,7 @@ A project entry looks like this:
 #let entry = project(
   title: "my-project",
   description: "Project description.",
+  languages: ("Typst", "Rust"),
   published: "2026/05/22",
   repo-url: "https://github.com/user/repo",
   links: (
@@ -123,6 +125,8 @@ A project entry looks like this:
   #img("/images/projects/my-project/screenshot.png", alt: "Screenshot")
 ]
 ```
+
+`languages` accepts multiple values and is used for the Projects page filter and language badges on project cards. Badges are rendered as Shields.io SVGs with official Simple Icons logos where available. When omitted or empty, the project is treated as `Other`.
 
 ## Writer-facing helpers
 
