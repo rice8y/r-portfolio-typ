@@ -179,8 +179,8 @@
   max-width: "660px",
   radius: "10px",
   title: "Apple Music embed",
-) = html.elem("div", attrs: (class: "apple-music-embed"))[
-  #html.elem("iframe", attrs: (
+) = _elem("div", attrs: (class: "apple-music-embed"))[
+  #_elem("iframe", attrs: (
     title: title,
     src: src,
     allow: "autoplay *; encrypted-media *; fullscreen *; clipboard-write",
