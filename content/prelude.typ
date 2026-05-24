@@ -150,16 +150,45 @@
   ]
 ]
 
-#let instagram(url) = [
+#let instagram(
+  url,
+  title: "Instagram embed",
+  fallback: "View this post on Instagram",
+) = [
   #_elem("blockquote", attrs: (
     class: "instagram-media instagram-lite",
     "data-instgrm-permalink": url,
     "data-instgrm-version": "14",
   ))[
-    #_elem("p")[Instagram embed]
-    #_elem("a", attrs: (href: url, target: "_blank", rel: "noreferrer"))[View this post on Instagram]
+    #_elem("p")[#title]
+    #_elem("a", attrs: (
+      href: url,
+      target: "_blank",
+      rel: "noreferrer",
+    ))[#fallback]
   ]
-  #_elem("script", attrs: (async: "true", src: "//www.instagram.com/embed.js"))[]
+  #_elem("script", attrs: (
+    "async": "true",
+    src: "//www.instagram.com/embed.js",
+  ))[]
+]
+
+#let apple-music(
+  src,
+  height: 450,
+  max-width: "660px",
+  radius: "10px",
+  title: "Apple Music embed",
+) = html.elem("div", attrs: (class: "apple-music-embed"))[
+  #html.elem("iframe", attrs: (
+    title: title,
+    src: src,
+    allow: "autoplay *; encrypted-media *; fullscreen *; clipboard-write",
+    frameborder: "0",
+    height: str(height),
+    style: "width:100%;max-width:" + max-width + ";overflow:hidden;border-radius:" + radius + ";",
+    sandbox: "allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation",
+  ))[]
 ]
 
 #let data-table(headers: (), rows: ()) = _elem("div", attrs: (class: "table-scroll"))[
