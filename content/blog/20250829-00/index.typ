@@ -12,6 +12,5 @@
   title: "Astro Nano",
   description: "Astro Nano is a static, minimalist, lightweight, lightning fast portfolio and blog.",
   link: "https://github.com/markhorn-dev/astro-nano",
-  image: "/images/blog/astro-nano.png",
 )
 ]

@@ -11,6 +11,5 @@
   title: "Typst Documentation — HTML",
   description: "Typst's experimental HTML export captures document structure as semantic, human-readable HTML and exposes the html module for raw and typed HTML elements.",
   link: "https://typst.app/docs/reference/html/",
-  image: "/images/blog/typst-social.png",
 )
 ]
