@@ -140,6 +140,11 @@ dist/projects/rss.xml
 
 `rss.xml` is a combined feed for blog posts and projects. `blog/rss.xml` and `projects/rss.xml` are collection-specific feeds. Feed items are generated from the `title`, `description`, and `published` metadata in each entry.
 
+The UI exposes RSS in two places:
+
+- the global feed is linked from the footer and the home contact section;
+- collection-specific feeds are linked from the Blog and Projects page headings.
+
 ## Writer-facing helpers
 
 `content/prelude.typ` provides small components so article files do not need to call `html.elem(...)` directly:
@@ -161,7 +166,7 @@ dist/projects/rss.xml
 ## Rendering architecture
 
 - `main.typ` is the Typst entry point. It receives the route through `--input page=...` and delegates to `site.typ`.
-- `site.typ` contains the HTML layout functions, route switch, cards, article layout, header, footer, and SEO tags.
+- `site.typ` contains the HTML layout functions, route switch, cards, project language badges/filter UI, article layout, header, footer, RSS links, and OGP/Twitter metadata.
 - `assets/site.css` defines the visual system. It is inlined into every page through `read(...)`, so no CSS bundler is required.
 - The visual system follows the Astro source: sans-serif UI text uses an Inter-first stack and article paragraphs use a Lora-first serif stack. Inter/Lora are self-hosted from `public/fonts/` and preloaded in `site.typ`, mirroring the original Astro build.
 - Typst HTML export can attach font styles to generated leaf spans. `assets/site.css` resets those spans to inherit the component font so the final DOM keeps the Astro-like typography.
