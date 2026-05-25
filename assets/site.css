@@ -2002,3 +2002,45 @@ article.prose :where(ul, ol) + :where(h2, h3, h4) {
   border: 0;
   background: transparent;
 }
+
+/* RSS UI -------------------------------------------------------------------
+   Keep RSS discoverable without making it a primary navigation item. */
+.page-head {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.5rem 1rem !important;
+}
+
+.rss-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: max-content !important;
+  color: inherit !important;
+  font-family: var(--sans) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.4 !important;
+  text-decoration: underline !important;
+  text-decoration-color: rgba(0, 0, 0, 0.15) !important;
+  text-underline-offset: 0.18em !important;
+  transition: color .3s ease, text-decoration-color .3s ease !important;
+}
+
+html.dark .rss-link {
+  text-decoration-color: rgba(255, 255, 255, 0.30) !important;
+}
+
+.rss-link:hover {
+  color: var(--fg-strong) !important;
+  text-decoration-color: rgba(0, 0, 0, 0.25) !important;
+}
+
+html.dark .rss-link:hover {
+  text-decoration-color: rgba(255, 255, 255, 0.50) !important;
+}
+
+.footer-copy .rss-link,
+.contact-list .rss-link {
+  font-size: inherit !important;
+}

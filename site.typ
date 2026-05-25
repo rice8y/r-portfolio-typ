@@ -37,6 +37,8 @@
   elem("a", attrs: attrs)[#body]
 }
 
+#let rss-link(href, label: "RSS") = elem("a", attrs: (href: href, class: "rss-link", type: "application/rss+xml"))[#label]
+
 #let icon-arrow-right(class: "card-arrow") = elem("svg", attrs: (
   xmlns: "http://www.w3.org/2000/svg",
   viewBox: "0 0 24 24",
@@ -84,7 +86,7 @@
       #elem("div", attrs: (class: "back-to-top-wrap"))[#back-to-top()]
     ]
     #elem("div", attrs: (class: "footer-row"))[
-      #elem("div", attrs: (class: "footer-copy"))[© #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title]]
+      #elem("div", attrs: (class: "footer-copy"))[© #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")]
       #elem("div", attrs: (class: "theme-buttons collapse-target"))[
         #theme-button("light-theme-button", "Light theme", sun-icon())
         #theme-button("dark-theme-button", "Dark theme", moon-icon())
@@ -176,6 +178,11 @@
   #if href != none {
     link(href)[#if label == none { "See all" } else { label }]
   }
+]
+
+#let page-head(title, rss-href: none, rss-label: "RSS") = elem("div", attrs: (class: "page-head"))[
+  #elem("div", attrs: (class: "animate page-title"))[#title]
+  #if rss-href != none { rss-link(rss-href, label: rss-label) }
 ]
 
 #let card-meta(entry) = elem("div", attrs: (class: "card-meta"))[
@@ -427,6 +434,7 @@
         #for social in profile.socials {
           elem("li")[#link(social.href, external: true)[#social.name] /]
         }
+        #elem("li")[#rss-link("/rss.xml") /]
         #elem("li")[#elem("span", attrs: (class: "email-no-copy", "data-email": profile.email, "aria-label": "Email address hidden from copy"))[]]
       ]
     ]
@@ -435,7 +443,7 @@
 
 #let projects-page(profile, projects, site-url: "") = layout(profile, "projects", "Projects", profile.projects_description, "projects", site-url: site-url)[
   #elem("div", attrs: (class: "stack-10"))[
-    #elem("div", attrs: (class: "animate page-title"))[Projects]
+    #page-head("Projects", rss-href: "/projects/rss.xml")
     #elem("div", attrs: (class: "stack-4"))[
       #project-filter(projects)
       #card-list(projects, "projects")
@@ -453,7 +461,7 @@
 
 #let blog-page(profile, posts, site-url: "") = layout(profile, "blog", "Blog", profile.blog_description, "blog", site-url: site-url)[
   #elem("div", attrs: (class: "stack-10"))[
-    #elem("div", attrs: (class: "animate page-title"))[Blog]
+    #page-head("Blog", rss-href: "/blog/rss.xml")
     #blog-groups-list(posts)
   ]
 ]
