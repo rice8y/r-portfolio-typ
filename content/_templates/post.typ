@@ -4,6 +4,7 @@
   title: "New post",
   description: "Short summary shown in cards and metadata.",
   published: "2026/05/22",
+  image: "/images/og/default.png",
 )[
 Write naturally, almost like MDX/Markdown.
 

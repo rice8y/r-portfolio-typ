@@ -95,43 +95,73 @@
   #elem("script", attrs: (src: "https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"))[]
 ]
 
-#let head(profile, title, description, path, site-url: "", image: "/astro-nano.png") = elem("head")[
-  #void("meta", attrs: (charset: "utf-8"))
-  #void("meta", attrs: (name: "viewport", content: "width=device-width, initial-scale=1"))
-  #void("meta", attrs: (name: "description", content: description))
-  #void("meta", attrs: (name: "generator", content: "Typst HTML exporter"))
-  #void("meta", attrs: (name: "color-scheme", content: "light dark"))
-  #void("link", attrs: (rel: "preconnect", href: "https://fonts.googleapis.com"))
-  #void("link", attrs: (rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous"))
-  #void("link", attrs: (rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:wght@400;600&display=swap"))
-  #void("link", attrs: (id: "site-favicon", rel: "icon", type: "image/svg+xml", href: "/favicon-light.svg"))
-  #void("meta", attrs: (name: "theme-color", content: "#f5f5f4", media: "(prefers-color-scheme: light)"))
-  #void("meta", attrs: (name: "theme-color", content: "#1c1917", media: "(prefers-color-scheme: dark)"))
-  #if site-url != "" {
-    let canonical = site-url + site-path(path)
-    void("link", attrs: (rel: "canonical", href: canonical))
-    void("meta", attrs: (property: "og:url", content: canonical))
-    void("meta", attrs: (property: "twitter:url", content: canonical))
-    void("meta", attrs: (property: "og:image", content: site-url + image))
-    void("meta", attrs: (property: "twitter:image", content: site-url + image))
-  }
-  #elem("title")[#full-title(profile, title)]
-  #void("meta", attrs: (name: "title", content: full-title(profile, title)))
-  #void("meta", attrs: (property: "og:type", content: "website"))
-  #void("meta", attrs: (property: "og:title", content: full-title(profile, title)))
-  #void("meta", attrs: (property: "og:description", content: description))
-  #void("meta", attrs: (property: "twitter:card", content: "summary_large_image"))
-  #void("meta", attrs: (property: "twitter:title", content: full-title(profile, title)))
-  #void("meta", attrs: (property: "twitter:description", content: description))
-  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Feed", href: "/rss.xml"))
-  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Blog Feed", href: "/blog/rss.xml"))
-  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Projects Feed", href: "/projects/rss.xml"))
-  #elem("script")[#site-js]
-  #elem("style")[#site-css]
-]
+#let is-absolute-url(value) = {
+  let s = str(value)
+  s.starts-with("http://") or s.starts-with("https://")
+}
 
-#let layout(profile, current, title, description, path, site-url: "", body) = elem("html", attrs: (lang: profile.lang))[
-  #head(profile, title, description, path, site-url: site-url)
+#let absolute-url(site-url, value) = {
+  let s = str(value)
+  if s == "" {
+    ""
+  } else if is-absolute-url(s) {
+    s
+  } else if site-url == "" {
+    s
+  } else if s.starts-with("/") {
+    site-url + s
+  } else {
+    site-url + "/" + s
+  }
+}
+
+#let head(profile, title, description, path, site-url: "", image: none, kind: "website") = {
+  let page-title = full-title(profile, title)
+  let page-image = if image == none { profile.at("image", default: "/astro-nano.png") } else { image }
+  let og-image = if page-image == none { none } else { absolute-url(site-url, page-image) }
+  let twitter-card = if og-image == none { "summary" } else { "summary_large_image" }
+  let page-url = if site-url == "" { none } else { site-url + site-path(path) }
+
+  elem("head")[
+    #void("meta", attrs: (charset: "utf-8"))
+    #void("meta", attrs: (name: "viewport", content: "width=device-width, initial-scale=1"))
+    #void("meta", attrs: (name: "description", content: description))
+    #void("meta", attrs: (name: "generator", content: "Typst HTML exporter"))
+    #void("meta", attrs: (name: "color-scheme", content: "light dark"))
+    #void("link", attrs: (rel: "preconnect", href: "https://fonts.googleapis.com"))
+    #void("link", attrs: (rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "anonymous"))
+    #void("link", attrs: (rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Lora:wght@400;600&display=swap"))
+    #void("link", attrs: (id: "site-favicon", rel: "icon", type: "image/svg+xml", href: "/favicon-light.svg"))
+    #void("meta", attrs: (name: "theme-color", content: "#f5f5f4", media: "(prefers-color-scheme: light)"))
+    #void("meta", attrs: (name: "theme-color", content: "#1c1917", media: "(prefers-color-scheme: dark)"))
+    #if page-url != none {
+      void("link", attrs: (rel: "canonical", href: page-url))
+      void("meta", attrs: (property: "og:url", content: page-url))
+      void("meta", attrs: (property: "twitter:url", content: page-url))
+    }
+    #elem("title")[#page-title]
+    #void("meta", attrs: (name: "title", content: page-title))
+    #void("meta", attrs: (property: "og:site_name", content: profile.site_title))
+    #void("meta", attrs: (property: "og:type", content: kind))
+    #void("meta", attrs: (property: "og:title", content: page-title))
+    #void("meta", attrs: (property: "og:description", content: description))
+    #void("meta", attrs: (property: "twitter:card", content: twitter-card))
+    #void("meta", attrs: (property: "twitter:title", content: page-title))
+    #void("meta", attrs: (property: "twitter:description", content: description))
+    #if og-image != none {
+      void("meta", attrs: (property: "og:image", content: og-image))
+      void("meta", attrs: (property: "twitter:image", content: og-image))
+    }
+    #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Feed", href: "/rss.xml"))
+    #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Blog Feed", href: "/blog/rss.xml"))
+    #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Projects Feed", href: "/projects/rss.xml"))
+    #elem("script")[#site-js]
+    #elem("style")[#site-css]
+  ]
+}
+
+#let layout(profile, current, title, description, path, site-url: "", image: none, kind: "website", body) = elem("html", attrs: (lang: profile.lang))[
+  #head(profile, title, description, path, site-url: site-url, image: image, kind: kind)
   #elem("body")[
     #header(profile, current)
     #elem("main")[
@@ -338,7 +368,7 @@
   }
 }
 
-#let article-page(profile, current, back-href, back-label, entry, collection, site-url: "") = layout(profile, current, entry.title, entry.description, collection + "/" + entry.slug, site-url: site-url)[
+#let article-page(profile, current, back-href, back-label, entry, collection, site-url: "") = layout(profile, current, entry.title, entry.description, collection + "/" + entry.slug, site-url: site-url, image: entry.at("image", default: none), kind: "article")[
   #elem("div", attrs: (class: "animate"))[#back-to-prev(back-href, back-label)]
   #elem("div", attrs: (class: "article-header stack-1"))[
     #elem("div", attrs: (class: "animate article-meta-line"))[

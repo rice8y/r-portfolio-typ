@@ -70,8 +70,8 @@ enableKeyboardStop();
 
 function rebuild() {
   clearTimeout(timer);
-  timer = setTimeout(() => {
-    try { console.log("\n[dev] rebuild"); build(); }
+  timer = setTimeout(async () => {
+    try { console.log("\n[dev] rebuild"); await build(); }
     catch (error) { console.error(error.message || error); }
   }, 120);
 }
@@ -86,7 +86,7 @@ function servePath(urlPath) {
   return join(distDir, "404.html");
 }
 
-try { build(); } catch (error) { console.error(error.message || error); }
+try { await build(); } catch (error) { console.error(error.message || error); }
 
 for (const dir of ["content", "assets", "scripts", "site.typ", "main.typ"]) {
   try {

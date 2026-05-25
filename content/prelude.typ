@@ -36,6 +36,7 @@
   description: "",
   published: none,
   updated: none,
+  image: none,
   links: (),
   reading-time: "1 min read",
   body,
@@ -44,6 +45,7 @@
   description: description,
   published: published,
   updated: updated,
+  image: image,
   published_date: display-date(published),
   updated_date: display-date(updated),
   reading_time: reading-time,
@@ -58,6 +60,7 @@
   description: "",
   published: none,
   updated: none,
+  image: none,
   links: (),
   reading-time: "1 min read",
   body,
@@ -66,6 +69,7 @@
   description: description,
   published: published,
   updated: updated,
+  image: image,
   links: links,
   reading-time: reading-time,
   body,
@@ -76,6 +80,7 @@
   description: "",
   published: none,
   updated: none,
+  image: none,
   languages: (),
   repo-url: none,
   links: (),
@@ -88,6 +93,7 @@
     description: description,
     published: published,
     updated: updated,
+    image: image,
     links: all-links,
     reading-time: reading-time,
     body,
@@ -99,6 +105,7 @@
   description: "",
   published: none,
   updated: none,
+  image: none,
   links: (),
   reading-time: "1 min read",
   body,
@@ -107,6 +114,7 @@
   description: description,
   published: published,
   updated: updated,
+  image: image,
   links: links,
   reading-time: reading-time,
   body,
@@ -115,10 +123,12 @@
 #let page(
   title: none,
   description: "",
+  image: none,
   body,
 ) = (
   title: title,
   description: description,
+  image: image,
   body: body,
 )
 
@@ -150,45 +160,16 @@
   ]
 ]
 
-#let instagram(
-  url,
-  title: "Instagram embed",
-  fallback: "View this post on Instagram",
-) = [
+#let instagram(url) = [
   #_elem("blockquote", attrs: (
     class: "instagram-media instagram-lite",
     "data-instgrm-permalink": url,
     "data-instgrm-version": "14",
   ))[
-    #_elem("p")[#title]
-    #_elem("a", attrs: (
-      href: url,
-      target: "_blank",
-      rel: "noreferrer",
-    ))[#fallback]
+    #_elem("p")[Instagram embed]
+    #_elem("a", attrs: (href: url, target: "_blank", rel: "noreferrer"))[View this post on Instagram]
   ]
-  #_elem("script", attrs: (
-    "async": "true",
-    src: "//www.instagram.com/embed.js",
-  ))[]
-]
-
-#let apple-music(
-  src,
-  height: 450,
-  max-width: "660px",
-  radius: "10px",
-  title: "Apple Music embed",
-) = _elem("div", attrs: (class: "apple-music-embed"))[
-  #_elem("iframe", attrs: (
-    title: title,
-    src: src,
-    allow: "autoplay *; encrypted-media *; fullscreen *; clipboard-write",
-    frameborder: "0",
-    height: str(height),
-    style: "width:100%;max-width:" + max-width + ";overflow:hidden;border-radius:" + radius + ";",
-    sandbox: "allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation",
-  ))[]
+  #_elem("script", attrs: (async: "true", src: "//www.instagram.com/embed.js"))[]
 ]
 
 #let data-table(headers: (), rows: ()) = _elem("div", attrs: (class: "table-scroll"))[

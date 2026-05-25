@@ -4,6 +4,7 @@
   site_title: "r-Portfolio",
   lang: "ja",
   description: "r-Portfolio is a personal portfolio and blog for sharing research, projects, publications, and notes.",
+  image: "/logo.png",
   blog_description: "A collection of articles on topics I am passionate about.",
   awards_description: "A showcase of my experiences and achievements.",
   publications_description: "A showcase of my publications and research work.",

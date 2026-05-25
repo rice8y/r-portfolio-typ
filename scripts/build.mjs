@@ -11,6 +11,10 @@ const generatedContentDir = join(contentDir, "_build");
 const siteUrl = (process.env.SITE_URL || "").replace(/\/$/, "");
 const localTypst = join(rootDir, ".bin", process.platform === "win32" ? "typst.exe" : "typst");
 const typstCommand = process.env.TYPST || (existsSync(localTypst) ? localTypst : "typst");
+const ogpCacheFile = join(rootDir, ".cache", "ogp.json");
+const enableOgpFetch = process.env.OGP_FETCH !== "0";
+const ogpFetchTimeoutMs = Number(process.env.OGP_FETCH_TIMEOUT_MS || 8000);
+
 
 function copyPublic() {
   if (!existsSync(publicDir)) return;
@@ -56,7 +60,7 @@ function readMeta(file) {
     const m = src.match(new RegExp(`${key}:\\s*"((?:\\\\.|[^"\\\\])*)"`));
     return m ? decodeTypString(m[1]) : "";
   };
-  return { title: get("title"), description: get("description"), published: get("published") };
+  return { title: get("title"), description: get("description"), published: get("published"), image: get("image") };
 }
 
 function dateKey(value) {
@@ -197,6 +201,203 @@ function flushMarkdownTable(out, rows) {
   }
 }
 
+function readJsonFile(path, fallback) {
+  try { return JSON.parse(readFileSync(path, "utf8")); }
+  catch { return fallback; }
+}
+
+let ogpCache = null;
+function getOgpCache() {
+  if (ogpCache === null) ogpCache = readJsonFile(ogpCacheFile, {});
+  return ogpCache;
+}
+
+function saveOgpCache() {
+  if (ogpCache === null) return;
+  mkdirSync(dirname(ogpCacheFile), { recursive: true });
+  writeFileSync(ogpCacheFile, JSON.stringify(ogpCache, null, 2) + "\n");
+}
+
+function decodeHtmlEntity(value) {
+  return String(value)
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">");
+}
+
+function parseHtmlAttributes(tag) {
+  const attrs = {};
+  const re = /([A-Za-z_:][-A-Za-z0-9_:.]*)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>`]+)))?/g;
+  let m;
+  while ((m = re.exec(tag))) {
+    const key = m[1].toLowerCase();
+    if (key === "meta" || key === "link") continue;
+    attrs[key] = decodeHtmlEntity(m[2] ?? m[3] ?? m[4] ?? "");
+  }
+  return attrs;
+}
+
+function absolutizeUrl(value, baseUrl) {
+  if (!value) return "";
+  try { return new URL(decodeHtmlEntity(value).trim(), baseUrl).toString(); }
+  catch { return decodeHtmlEntity(value).trim(); }
+}
+
+function extractOgp(html, baseUrl) {
+  const meta = new Map();
+  for (const match of html.matchAll(/<meta\s+[^>]*>/gi)) {
+    const attrs = parseHtmlAttributes(match[0]);
+    const key = (attrs.property || attrs.name || "").toLowerCase();
+    if (!key || attrs.content == null) continue;
+    if (!meta.has(key)) meta.set(key, attrs.content.trim());
+  }
+
+  let icon = "";
+  for (const match of html.matchAll(/<link\s+[^>]*>/gi)) {
+    const attrs = parseHtmlAttributes(match[0]);
+    const rel = String(attrs.rel || "").toLowerCase();
+    if (!icon && rel.includes("image_src") && attrs.href) icon = attrs.href;
+  }
+
+  const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  const title = meta.get("og:title") || meta.get("twitter:title") || (titleMatch ? titleMatch[1].replace(/\s+/g, " ").trim() : "");
+  const description = meta.get("og:description") || meta.get("twitter:description") || meta.get("description") || "";
+  const image = meta.get("og:image") || meta.get("og:image:url") || meta.get("twitter:image") || meta.get("twitter:image:src") || icon || "";
+
+  return {
+    title: decodeHtmlEntity(title),
+    description: decodeHtmlEntity(description),
+    image: image ? absolutizeUrl(image, baseUrl) : "",
+  };
+}
+
+function isHttpUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+async function fetchOgpMetadata(url) {
+  if (!enableOgpFetch || !isHttpUrl(url)) return {};
+  const cache = getOgpCache();
+  if (Object.hasOwn(cache, url)) return cache[url] || {};
+
+  try {
+    const res = await fetch(url, {
+      redirect: "follow",
+      signal: AbortSignal.timeout(ogpFetchTimeoutMs),
+      headers: {
+        "user-agent": "r-portfolio-ogp-fetcher/1.0 (+https://typst.app)",
+        "accept": "text/html,application/xhtml+xml",
+      },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const contentType = res.headers.get("content-type") || "";
+    if (contentType && !contentType.includes("text/html") && !contentType.includes("application/xhtml")) {
+      throw new Error(`unsupported content-type: ${contentType}`);
+    }
+    const html = await res.text();
+    const metadata = extractOgp(html.slice(0, 512_000), res.url || url);
+    if (metadata.title || metadata.description || metadata.image) {
+      cache[url] = metadata;
+      saveOgpCache();
+    }
+    return metadata;
+  } catch (error) {
+    if (process.env.OGP_VERBOSE === "1") console.warn(`[ogp] ${url}: ${error.message || error}`);
+    return {};
+  }
+}
+
+function findMatchingParen(source, openIndex) {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let i = openIndex; i < source.length; i++) {
+    const ch = source[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === "(") depth++;
+    else if (ch === ")") {
+      depth--;
+      if (depth === 0) return i;
+    }
+  }
+  return -1;
+}
+
+function stringArg(args, key) {
+  const match = args.match(new RegExp(`(?:^|[,\\s])${key}\\s*:\\s*"((?:\\\\.|[^"\\\\])*)"`));
+  return match ? decodeTypString(match[1]) : "";
+}
+
+function hasArg(args, key) {
+  return new RegExp(`(?:^|[,\\s])${key}\\s*:`).test(args);
+}
+
+function missingOrEmptyStringArg(args, key) {
+  if (!hasArg(args, key)) return true;
+  const value = stringArg(args, key);
+  return value === "" && new RegExp(`(?:^|[,\\s])${key}\\s*:\\s*""`).test(args);
+}
+
+function addNamedArgs(args, additions) {
+  const clean = args.replace(/\s*$/, "");
+  const comma = clean.trim().length > 0 && !clean.trim().endsWith(",") ? "," : "";
+  return `${clean}${comma}\n  ${additions.join(",\n  ")},\n`;
+}
+
+async function enrichLinkPreviews(source) {
+  let out = "";
+  let cursor = 0;
+  const needle = "#link-preview(";
+
+  while (true) {
+    const start = source.indexOf(needle, cursor);
+    if (start === -1) {
+      out += source.slice(cursor);
+      break;
+    }
+    const open = start + needle.length - 1;
+    const close = findMatchingParen(source, open);
+    if (close === -1) {
+      out += source.slice(cursor);
+      break;
+    }
+
+    out += source.slice(cursor, start);
+    const args = source.slice(open + 1, close);
+    const link = stringArg(args, "link");
+    const additions = [];
+
+    if (link) {
+      const metadata = await fetchOgpMetadata(link);
+      if (!hasArg(args, "image") && metadata.image) additions.push(`image: ${typString(metadata.image)}`);
+      if (missingOrEmptyStringArg(args, "title") && metadata.title) additions.push(`title: ${typString(metadata.title)}`);
+      if (missingOrEmptyStringArg(args, "description") && metadata.description) additions.push(`description: ${typString(metadata.description)}`);
+    }
+
+    if (additions.length > 0) out += needle + addNamedArgs(args, additions) + ")";
+    else out += source.slice(start, close + 1);
+    cursor = close + 1;
+  }
+
+  return out;
+}
+
 function normalizeTypContent(src) {
   const lines = src.split(/\r?\n/);
   const out = [];
@@ -272,19 +473,20 @@ function generatedImportPath(entry) {
   return `/content/_build/${entry.name}/index.typ`;
 }
 
-function materializeEntry(entry) {
+async function materializeEntry(entry) {
   const rel = entry.collection ? join(entry.collection, ...entry.slug.split("/"), "index.typ") : join(entry.name, "index.typ");
   const out = join(generatedContentDir, rel);
   mkdirSync(dirname(out), { recursive: true });
   const source = readFileSync(entry.file, "utf8");
-  writeFileSync(out, normalizeTypContent(source));
+  const enriched = await enrichLinkPreviews(source);
+  writeFileSync(out, normalizeTypContent(enriched));
 }
 
-function materializeContent(content) {
+async function materializeContent(content) {
   if (existsSync(generatedContentDir)) rmSync(generatedContentDir, { recursive: true, force: true });
   mkdirSync(generatedContentDir, { recursive: true });
   for (const entry of [...content.posts, ...content.projects, ...content.favorites, content.awards, content.publications]) {
-    materializeEntry(entry);
+    await materializeEntry(entry);
   }
 }
 
@@ -331,7 +533,7 @@ function generateContentManifest(content) {
   writeFileSync(join(contentDir, "_generated.typ"), lines.join("\n"));
 }
 
-function contentManifest() {
+async function contentManifest() {
   const content = {
     posts: scanCollection("blog"),
     projects: scanCollection("projects"),
@@ -339,7 +541,7 @@ function contentManifest() {
     awards: scanPage("awards"),
     publications: scanPage("publications"),
   };
-  materializeContent(content);
+  await materializeContent(content);
   generateContentManifest(content);
   return content;
 }
@@ -458,10 +660,10 @@ function makeRss(content) {
   });
 }
 
-export function build() {
+export async function build() {
   if (existsSync(distDir)) rmSync(distDir, { recursive: true, force: true });
   mkdirSync(distDir, { recursive: true });
-  const content = contentManifest();
+  const content = await contentManifest();
   copyPublic();
 
   const routes = [
@@ -485,6 +687,6 @@ export function build() {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  try { build(); }
+  try { await build(); }
   catch (error) { console.error(error.message || error); process.exit(1); }
 }
