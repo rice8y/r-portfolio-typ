@@ -48,7 +48,7 @@ The build is intentionally static and deterministic:
    ```
 
 5. `public/` is copied to `dist/`.
-6. If `SITE_URL` is set, `sitemap.xml`, `robots.txt`, and `rss.xml` are generated.
+6. If `SITE_URL` is set, `sitemap.xml`, `robots.txt`, and RSS feeds are generated.
 
 Generated files are ignored by Git:
 
@@ -128,6 +128,18 @@ A project entry looks like this:
 
 `languages` accepts multiple values and is used for the Projects page filter and language badges on project cards. Badges are rendered as Shields.io SVGs with official Simple Icons logos where available. When omitted or empty, the project is treated as `Other`.
 
+## RSS feeds
+
+When `SITE_URL` is set, the build generates RSS feeds for blog posts and projects:
+
+```txt
+dist/rss.xml
+dist/blog/rss.xml
+dist/projects/rss.xml
+```
+
+`rss.xml` is a combined feed for blog posts and projects. `blog/rss.xml` and `projects/rss.xml` are collection-specific feeds. Feed items are generated from the `title`, `description`, and `published` metadata in each entry.
+
 ## Writer-facing helpers
 
 `content/prelude.typ` provides small components so article files do not need to call `html.elem(...)` directly:
@@ -186,7 +198,7 @@ Deploy steps:
 1. Import the repository into Vercel.
 2. Keep the framework preset as “Other” or “Static”.
 3. Set the output directory to `dist` if Vercel does not read it automatically.
-4. Set `SITE_URL` to your production URL to generate canonical URLs, sitemap, robots, and RSS.
+4. Set `SITE_URL` to your production URL to generate canonical URLs, sitemap, robots, and RSS feeds.
 
 Example environment variable:
 
