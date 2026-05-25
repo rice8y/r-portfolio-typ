@@ -123,7 +123,9 @@
   #void("meta", attrs: (property: "twitter:card", content: "summary_large_image"))
   #void("meta", attrs: (property: "twitter:title", content: full-title(profile, title)))
   #void("meta", attrs: (property: "twitter:description", content: description))
-  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title, href: "/rss.xml"))
+  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Feed", href: "/rss.xml"))
+  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Blog Feed", href: "/blog/rss.xml"))
+  #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Projects Feed", href: "/projects/rss.xml"))
   #elem("script")[#site-js]
   #elem("style")[#site-css]
 ]

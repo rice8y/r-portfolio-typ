@@ -383,13 +383,79 @@ function makeSitemap(routes) {
   writeText("robots.txt", `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`);
 }
 
-function makeRss(posts) {
+function rfc822Date(value) {
+  const [y, m = "1", d = "1"] = String(value || "").split("/").map(Number);
+  if (!y || !m || !d) return "";
+  return new Date(Date.UTC(y, m - 1, d, 0, 0, 0)).toUTCString();
+}
+
+function rssItemUrl(entry) {
+  return `${siteUrl}/${entry.collection}/${entry.slug}/`;
+}
+
+function makeRssFeed({ output, title, description, linkPath, entries }) {
   if (!siteUrl) return;
-  const items = posts.map(post => {
-    const url = `${siteUrl}/blog/${post.slug}/`;
-    return `  <item>\n    <title>${xmlEscape(post.title)}</title>\n    <link>${xmlEscape(url)}</link>\n    <guid>${xmlEscape(url)}</guid>\n    <description>${xmlEscape(post.description)}</description>\n  </item>`;
+
+  const feedUrl = `${siteUrl}/${output}`;
+  const channelUrl = `${siteUrl}${linkPath}`;
+  const items = entries.map(entry => {
+    const url = rssItemUrl(entry);
+    const pubDate = rfc822Date(entry.published);
+    return [
+      "  <item>",
+      `    <title>${xmlEscape(entry.title)}</title>`,
+      `    <link>${xmlEscape(url)}</link>`,
+      `    <guid isPermaLink="true">${xmlEscape(url)}</guid>`,
+      `    <description>${xmlEscape(entry.description)}</description>`,
+      pubDate ? `    <pubDate>${xmlEscape(pubDate)}</pubDate>` : "",
+      "  </item>",
+    ].filter(Boolean).join("\n");
   }).join("\n");
-  writeText("rss.xml", `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0">\n<channel>\n  <title>r-Portfolio</title>\n  <link>${xmlEscape(siteUrl)}</link>\n  <description>r-Portfolio posts</description>\n${items}\n</channel>\n</rss>\n`);
+
+  const lastBuildDate = new Date().toUTCString();
+  writeText(output, `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>${xmlEscape(title)}</title>
+  <link>${xmlEscape(channelUrl)}</link>
+  <description>${xmlEscape(description)}</description>
+  <atom:link href="${xmlEscape(feedUrl)}" rel="self" type="application/rss+xml" />
+  <lastBuildDate>${xmlEscape(lastBuildDate)}</lastBuildDate>
+${items}
+</channel>
+</rss>
+`);
+}
+
+function makeRss(content) {
+  if (!siteUrl) return;
+
+  const posts = content.posts.map(entry => ({ ...entry, collection: "blog" }));
+  const projects = content.projects.map(entry => ({ ...entry, collection: "projects" }));
+  const all = [...posts, ...projects]
+    .sort((a, b) => dateKey(b.published).localeCompare(dateKey(a.published)) || a.slug.localeCompare(b.slug));
+
+  makeRssFeed({
+    output: "rss.xml",
+    title: "r-Portfolio",
+    description: "Blog posts and projects from r-Portfolio.",
+    linkPath: "/",
+    entries: all,
+  });
+  makeRssFeed({
+    output: "blog/rss.xml",
+    title: "r-Portfolio Blog",
+    description: "Blog posts from r-Portfolio.",
+    linkPath: "/blog/",
+    entries: posts,
+  });
+  makeRssFeed({
+    output: "projects/rss.xml",
+    title: "r-Portfolio Projects",
+    description: "Projects from r-Portfolio.",
+    linkPath: "/projects/",
+    entries: projects,
+  });
 }
 
 export function build() {
@@ -413,9 +479,9 @@ export function build() {
 
   for (const route of routes) compile(route);
   makeSitemap(routes);
-  makeRss(content.posts);
+  makeRss(content);
   console.log(`\nGenerated ${routes.length} HTML pages in dist/`);
-  if (!siteUrl) console.log("Set SITE_URL=https://example.com to emit sitemap.xml, robots.txt, and rss.xml.");
+  if (!siteUrl) console.log("Set SITE_URL=https://example.com to emit sitemap.xml, robots.txt, and RSS feeds.");
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
