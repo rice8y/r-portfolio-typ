@@ -5,6 +5,7 @@
   description: "Short project description.",
   published: "2026/05/22",
   image: "/images/og/default.png",
+  draft: false,
   languages: ("Typst", "Rust"),
   repo-url: "https://github.com/user/repo",
   links: (

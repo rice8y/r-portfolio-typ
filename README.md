@@ -34,6 +34,8 @@ npm run dev
 
 `just dev` serves `dist/` at `http://localhost:4321`. Press `Ctrl+C` or `q` to stop. The wrapper script temporarily disables terminal `ISIG` so `Ctrl+C` is handled inside the dev server instead of being reported by `just` as an interrupted recipe.
 
+Dev builds include entries marked `draft: true` so unfinished content can be previewed locally. Normal `just build` / Vercel builds exclude drafts.
+
 ## Build pipeline
 
 The build is intentionally static and deterministic:
@@ -90,6 +92,7 @@ A blog post looks like this:
   title: "My new post",
   description: "Short card and meta description.",
   published: "2026/05/22",
+  draft: false,
 )[
   Write ordinary Typst markup here.
 
@@ -115,6 +118,7 @@ A project entry looks like this:
   description: "Project description.",
   languages: ("Typst", "Rust"),
   published: "2026/05/22",
+  draft: false,
   repo-url: "https://github.com/user/repo",
   links: (
     (label: "Docs", url: "https://example.com"),
@@ -127,6 +131,29 @@ A project entry looks like this:
 ```
 
 `languages` accepts multiple values and is used for the Projects page filter and language badges on project cards. Badges are rendered as Shields.io SVGs with official Simple Icons logos where available. When omitted or empty, the project is treated as `Other`.
+
+
+## Draft entries
+
+Posts, projects, and favorites can be marked as drafts:
+
+```typ
+#let entry = post(
+  title: "Work in progress",
+  description: "Draft-only preview content.",
+  published: "2026/05/23",
+  draft: true,
+)[
+  This page is visible in dev builds only.
+]
+```
+
+Draft behavior:
+
+- `just dev` includes drafts and shows a `Draft` badge on cards and article pages.
+- `just build` excludes drafts from generated routes, lists, sitemap, and RSS feeds.
+- `RPORTFOLIO_INCLUDE_DRAFTS=1 just build` can be used when a static preview build should include drafts.
+- Blog drafts do not load Giscus comments, even when previewed locally.
 
 ## RSS feeds
 
