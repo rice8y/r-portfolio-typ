@@ -2,11 +2,16 @@ import { createServer } from "node:http";
 import { existsSync, readFileSync, statSync, watch } from "node:fs";
 import { extname, join, normalize, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { build } from "./build.mjs";
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..");
 const distDir = join(rootDir, "dist");
 const port = Number(process.env.PORT || 4321);
+// Dev mode should include drafts so unfinished entries can be previewed
+// without affecting production builds. This must be set before importing the
+// build module because scripts/build.mjs reads it at module initialization.
+process.env.RPORTFOLIO_INCLUDE_DRAFTS ??= "1";
+const { build } = await import("./build.mjs");
+
 const mime = new Map([
   [".html", "text/html; charset=utf-8"],
   [".css", "text/css; charset=utf-8"],

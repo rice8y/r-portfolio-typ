@@ -17,6 +17,8 @@
 #let full-title(profile, title) = if title == "Home" { profile.site_title } else { title + " | " + profile.site_title }
 
 #let as-array(value) = if type(value) == dictionary { (value,) } else { value }
+#let is-draft(entry) = entry.at("draft", default: false)
+#let draft-badge() = elem("span", attrs: (class: "draft-badge", "aria-label": "Draft"))[Draft]
 
 #let nav-link(item, current) = {
   let attrs = if item.key == current {
@@ -289,6 +291,7 @@
     #elem("div", attrs: (class: "card-body"))[
       #elem("div", attrs: (class: "card-title-row"))[
         #elem("div", attrs: (class: "card-title"))[#entry.title]
+        #if is-draft(entry) { draft-badge() }
         #if is-project { language-badges(entry) }
       ]
       #card-meta(entry)
@@ -379,6 +382,7 @@
   #elem("div", attrs: (class: "animate"))[#back-to-prev(back-href, back-label)]
   #elem("div", attrs: (class: "article-header stack-1"))[
     #elem("div", attrs: (class: "animate article-meta-line"))[
+      #if is-draft(entry) { draft-badge() }
       #if entry.published_date != none { elem("span")[Published: #entry.published_date] }
       #if entry.updated_date != none { elem("span")[Updated: #entry.updated_date] }
       #if entry.reading_time != none {
@@ -390,7 +394,7 @@
     #entry-links(entry)
   ]
   #elem("article", attrs: (class: "animate prose"))[#entry.body]
-  #if collection == "blog" {
+  #if collection == "blog" and not is-draft(entry) {
     giscus-block()
   }
 ]

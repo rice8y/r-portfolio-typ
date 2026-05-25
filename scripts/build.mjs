@@ -14,6 +14,7 @@ const typstCommand = process.env.TYPST || (existsSync(localTypst) ? localTypst :
 const ogpCacheFile = join(rootDir, ".cache", "ogp.json");
 const enableOgpFetch = process.env.OGP_FETCH !== "0";
 const ogpFetchTimeoutMs = Number(process.env.OGP_FETCH_TIMEOUT_MS || 8000);
+const includeDrafts = process.env.RPORTFOLIO_INCLUDE_DRAFTS === "1" || process.env.INCLUDE_DRAFTS === "1";
 
 
 function copyPublic() {
@@ -54,13 +55,33 @@ function decodeTypString(raw) {
   catch { return raw.replace(/\\"/g, '"').replace(/\\\\/g, "\\"); }
 }
 
+function entryArgsSource(src) {
+  const start = src.indexOf("#let entry");
+  if (start === -1) return src;
+  const open = src.indexOf("(", start);
+  if (open === -1) return src.slice(start);
+  const close = findMatchingParen(src, open);
+  return close === -1 ? src.slice(start) : src.slice(open + 1, close);
+}
+
 function readMeta(file) {
   const src = readFileSync(file, "utf8");
+  const metaSrc = entryArgsSource(src);
   const get = (key) => {
-    const m = src.match(new RegExp(`${key}:\\s*"((?:\\\\.|[^"\\\\])*)"`));
+    const m = metaSrc.match(new RegExp(`${key}:\\s*"((?:\\\\.|[^"\\\\])*)"`));
     return m ? decodeTypString(m[1]) : "";
   };
-  return { title: get("title"), description: get("description"), published: get("published"), image: get("image") };
+  const getBool = (key) => {
+    const m = metaSrc.match(new RegExp(`${key}:\\s*(true|false)`));
+    return m ? m[1] === "true" : false;
+  };
+  return {
+    title: get("title"),
+    description: get("description"),
+    published: get("published"),
+    image: get("image"),
+    draft: getBool("draft"),
+  };
 }
 
 function dateKey(value) {
@@ -69,11 +90,13 @@ function dateKey(value) {
 }
 
 function scanCollection(collection) {
-  return walk(join(contentDir, collection))
+  const entries = walk(join(contentDir, collection))
     .filter(file => file.endsWith(`${sep}index.typ`) || file.endsWith(`/index.typ`))
     .sort((a, b) => a.localeCompare(b))
     .map(file => ({ collection, slug: slugForIndex(collection, file), file, ...readMeta(file) }))
+    .filter(entry => includeDrafts || !entry.draft)
     .sort((a, b) => dateKey(b.published).localeCompare(dateKey(a.published)) || a.slug.localeCompare(b.slug));
+  return entries;
 }
 
 function scanPage(name) {
@@ -632,8 +655,8 @@ ${items}
 function makeRss(content) {
   if (!siteUrl) return;
 
-  const posts = content.posts.map(entry => ({ ...entry, collection: "blog" }));
-  const projects = content.projects.map(entry => ({ ...entry, collection: "projects" }));
+  const posts = content.posts.filter(entry => !entry.draft).map(entry => ({ ...entry, collection: "blog" }));
+  const projects = content.projects.filter(entry => !entry.draft).map(entry => ({ ...entry, collection: "projects" }));
   const all = [...posts, ...projects]
     .sort((a, b) => dateKey(b.published).localeCompare(dateKey(a.published)) || a.slug.localeCompare(b.slug));
 
@@ -683,6 +706,7 @@ export async function build() {
   makeSitemap(routes);
   makeRss(content);
   console.log(`\nGenerated ${routes.length} HTML pages in dist/`);
+  if (includeDrafts) console.log("Draft entries are included because RPORTFOLIO_INCLUDE_DRAFTS=1.");
   if (!siteUrl) console.log("Set SITE_URL=https://example.com to emit sitemap.xml, robots.txt, and RSS feeds.");
 }
 
