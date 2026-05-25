@@ -142,7 +142,7 @@ dist/projects/rss.xml
 
 The UI exposes RSS in two places:
 
-- the global feed is linked from the footer and the home contact section;
+- the global feed is linked from the footer;
 - collection-specific feeds are linked from the Blog and Projects page headings.
 
 ## Writer-facing helpers

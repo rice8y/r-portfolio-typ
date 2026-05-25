@@ -434,7 +434,6 @@
         #for social in profile.socials {
           elem("li")[#link(social.href, external: true)[#social.name] /]
         }
-        #elem("li")[#rss-link("/rss.xml") /]
         #elem("li")[#elem("span", attrs: (class: "email-no-copy", "data-email": profile.email, "aria-label": "Email address hidden from copy"))[]]
       ]
     ]
