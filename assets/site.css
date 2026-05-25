@@ -1988,3 +1988,17 @@ article.prose :where(ul, ol) + :where(h2, h3, h4) {
 .card .language-shield {
   height: 1.25rem !important;
 }
+
+/* Apple Music embed */
+.apple-music-embed {
+  display: flex;
+  justify-content: center;
+  margin: 1.35rem 0;
+}
+
+.apple-music-embed iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: transparent;
+}
