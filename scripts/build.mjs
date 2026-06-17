@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,13 +17,6 @@ const ogpFetchTimeoutMs = Number(process.env.OGP_FETCH_TIMEOUT_MS || 8000);
 const includeDrafts = process.env.RPORTFOLIO_INCLUDE_DRAFTS === "1" || process.env.INCLUDE_DRAFTS === "1";
 
 
-function copyPublic() {
-  if (!existsSync(publicDir)) return;
-  for (const name of readdirSync(publicDir)) {
-    cpSync(join(publicDir, name), join(distDir, name), { recursive: true });
-  }
-}
-
 function walk(dir) {
   if (!existsSync(dir)) return [];
   const out = [];
@@ -35,6 +28,16 @@ function walk(dir) {
     else out.push(path);
   }
   return out;
+}
+
+function scanPublicAssets() {
+  return walk(publicDir)
+    .filter(file => statSync(file).isFile())
+    .map(file => {
+      const rel = toPosix(relative(publicDir, file));
+      return { out: rel, source: `/public/${rel}` };
+    })
+    .sort((a, b) => a.out.localeCompare(b.out));
 }
 
 function toPosix(path) {
@@ -552,6 +555,11 @@ function generateContentManifest(content) {
   lines.push("#let awards-body = awards_page.entry.body");
   lines.push("#let publications-body = publications_page.entry.body");
   lines.push("");
+  lines.push("#let public-assets = (");
+  for (const item of scanPublicAssets()) {
+    lines.push(`  (out: ${typString(item.out)}, source: ${typString(item.source)}),`);
+  }
+  lines.push(")", "");
 
   writeFileSync(join(contentDir, "_generated.typ"), lines.join("\n"));
 }
@@ -569,21 +577,18 @@ async function contentManifest() {
   return content;
 }
 
-function compile(route) {
-  const output = join(distDir, route.out);
-  mkdirSync(dirname(output), { recursive: true });
+function compileBundle() {
   const args = [
     "compile",
-    "--features", "html",
-    "--format", "html",
-    "--input", `page=${route.page}`,
+    "--features", "html,bundle",
+    "--format", "bundle",
     "--input", `site_url=${siteUrl}`,
+    "main.typ",
+    distDir,
   ];
-  if (route.slug) args.push("--input", `slug=${route.slug}`);
-  args.push("main.typ", output);
   const res = spawnSync(typstCommand, args, { cwd: rootDir, stdio: "inherit" });
   if (res.error) throw res.error;
-  if (res.status !== 0) throw new Error(`typst compile failed for ${route.out}`);
+  if (res.status !== 0) throw new Error("typst bundle compile failed");
 }
 
 function writeText(path, body) {
@@ -687,7 +692,6 @@ export async function build() {
   if (existsSync(distDir)) rmSync(distDir, { recursive: true, force: true });
   mkdirSync(distDir, { recursive: true });
   const content = await contentManifest();
-  copyPublic();
 
   const routes = [
     { page: "home", out: "index.html" },
@@ -702,10 +706,10 @@ export async function build() {
     ...content.favorites.map(favorite => ({ page: "favorite", slug: favorite.slug, out: `favorites/${favorite.slug}/index.html` })),
   ];
 
-  for (const route of routes) compile(route);
+  compileBundle();
   makeSitemap(routes);
   makeRss(content);
-  console.log(`\nGenerated ${routes.length} HTML pages in dist/`);
+  console.log(`\nGenerated ${routes.length} HTML pages as a Typst bundle in dist/`);
   if (includeDrafts) console.log("Draft entries are included because RPORTFOLIO_INCLUDE_DRAFTS=1.");
   if (!siteUrl) console.log("Set SITE_URL=https://example.com to emit sitemap.xml, robots.txt, and RSS feeds.");
 }
