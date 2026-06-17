@@ -827,154 +827,54 @@ article.prose pre:focus-within::-webkit-scrollbar-thumb {
   border-color: var(--line-hover) !important;
 }
 
+/* Article link cards. Keep this later than prose link rules so cards are not
+   treated like ordinary underlined links. */
 article.prose a.link-preview,
 article.prose .link-preview,
 .link-preview {
-  display: flex !important;
-  align-items: stretch !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
   width: 100% !important;
-  min-height: 0 !important;
+  min-width: 0 !important;
+  margin: 1.35rem 0 !important;
   padding: 0 !important;
   overflow: hidden !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 1rem !important;
-  background: var(--preview-bg) !important;
-  color: inherit !important;
-  text-decoration: none !important;
-  box-shadow: 0 14px 34px -28px rgba(0, 0, 0, 0.55) !important;
-  transform: none !important;
-  font-family: var(--sans) !important;
-}
-article.prose a.link-preview:hover,
-article.prose .link-preview:hover,
-.link-preview:hover {
-  background: var(--surface-hover) !important;
-  border-color: var(--line-hover) !important;
-  color: var(--fg-strong) !important;
-  text-decoration: none !important;
-  transform: translateY(-1px) !important;
-}
-article.prose .link-preview *,
-.link-preview * {
-  font-family: var(--sans) !important;
-  text-decoration: none !important;
-}
-article.prose .link-preview-thumb,
-.link-preview-thumb {
-  flex: 0 0 clamp(14rem, 40%, 18rem) !important;
-  width: auto !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  aspect-ratio: 16 / 9 !important;
-  display: grid !important;
-  place-items: center !important;
-  overflow: hidden !important;
-  border-right: 1px solid var(--line) !important;
-  border-bottom: 0 !important;
+  border: 1px solid color-mix(in srgb, var(--line) 86%, transparent) !important;
+  border-radius: 0.85rem !important;
   background: color-mix(in srgb, var(--preview-bg) 88%, var(--bg)) !important;
-  line-height: 0 !important;
-}
-article.prose .link-preview-thumb img,
-.link-preview-thumb img {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  max-width: none !important;
-  margin: 0 !important;
-  object-fit: contain !important;
-  object-position: center !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-}
-article.prose .link-preview-copy,
-.link-preview-copy {
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  gap: 0.4rem !important;
-  padding: 1.05rem 1.2rem !important;
-}
-article.prose .link-preview-title,
-.link-preview-title {
-  display: block !important;
-  color: var(--fg-strong) !important;
-  font-size: 1.05rem !important;
-  font-weight: 700 !important;
-  line-height: 1.32 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-article.prose .link-preview-desc,
-.link-preview-desc {
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden !important;
-  color: var(--fg) !important;
-  font-size: 0.88rem !important;
-  line-height: 1.55 !important;
-}
-article.prose .link-preview-url,
-.link-preview-url {
-  display: block !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  color: var(--muted) !important;
-  font-size: 0.75rem !important;
-  line-height: 1.35 !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-}
-
-@media (max-width: 640px) {
-  article.prose a.link-preview,
-  article.prose .link-preview,
-  .link-preview { flex-direction: column !important; }
-  article.prose .link-preview-thumb,
-  .link-preview-thumb {
-    flex-basis: auto !important;
-    width: 100% !important;
-    border-right: 0 !important;
-    border-bottom: 1px solid var(--line) !important;
-  }
-}
-
-
-/* Link preview final seam polish -------------------------------------------
-   Keep the previous horizontal card shape, but remove the hard vertical split
-   between the preview image and the text area. The image fades into the card
-   surface so the boundary feels natural in both light and dark modes. */
-article.prose a.link-preview,
-article.prose .link-preview,
-.link-preview {
-  display: flex !important;
-  align-items: stretch !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 1rem !important;
-  background: var(--preview-bg) !important;
   color: inherit !important;
   text-decoration: none !important;
-  box-shadow: 0 14px 34px -28px rgba(0, 0, 0, 0.55) !important;
+  box-shadow: 0 16px 34px -30px rgba(0, 0, 0, 0.55) !important;
   transform: none !important;
+  transition: background .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease !important;
   font-family: var(--sans) !important;
+}
+article.prose a.link-preview.has-image,
+article.prose .link-preview.has-image,
+.link-preview.has-image {
+  grid-template-columns: minmax(10.5rem, 40%) minmax(0, 1fr) !important;
+  min-height: 8.75rem !important;
 }
 article.prose a.link-preview:hover,
 article.prose .link-preview:hover,
 .link-preview:hover {
-  background: var(--surface-hover) !important;
+  background: color-mix(in srgb, var(--surface-hover) 68%, var(--preview-bg)) !important;
   border-color: var(--line-hover) !important;
   color: var(--fg-strong) !important;
   text-decoration: none !important;
+  box-shadow: 0 18px 42px -32px rgba(0, 0, 0, 0.62) !important;
   transform: translateY(-1px) !important;
+}
+article.prose a.link-preview:focus-visible,
+.link-preview:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--fg-strong) 35%, transparent) !important;
+  outline-offset: 3px !important;
+}
+article.prose .link-preview:not(.has-image),
+.link-preview:not(.has-image) {
+  box-shadow:
+    inset 3px 0 0 color-mix(in srgb, var(--fg-strong) 16%, transparent),
+    0 16px 34px -30px rgba(0, 0, 0, 0.55) !important;
 }
 article.prose .link-preview *,
 .link-preview * {
@@ -984,161 +884,17 @@ article.prose .link-preview *,
 article.prose .link-preview-thumb,
 .link-preview-thumb {
   position: relative !important;
-  flex: 0 0 clamp(14rem, 40%, 18rem) !important;
-  width: auto !important;
   min-width: 0 !important;
-  min-height: 0 !important;
-  aspect-ratio: 16 / 9 !important;
-  display: grid !important;
-  place-items: center !important;
-  overflow: hidden !important;
-  border-right: 0 !important;
-  border-bottom: 0 !important;
-  background: var(--preview-bg) !important;
-  line-height: 0 !important;
-}
-article.prose .link-preview-thumb::after,
-.link-preview-thumb::after {
-  content: "" !important;
-  position: absolute !important;
-  top: 0 !important;
-  right: -1px !important;
-  bottom: 0 !important;
-  width: clamp(2.25rem, 9vw, 4.5rem) !important;
-  pointer-events: none !important;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--preview-bg) 86%) !important;
-  z-index: 1 !important;
-}
-html.dark article.prose .link-preview-thumb::after,
-html.dark .link-preview-thumb::after {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0), var(--preview-bg) 86%) !important;
-}
-article.prose .link-preview:hover .link-preview-thumb::after,
-.link-preview:hover .link-preview-thumb::after {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0), var(--surface-hover) 86%) !important;
-}
-html.dark article.prose .link-preview:hover .link-preview-thumb::after,
-html.dark .link-preview:hover .link-preview-thumb::after {
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0), var(--surface-hover) 86%) !important;
-}
-article.prose .link-preview-thumb img,
-.link-preview-thumb img {
-  display: block !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  max-width: none !important;
-  margin: 0 !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-}
-article.prose .link-preview-copy,
-.link-preview-copy {
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  gap: 0.4rem !important;
-  padding: 1.05rem 1.2rem 1.05rem 0.9rem !important;
-  position: relative !important;
-  z-index: 2 !important;
-}
-article.prose .link-preview-title,
-.link-preview-title {
-  display: block !important;
-  color: var(--fg-strong) !important;
-  font-size: 1.05rem !important;
-  font-weight: 700 !important;
-  line-height: 1.32 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-article.prose .link-preview-desc,
-.link-preview-desc {
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden !important;
-  color: var(--fg) !important;
-  font-size: 0.88rem !important;
-  line-height: 1.55 !important;
-}
-article.prose .link-preview-url,
-.link-preview-url {
-  display: block !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  color: var(--muted) !important;
-  font-size: 0.75rem !important;
-  line-height: 1.35 !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
-}
-@media (max-width: 640px) {
-  article.prose a.link-preview,
-  article.prose .link-preview,
-  .link-preview { flex-direction: column !important; }
-  article.prose .link-preview-thumb,
-  .link-preview-thumb {
-    flex-basis: auto !important;
-    width: 100% !important;
-  }
-  article.prose .link-preview-thumb::after,
-  .link-preview-thumb::after {
-    top: auto !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: -1px !important;
-    width: auto !important;
-    height: 3.25rem !important;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--preview-bg) 86%) !important;
-  }
-  html.dark article.prose .link-preview-thumb::after,
-  html.dark .link-preview-thumb::after {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0), var(--preview-bg) 86%) !important;
-  }
-  article.prose .link-preview-copy,
-  .link-preview-copy { padding: 0.95rem 1rem 1rem !important; }
-}
-
-/* Link preview boundary fix -------------------------------------------------
-   Keep the horizontal card shape, but remove inner rounding at the seam
-   between the thumbnail and the text area. Only the outer card clips corners. */
-article.prose a.link-preview,
-article.prose .link-preview,
-.link-preview {
-  display: flex !important;
-  align-items: stretch !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border-radius: 1rem !important;
-  background: var(--preview-bg) !important;
-}
-
-article.prose .link-preview-thumb,
-.link-preview-thumb {
-  position: relative !important;
-  flex: 0 0 clamp(14rem, 40%, 18rem) !important;
+  min-height: 100% !important;
   aspect-ratio: 16 / 9 !important;
   display: block !important;
   overflow: hidden !important;
   border: 0 !important;
+  border-right: 1px solid color-mix(in srgb, var(--line) 72%, transparent) !important;
   border-radius: 0 !important;
-  background: transparent !important;
+  background: var(--preview-thumb-bg) !important;
   line-height: 0 !important;
 }
-
-article.prose .link-preview-thumb::after,
-.link-preview-thumb::after {
-  display: none !important;
-  content: none !important;
-}
-
 article.prose .link-preview-thumb img,
 .link-preview-thumb img {
   display: block !important;
@@ -1152,20 +908,129 @@ article.prose .link-preview-thumb img,
   border-radius: 0 !important;
   box-shadow: none !important;
 }
-
 article.prose .link-preview-copy,
 .link-preview-copy {
-  flex: 1 1 auto !important;
   min-width: 0 !important;
-  padding: 1.05rem 1.2rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 0.38rem !important;
+  padding: 1rem 1.1rem !important;
   background: transparent !important;
+}
+article.prose .link-preview:not(.has-image) .link-preview-copy,
+.link-preview:not(.has-image) .link-preview-copy {
+  min-height: 6.4rem !important;
+  padding-inline: 1.15rem !important;
+}
+article.prose .link-preview-title,
+.link-preview-title {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: var(--fg-strong) !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+article.prose .link-preview-desc,
+.link-preview-desc {
+  display: -webkit-box !important;
+  overflow: hidden !important;
+  color: color-mix(in srgb, var(--fg) 86%, var(--fg-strong)) !important;
+  font-size: 0.84rem !important;
+  line-height: 1.5 !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 2 !important;
+}
+article.prose .link-preview-url,
+.link-preview-url {
+  display: block !important;
+  max-width: 100% !important;
+  margin-top: 0.12rem !important;
+  overflow: hidden !important;
+  color: var(--muted) !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  line-height: 1.35 !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }
 
 @media (max-width: 640px) {
+  main {
+    overflow-x: hidden !important;
+  }
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 1rem !important;
+  }
+  .header-row {
+    justify-content: flex-start !important;
+    row-gap: 0.45rem !important;
+  }
+  nav.primary {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    scrollbar-width: none !important;
+  }
+  nav.primary::-webkit-scrollbar {
+    display: none !important;
+  }
+  article.prose,
+  article.prose > p {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  article.prose a.link-preview,
+  article.prose .link-preview,
+  .link-preview {
+    max-width: 100% !important;
+    margin-block: 1.15rem !important;
+    border-radius: 0.8rem !important;
+  }
+  article.prose a.link-preview.has-image,
+  article.prose .link-preview.has-image,
+  .link-preview.has-image {
+    grid-template-columns: minmax(0, 1fr) !important;
+    min-height: 0 !important;
+  }
   article.prose .link-preview-thumb,
   .link-preview-thumb {
-    flex: 0 0 auto !important;
     width: 100% !important;
+    min-height: 0 !important;
+    height: clamp(7.25rem, 36vw, 9rem) !important;
+    aspect-ratio: auto !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 72%, transparent) !important;
+  }
+  article.prose .link-preview-copy,
+  .link-preview-copy {
+    gap: 0.34rem !important;
+    padding: 0.85rem 0.92rem 0.95rem !important;
+  }
+  article.prose .link-preview:not(.has-image) .link-preview-copy,
+  .link-preview:not(.has-image) .link-preview-copy {
+    min-height: 5.6rem !important;
+    padding-inline: 1rem !important;
+  }
+  article.prose .link-preview-title,
+  .link-preview-title {
+    font-size: 0.96rem !important;
+    line-height: 1.34 !important;
+  }
+  article.prose .link-preview-desc,
+  .link-preview-desc {
+    font-size: 0.81rem !important;
+    line-height: 1.46 !important;
+  }
+  article.prose .link-preview-url,
+  .link-preview-url {
+    font-size: 0.69rem !important;
   }
 }
 

@@ -160,7 +160,11 @@
 ))[
   #if image != none {
     _elem("span", attrs: (class: "link-preview-thumb"))[
-      #_void("img", attrs: (src: image, alt: ""))
+      #_void("img", attrs: (
+        src: image,
+        alt: "",
+        onerror: "this.closest('.link-preview')?.classList.remove('has-image'); this.closest('.link-preview-thumb')?.remove();",
+      ))
     ]
   }
   #_elem("span", attrs: (class: "link-preview-copy"))[
