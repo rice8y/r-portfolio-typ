@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 import { get } from "node:https";
 
 const rootDir = join(dirname(fileURLToPath(import.meta.url)), "..");
-const version = process.env.TYPST_VERSION || "0.14.2";
+const version = process.env.TYPST_VERSION || "0.15.0";
 const binDir = join(rootDir, ".bin");
 const cacheDir = join(rootDir, ".cache", "typst", `v${version}`);
 const localBin = join(binDir, process.platform === "win32" ? "typst.exe" : "typst");

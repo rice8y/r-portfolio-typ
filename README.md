@@ -4,7 +4,7 @@ A Typst HTML exporter implementation of [`r-portfolio`](https://github.com/rice8
 
 ## What this repository does
 
-- Uses Typst `0.14.x` experimental HTML export for page rendering.
+- Uses Typst `0.15.x` experimental bundle + HTML export for page rendering.
 - Builds clean URLs such as `/blog/<slug>/` and `/projects/<slug>/`.
 - Keeps content authoring simple with one `index.typ` per entry.
 - Supports implementation-language badges and filtering on the Projects page.
@@ -14,7 +14,7 @@ A Typst HTML exporter implementation of [`r-portfolio`](https://github.com/rice8
 ## Requirements
 
 - Node.js `20` or newer
-- Typst `0.14.2` or newer
+- Typst `0.15.0` or newer
 
 The build can install the official Typst CLI into `.bin/` when `typst` is not available on `PATH`. This is used by Vercel builds as well.
 
@@ -43,14 +43,13 @@ The build is intentionally static and deterministic:
 1. `scripts/build.mjs` scans content entries under `content/blog`, `content/projects`, and `content/favorites`.
 2. Source entries are normalized into `content/_build/**/index.typ`.
 3. `content/_generated.typ` imports all generated entries and exposes route data to `main.typ`.
-4. Each route is compiled with Typst:
+4. `main.typ` emits a Typst bundle containing one `document(...)` per route and one `asset(...)` per file in `public/`.
 
    ```bash
-   typst compile --features html --format html --input page=<route> main.typ dist/<route>/index.html
+   typst compile --features html,bundle --format bundle --input site_url=<url> main.typ dist
    ```
 
-5. `public/` is copied to `dist/`.
-6. If `SITE_URL` is set, `sitemap.xml`, `robots.txt`, and RSS feeds are generated.
+5. If `SITE_URL` is set, `sitemap.xml`, `robots.txt`, and RSS feeds are generated.
 
 Generated files are ignored by Git:
 
@@ -192,7 +191,7 @@ The UI exposes RSS in two places:
 
 ## Rendering architecture
 
-- `main.typ` is the Typst entry point. It receives the route through `--input page=...` and delegates to `site.typ`.
+- `main.typ` is the Typst entry point. It emits the bundle documents and static assets, then delegates each page body to `site.typ`.
 - `site.typ` contains the HTML layout functions, route switch, cards, project language badges/filter UI, article layout, header, footer, RSS links, and OGP/Twitter metadata.
 - `assets/site.css` defines the visual system. It is inlined into every page through `read(...)`, so no CSS bundler is required.
 - The visual system follows the Astro source: sans-serif UI text uses an Inter-first stack and article paragraphs use a Lora-first serif stack. Inter/Lora are self-hosted from `public/fonts/` and preloaded in `site.typ`, mirroring the original Astro build.
@@ -240,8 +239,8 @@ SITE_URL=https://portfolio.example.com
 
 ## Notes
 
-- Typst HTML export is experimental. The build targets Typst `0.14.2` and avoids the unavailable `bundle` feature.
-- Public assets, including self-hosted fonts in `public/fonts/`, are copied from `public/` to `dist/`.
+- Typst bundle and HTML export are experimental. The build targets Typst `0.15.0` or newer and enables both features with `--features html,bundle`.
+- Public assets, including images and favicons in `public/`, are emitted into `dist/` through Typst bundle `asset(...)` elements.
 - `content/_build/` and `content/_generated.typ` are implementation details and should not be edited directly.
 
 
