@@ -1941,3 +1941,88 @@ html.dark .draft-badge {
 .article-meta-line .draft-badge {
   height: 1.35rem !important;
 }
+
+/* Project list controls -------------------------------------------------- */
+.project-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+}
+
+.project-filter {
+  flex: 1 1 28rem;
+}
+
+.project-sort {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1;
+}
+
+.project-sort-label {
+  white-space: nowrap;
+}
+
+.project-sort-options {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0.15rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--surface);
+}
+
+.project-sort-button {
+  min-width: 5.25rem;
+  min-height: 1.8rem;
+  padding: 0.35rem 0.65rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  color: var(--muted);
+  font: 0.75rem/1 var(--sans);
+  transition: background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.project-sort-button:hover {
+  color: var(--fg-strong);
+}
+
+.project-sort-button.is-active {
+  background: var(--surface-hover);
+  color: var(--fg-strong);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--fg-strong) 12%, transparent);
+}
+
+@media (max-width: 640px) {
+  .project-controls {
+    gap: 0.85rem;
+  }
+
+  .project-filter {
+    flex-basis: 100%;
+  }
+
+  .project-sort {
+    width: 100%;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+
+  .project-sort-options {
+    flex: 1 1 auto;
+    max-width: 12rem;
+  }
+
+  .project-sort-button {
+    min-width: 0;
+  }
+}
