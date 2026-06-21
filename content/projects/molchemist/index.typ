@@ -246,5 +246,5 @@ Use `cetz-annotation` as the escape hatch for advanced figure polishing:
 
 The `molchemist` package code is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/molchemist/v0.1.2/LICENSE")[LICENSE] for details.
 
-Redistributed third-party code and bundled example-data provenance, including PubChem-derived SDF/example images, are documented separately in #link("https://github.com/rice8y/molchemist/blob/v0.1.2/THIRD_PARTY_NOTICES.md").
+Redistributed third-party code and bundled example-data provenance, including PubChem-derived SDF/example images, are documented separately in #link("https://github.com/rice8y/molchemist/blob/v0.1.2/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md].
 ]
