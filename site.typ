@@ -270,7 +270,7 @@
 #let project-filter(projects) = {
   let languages = project-languages(projects)
   if languages.len() > 0 {
-    elem("div", attrs: (class: "project-filter animate", "aria-label": "Filter projects by implementation language"))[
+    elem("div", attrs: (class: "project-filter", "aria-label": "Filter projects by implementation language"))[
       #elem("button", attrs: ("type": "button", class: "project-filter-button is-active", "data-language-filter": "all"))[#language-badge("All")]
       #for language in languages {
         elem("button", attrs: ("type": "button", class: "project-filter-button", "data-language-filter": str(language)))[#language-badge(language)]
@@ -279,11 +279,31 @@
   }
 }
 
+#let project-sort() = elem("div", attrs: (class: "project-sort", "aria-label": "Sort projects"))[
+  #elem("span", attrs: (class: "project-sort-label"))[Sort by]
+  #elem("div", attrs: (class: "project-sort-options", role: "group", "aria-label": "Sort projects by date"))[
+    #elem("button", attrs: ("type": "button", class: "project-sort-button is-active", "data-project-sort": "published", "aria-pressed": "true"))[Published]
+    #elem("button", attrs: ("type": "button", class: "project-sort-button", "data-project-sort": "updated", "aria-pressed": "false"))[Updated]
+  ]
+]
+
 #let card(entry, href) = {
   let is-project = entry.at("collection", default: "") == "projects"
   let languages = if is-project { entry-languages(entry) } else { () }
+  let published = entry.at("published", default: none)
+  let updated = entry.at("updated", default: none)
+  let published-sort = if published == none { "" } else { str(published) }
+  let updated-sort = if updated == none { published-sort } else { str(updated) }
   let attrs = if is-project {
-    (href: href, class: "card", title: entry.description, "data-project-card": "true", "data-languages": join-languages(languages))
+    (
+      href: href,
+      class: "card",
+      title: entry.description,
+      "data-project-card": "true",
+      "data-languages": join-languages(languages),
+      "data-published": published-sort,
+      "data-updated": updated-sort,
+    )
   } else {
     (href: href, class: "card", title: entry.description)
   }
@@ -447,8 +467,11 @@
 #let projects-page(profile, projects, site-url: "") = layout(profile, "projects", "Projects", profile.projects_description, "projects", site-url: site-url)[
   #elem("div", attrs: (class: "stack-10"))[
     #page-head("Projects", rss-href: "/projects/rss.xml")
-    #elem("div", attrs: (class: "stack-4"))[
-      #project-filter(projects)
+    #elem("div", attrs: (class: "project-index stack-4"))[
+      #elem("div", attrs: (class: "project-controls animate"))[
+        #project-filter(projects)
+        #project-sort()
+      ]
       #card-list(projects, "projects")
       #elem("p", attrs: (class: "project-filter-empty hidden"))[No projects match this language.]
     ]

@@ -6,7 +6,7 @@ function initPortfolio() {
   initCollapse();
   initNoCopyEmail();
   initCodeCopyButtons();
-  initProjectLanguageFilter();
+  initProjectControls();
 
   const backToTop = document.getElementById("back-to-top");
   backToTop?.addEventListener("click", (event) => scrollToTop(event));
@@ -151,20 +151,30 @@ async function copyText(text) {
   return ok;
 }
 
-function initProjectLanguageFilter() {
-  const filter = document.querySelector(".project-filter");
-  if (!filter || filter.dataset.filterReady) return;
-  filter.dataset.filterReady = "true";
+function projectDateValue(value) {
+  const parts = String(value || "").split("/").map(Number);
+  if (parts.length < 3 || parts.some((part) => !Number.isFinite(part))) return 0;
+  return parts[0] * 10000 + parts[1] * 100 + parts[2];
+}
 
-  const buttons = Array.from(filter.querySelectorAll("[data-language-filter]"));
-  const cards = Array.from(document.querySelectorAll("[data-project-card]"));
-  const empty = document.querySelector(".project-filter-empty");
+function initProjectControls() {
+  const root = document.querySelector(".project-index");
+  if (!root || root.dataset.controlsReady) return;
+  root.dataset.controlsReady = "true";
+
+  const filter = root.querySelector(".project-filter");
+  const languageButtons = Array.from(root.querySelectorAll("[data-language-filter]"));
+  const sortButtons = Array.from(root.querySelectorAll("[data-project-sort]"));
+  const cards = Array.from(root.querySelectorAll("[data-project-card]"));
+  const list = root.querySelector(".card-list");
+  const empty = root.querySelector(".project-filter-empty");
   const params = new URLSearchParams(window.location.search);
+  const originalOrder = new Map(cards.map((card, index) => [card, index]));
 
-  const setActive = (language, updateUrl = true) => {
+  const setLanguage = (language, updateUrl = true) => {
     let visible = 0;
 
-    buttons.forEach((button) => {
+    languageButtons.forEach((button) => {
       const active = button.dataset.languageFilter === language;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", active ? "true" : "false");
@@ -191,17 +201,47 @@ function initProjectLanguageFilter() {
     }
   };
 
-  buttons.forEach((button) => {
+  const setSort = (sort, updateUrl = true) => {
+    sortButtons.forEach((button) => {
+      const active = button.dataset.projectSort === sort;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+
+    if (list) {
+      const sorted = [...cards].sort((a, b) => {
+        const difference = projectDateValue(b.dataset[sort]) - projectDateValue(a.dataset[sort]);
+        return difference || originalOrder.get(a) - originalOrder.get(b);
+      });
+      sorted.forEach((card) => list.append(card.closest("li") || card));
+    }
+
+    if (updateUrl) {
+      const next = new URL(window.location.href);
+      if (sort === "published") next.searchParams.delete("sort");
+      else next.searchParams.set("sort", sort);
+      window.history.replaceState({}, "", next);
+    }
+  };
+
+  languageButtons.forEach((button) => {
     button.setAttribute("aria-pressed", button.classList.contains("is-active") ? "true" : "false");
-    button.addEventListener("click", () => setActive(button.dataset.languageFilter || "all"));
+    button.addEventListener("click", () => setLanguage(button.dataset.languageFilter || "all"));
   });
 
-  const initial = params.get("language");
-  if (initial && buttons.some((button) => button.dataset.languageFilter === initial)) {
-    setActive(initial, false);
+  sortButtons.forEach((button) => {
+    button.addEventListener("click", () => setSort(button.dataset.projectSort || "published"));
+  });
+
+  const initialLanguage = params.get("language");
+  if (filter && initialLanguage && languageButtons.some((button) => button.dataset.languageFilter === initialLanguage)) {
+    setLanguage(initialLanguage, false);
   } else {
-    setActive("all", false);
+    setLanguage("all", false);
   }
+
+  const initialSort = params.get("sort") === "updated" ? "updated" : "published";
+  setSort(initialSort, false);
 }
 
 function initNoCopyEmail() {
