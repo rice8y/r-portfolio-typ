@@ -5,6 +5,7 @@
   description: "A Typst package for visualizing multiple-sequence alignments in bioinformatics.",
   languages: ("Typst",),
   published: "2026/05/23",
+  updated: "2026/06/21",
   repo-url: "https://github.com/rice8y/typshade",
   links: ((label: "Typst Universe", url: "https://typst.app/universe/package/typshade/"),),
 )[
@@ -62,7 +63,7 @@ The lower-level helpers are still available through `commands:` when you need pr
 == Quick Start
 
 ```typst
-#import "@preview/typshade:0.1.1": *
+#import "@preview/typshade:0.1.2": *
 
 #let alignment = read("alignment.msf", encoding: none)
 
@@ -72,6 +73,12 @@ The lower-level helpers are still available through `commands:` when you need pr
   theme: "screen",
   figure: motif-map(auto),
 )
+```
+
+`read(..., encoding: none)` remains supported on Typst 0.15 and later. On Typst 0.15 or later, you can additionally pass a resolved project path and let Typshade read the source inside the package:
+
+```typst
+#shade(path("alignment.msf"), format: "msf", figure: motif-map(auto))
 ```
 
 == Preview
@@ -112,7 +119,7 @@ and a ruler:
 
 | TeXshade idea | Typshade API |
 |---|---|
-| `texshade` environment | `shade(read("alignment.msf", encoding: none), format: "msf", figure: publication(...))` |
+| `texshade` environment | `shade(read("alignment.msf", encoding: none), format: "msf", figure: publication(...))`, or `shade(path("alignment.msf"), format: "msf", ...)` on Typst 0.15+ |
 | `shadingmode`, `shadingcolors`, `threshold` | `similar`, `identical`, `diverse`, `functional`, or `scoring-mode`, `color-scheme`, `threshold` |
 | `residuesperline`, `setends` | `lines`, `window`, or `residues-per-line`, `sequence-window` |
 | `shownames`, `shownumbering`, `showconsensus`, `showruler` | `names`, `numbers`, `consensus`, `ruler`, or the fine-grained track helpers |
@@ -202,5 +209,5 @@ You can also mix recipe output with explicit, reproducible helper lists:
 
 == License
 
-This project is distributed under the GPL v2 License. See #link("https://raw.githubusercontent.com/rice8y/typshade/main/LICENSE")[LICENSE] for details.
+This project is distributed under the GPL v2 License. See #link("https://raw.githubusercontent.com/rice8y/typshade/v0.1.2/LICENSE")[LICENSE] for details.
 ]
