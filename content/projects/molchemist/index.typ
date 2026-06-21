@@ -3,7 +3,7 @@
 #let entry = project(
   title: "molchemist",
   description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
-  languages: ("Typst", "Rust"),
+  languages: ("Typst", "Rust", "C++"),
   published: "2026/03/03",
   updated: "2026/06/21",
   repo-url: "https://github.com/rice8y/molchemist",
