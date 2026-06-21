@@ -10,7 +10,7 @@
 )[
 #img("/images/projects/glotter/logo.png", alt: "glotter logo")
 
-**glotter** is a Typst package for detecting the language of text fragments and applying language-aware settings to content.
+*glotter* is a Typst package for detecting the language of text fragments and applying language-aware settings to content.
 
 The Typst plugin is compiled to WebAssembly using #link("https://crates.io/crates/fasttext-pure-rs")[`fasttext-pure-rs`], a pure Rust implementation of fastText.
 
