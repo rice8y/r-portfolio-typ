@@ -66,7 +66,7 @@ The #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples")[`pack
 == Features
 
 - Inputs: PDB, text CIF/mmCIF, and BinaryCIF.
-- Structure layer: Mol#sym.ast-style Model/Structure/Unit concepts, assembly operators, altLoc handling, bond metadata, lookup3d/boundary summaries, secondary structure, coarse IHM spheres/gaussians, and semantic render-object metadata.
+- Structure layer: Mol#(sym.ast)-style Model/Structure/Unit concepts, assembly operators, altLoc handling, bond metadata, lookup3d/boundary summaries, secondary structure, coarse IHM spheres/gaussians, and semantic render-object metadata.
 - Representations: Mol#sym.ast default, spacefill, ball-and-stick, cartoon, ribbon, and backbone.
 - Assembly support: biological assemblies are represented as source model plus unit operators before static mesh export.
 - Alternate locations: select a concrete altLoc, all altLocs, or the highest-occupancy conformer.
