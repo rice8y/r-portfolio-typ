@@ -121,7 +121,7 @@ IHM coarse gaussian rows remain available as coarse model units, but they are no
 
 Molfig project code is licensed under the MIT License. See #link("https://github.com/rice8y/molfig/tree/v0.1.1/LICENSE")[`LICENSE`].
 
-Molfig ports or adapts #link("https://github.com/molstar/molstar")[Mol\*] behavior and includes Mol*-derived reference data in the Rust/WASM implementation. Mol* is licensed under the MIT License, copyright (c) 2017 - now, Mol\* contributors.
+Molfig ports or adapts #link("https://github.com/molstar/molstar")[Mol\*] behavior and includes Mol\*-derived reference data in the Rust/WASM implementation. Mol\* is licensed under the MIT License, copyright (c) 2017 - now, Mol\* contributors.
 
 Bundled example structure files under #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data")[`package/examples/data`] are PDB archive data from RCSB PDB / wwPDB and are available under CC0 1.0. Per-file PDB IDs, DOIs, and recommended attributions are listed in #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data/README.md")[`package/examples/data/README.md`].
 
