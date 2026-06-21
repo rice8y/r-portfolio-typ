@@ -10,7 +10,7 @@
 )[
 *Molfig* is a Typst package for rendering molecular structure files in static documents.
 
-It accepts PDB, mmCIF, and BinaryCIF input, converts structures through a CPU-side #link("https://molstar.org/")[Mol\*]-style Model/Structure/Unit layer, exports static OBJ/STL/PLY mesh bytes, and delegates final document rendering to #link("https://typst.app/universe/package/maquette")[`maquette`].
+It accepts PDB, mmCIF, and BinaryCIF input, converts structures through a CPU-side #link("https://molstar.org/")[Mol#sym.ast]-style Model/Structure/Unit layer, exports static OBJ/STL/PLY mesh bytes, and delegates final document rendering to #link("https://typst.app/universe/package/maquette")[`maquette`].
 
 #img("/images/projects/molfig/gallary.png", alt: "Gallery of molecular structures rendered with Molfig")
 
@@ -66,11 +66,11 @@ The #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples")[`pack
 == Features
 
 - Inputs: PDB, text CIF/mmCIF, and BinaryCIF.
-- Structure layer: Mol\*-style Model/Structure/Unit concepts, assembly operators, altLoc handling, bond metadata, lookup3d/boundary summaries, secondary structure, coarse IHM spheres/gaussians, and semantic render-object metadata.
-- Representations: Mol\* default, spacefill, ball-and-stick, cartoon, ribbon, and backbone.
+- Structure layer: Mol#sym.ast-style Model/Structure/Unit concepts, assembly operators, altLoc handling, bond metadata, lookup3d/boundary summaries, secondary structure, coarse IHM spheres/gaussians, and semantic render-object metadata.
+- Representations: Mol#sym.ast default, spacefill, ball-and-stick, cartoon, ribbon, and backbone.
 - Assembly support: biological assemblies are represented as source model plus unit operators before static mesh export.
 - Alternate locations: select a concrete altLoc, all altLocs, or the highest-occupancy conformer.
-- Color themes: `color-theme: "chain-id"` assigns Mol\* Chain ID colors and forwards OBJ materials to maquette.
+- Color themes: `color-theme: "chain-id"` assigns Mol#sym.ast Chain ID colors and forwards OBJ materials to maquette.
 - Outputs: OBJ, companion MTL, binary STL, and ASCII PLY.
 - Rendering: `render` passes generated mesh bytes to maquette; `render-object` exposes the mesh, rendered content, and normalized metadata for advanced documents.
 
@@ -89,11 +89,11 @@ The `data` argument accepts bytes from `read(..., encoding: none)`, inline strin
 
 == Choosing A Mesh Format
 
-- Use OBJ for the closest static Mol\* exporter parity and readable diffs.
+- Use OBJ for the closest static Mol#sym.ast exporter parity and readable diffs.
 - Use STL when a downstream tool specifically requires binary triangle data.
 - Use PLY when package-owned face group metadata is useful in a compact text mesh.
 
-OBJ output can be paired with `to-mtl`. During `render`, OBJ material colors are automatically converted to maquette's `materials` map; entries supplied through `config.materials` override generated colors. OBJ and PLY preserve Molfig group or operator metadata where the format can represent it. Binary STL follows Mol\* static exporter behavior and keeps the two-byte facet attribute field at zero.
+OBJ output can be paired with `to-mtl`. During `render`, OBJ material colors are automatically converted to maquette's `materials` map; entries supplied through `config.materials` override generated colors. OBJ and PLY preserve Molfig group or operator metadata where the format can represent it. Binary STL follows Mol#sym.ast static exporter behavior and keeps the two-byte facet attribute field at zero.
 
 == Documentation
 
@@ -113,7 +113,7 @@ The manual source is #link("https://github.com/rice8y/molfig/tree/v0.1.1/package
 
 == Notes And Limits
 
-Molfig emits static presentation meshes. It does not implement Mol\*'s interactive WebGL surface or volume rendering pipeline. Molecular surface, gaussian surface, gaussian volume, and density/volume visuals are outside the current static export contract.
+Molfig emits static presentation meshes. It does not implement Mol#sym.ast's interactive WebGL surface or volume rendering pipeline. Molecular surface, gaussian surface, gaussian volume, and density/volume visuals are outside the current static export contract.
 
 IHM coarse gaussian rows remain available as coarse model units, but they are not converted into gaussian surface or volume visuals.
 
@@ -121,7 +121,7 @@ IHM coarse gaussian rows remain available as coarse model units, but they are no
 
 Molfig project code is licensed under the MIT License. See #link("https://github.com/rice8y/molfig/tree/v0.1.1/LICENSE")[`LICENSE`].
 
-Molfig ports or adapts #link("https://github.com/molstar/molstar")[Mol\*] behavior and includes Mol\*-derived reference data in the Rust/WASM implementation. Mol\* is licensed under the MIT License, copyright (c) 2017 - now, Mol\* contributors.
+Molfig ports or adapts #link("https://github.com/molstar/molstar")[Mol#sym.ast] behavior and includes Mol#sym.ast-derived reference data in the Rust/WASM implementation. Mol#sym.ast is licensed under the MIT License, copyright (c) 2017 - now, Mol#sym.ast contributors.
 
 Bundled example structure files under #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data")[`package/examples/data`] are PDB archive data from RCSB PDB / wwPDB and are available under CC0 1.0. Per-file PDB IDs, DOIs, and recommended attributions are listed in #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data/README.md")[`package/examples/data/README.md`].
 
