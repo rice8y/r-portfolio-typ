@@ -10,7 +10,7 @@
 )[
 *Molfig* is a Typst package for rendering molecular structure files in static documents.
 
-It accepts PDB, mmCIF, and BinaryCIF input, converts structures through a CPU-side #link("https://molstar.org/")[Mol#super[#super[#sym.ast]]]-style Model/Structure/Unit layer, exports static OBJ/STL/PLY mesh bytes, and delegates final document rendering to #link("https://typst.app/universe/package/maquette")[`maquette`].
+It accepts PDB, mmCIF, and BinaryCIF input, converts structures through a CPU-side #link("https://molstar.org/")[Mol#super[#sym.ast]]-style Model/Structure/Unit layer, exports static OBJ/STL/PLY mesh bytes, and delegates final document rendering to #link("https://typst.app/universe/package/maquette")[`maquette`].
 
 #img("/images/projects/molfig/gallary.png", alt: "Gallery of molecular structures rendered with Molfig")
 
