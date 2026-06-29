@@ -7,7 +7,6 @@ toc = false
 
 [extra]
 kind = "post"
-reading_time = "1 min read"
 published_raw = "2025/08/29"
 ---
 

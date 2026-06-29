@@ -6,7 +6,6 @@ toc = false
 
 [extra]
 kind = "page"
-reading_time = "1 min read"
 ---
 
 #import "/content/_prelude.typ": *

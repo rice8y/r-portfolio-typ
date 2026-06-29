@@ -8,7 +8,6 @@ toc = false
 
 [extra]
 kind = "favorite"
-reading_time = "1 min read"
 published_raw = "2025/9/30"
 updated_raw = "2026/02/22"
 links = [{ label = "Instagram", url = "https://www.instagram.com/mayu_masuko/" }, { label = "X", url = "https://x.com/kokeko_m" }, { label = "植物の美術解剖学", url = "https://coloso.jp/products/illustrator-masuko-jp" }]

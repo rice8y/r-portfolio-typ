@@ -7,7 +7,6 @@ toc = false
 
 [extra]
 kind = "project"
-reading_time = "1 min read"
 published_raw = "2025/8/30"
 languages = ["Typst"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/cetzuron" }]

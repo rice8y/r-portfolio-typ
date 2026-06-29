@@ -7,7 +7,6 @@ toc = false
 
 [extra]
 kind = "project"
-reading_time = "1 min read"
 published_raw = "2026/05/23"
 languages = ["Typst", "Rust"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/glotter" }, { label = "Typst Universe", url = "https://typst.app/universe/package/glotter/" }]

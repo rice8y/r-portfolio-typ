@@ -8,7 +8,6 @@ toc = false
 
 [extra]
 kind = "favorite"
-reading_time = "1 min read"
 published_raw = "2025/9/30"
 updated_raw = "2026/02/22"
 ---

@@ -8,7 +8,6 @@ toc = false
 
 [extra]
 kind = "favorite"
-reading_time = "1 min read"
 published_raw = "2025/9/30"
 updated_raw = "2026/02/22"
 links = [{ label = "Instagram", url = "https://www.instagram.com/y_u_e/" }, { label = "X", url = "https://twitter.com/memento1113" }, { label = "Web", url = "https://www.yue-art.com/" }]

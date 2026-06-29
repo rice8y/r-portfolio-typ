@@ -312,6 +312,29 @@
   #if entry.updated != none { elem("span")[Updated: #display-date(entry.updated)] }
 ]
 
+#let _reading-source(page) = {
+  let source = read("/content/" + page.source)
+  source
+    .replace(regex("(?s)^---\\s*\\n.*?\\n---\\s*\\n?"), "")
+    .replace(regex("(?s)```.*?```"), " ")
+    .replace(regex("https?://\\S+"), " ")
+}
+
+#let estimated-reading-time(page) = {
+  let source = _reading-source(page)
+  let cjk = source.matches(regex("[\\p{scx:Han}\\p{scx:Hira}\\p{scx:Kana}]")).len()
+  let latin-source = source
+    .replace(regex("[\\p{scx:Han}\\p{scx:Hira}\\p{scx:Kana}]+"), " ")
+    .replace(regex("#[A-Za-z_][A-Za-z0-9_-]*"), " ")
+    .replace(regex("[^A-Za-z0-9]+"), " ")
+  let words = latin-source
+    .split(regex("\\s+"))
+    .filter(word => word != "")
+    .len()
+  let minutes = calc.max(1, calc.ceil(words / 200 + cjk / 500))
+  str(minutes) + if minutes == 1 { " min read" } else { " mins read" }
+}
+
 #let card(entry) = {
   let kind = extra(entry, "kind", default: "")
   let is-project = kind == "project" or entry.section == "projects"
@@ -534,11 +557,8 @@
         #if is-draft(page) { draft-badge() }
         #if page.date != none { elem("span")[Published: #display-date(page.date)] }
         #if page.updated != none { elem("span")[Updated: #display-date(page.updated)] }
-        #let reading = extra(page, "reading_time", default: none)
-        #if reading != none {
-          elem("span", attrs: (class: "article-meta-dot", "aria-hidden": "true"))[•]
-          elem("span")[#reading]
-        }
+        #elem("span", attrs: (class: "article-meta-dot", "aria-hidden": "true"))[•]
+        #elem("span")[#estimated-reading-time(page)]
       ]
       #elem("div", attrs: (class: "animate article-title"))[#page.title]
       #entry-links(page)
