@@ -46,7 +46,6 @@ dist/
 - `content/` contains Typst source pages and entries.
 - `templates/` contains the Typage templates and the r-Portfolio visual system.
 - `static/` contains files copied as-is into the generated site.
-- `scripts/import-r-portfolio.mjs` imports content from the previous Typst-native implementation.
 - `dist/` is generated output for local preview and static deployment.
 
 ## Content
