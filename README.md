@@ -101,3 +101,9 @@ dist/
 .vercel/
 push.sh
 ```
+
+## License
+
+This project is distributed under the MIT License. See `LICENSE` for details.
+
+Third-party attribution and license notes are documented in `THIRD_PARTY_NOTICES.md`.
