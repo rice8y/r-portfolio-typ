@@ -2,7 +2,7 @@
 title = "typshade"
 description = "A Typst package for visualizing multiple-sequence alignments in bioinformatics."
 date = "2026-05-23"
-updated = "2026-06-21"
+updated = "2026-06-30"
 section = "projects"
 toc = false
 
@@ -71,7 +71,7 @@ The lower-level helpers are still available through `commands:` when you need pr
 == Quick Start
 
 ```typst
-#import "@preview/typshade:0.1.2": *
+#import "@preview/typshade:0.1.3": *
 
 #let alignment = read("alignment.msf", encoding: none)
 
@@ -109,16 +109,19 @@ and a ruler:
 - `shade(...)`: Named-option alignment renderer for new documents.
 - `figure:`: Purpose-level recipe slot for complete figure designs.
 - `publication`, `motif-map`, `structure-map`, `logo-analysis`, `overview`: High-level recipes.
-- `similar`, `identical`, `diverse`, `functional`, `lines`, `window`, `ruler`, `consensus`, `logo`, `legend`: Compact command helpers.
+- `similar`, `identical`, `diverse`, `functional`, `lines`, `window`, `ruler`, `consensus`, `logo`, `legend`: Compact command helpers; `lines(auto)` and `fit: "container"` fit the current Typst container.
+- `auto-layout(...)`, `auto-page(...)`, and `fit: "page"`: Typst-aware line length and page-aware block splitting for long figures.
 - `color-scheme`, `scoring-mode`, `sequence-window`: Small, readable option helpers.
 - `ruler-track`, `consensus-track`, `sequence-logo`, `subfamily-logo`, `legend-track`: Track helpers.
 - `structure-tracks(...)`: Adds topology/secondary-structure tracks from sidecar files.
 - `shade-preset("publication" | "overview" | "logo" | "functional" | "structure")`: Reusable command bundles.
 - `shade-theme("classic" | "print" | "screen" | "warm" | "nature")` and `visual-theme(...)`: Color/style bundles.
-- `highlight`, `tint`, `emphasize`, `mark`, `motif`, `graph`: Readable command builders for common annotations.
+- `highlight`, `tint`, `emphasize`, `mark`, `motif`, `graph`: Readable command builders for common annotations; graph metrics include conservation, entropy, gap-fraction, coverage, identity, hydrophobicity, molecular weight, and charge.
+- `select-range`, `select-motif`, `select-metric`, `select-and`, `select-or`, `select-not`, and `select-pad`: Composable Selection DSL values for windows, highlights, marks, graphs, and analysis helpers.
+- `cell-style(ctx => ...)`: Data-driven per-cell styling with Typst functions.
 - `pdb-point`, `pdb-line`, `pdb-plane`: Safer constructors for PDB selections.
 - `alignment-position("left" | "center" | "right")`: Overrides the default left-aligned block placement.
-- `alignment-summary(...)` and `selection-preview(...)`: In-document inspection helpers.
+- `alignment-summary(...)`, `alignment-debug(...)`, `cell-inspect(...)`, and `selection-preview(...)`: In-document inspection helpers.
 - `sequence-list(...)` and `selection-table(...)`: Typst tables for data-aware reports.
 - `percent-identity(...)`, `percent-similarity(...)`, and `similarity-table(...)`: Pairwise identity/similarity analysis.
 - `alignment-data(...)` and `parse-alignment(...)`: Data access helpers for custom Typst logic.
@@ -130,7 +133,7 @@ and a ruler:
   rows: (
     ([`texshade` environment], [`shade(read("alignment.msf", encoding: none), format: "msf", figure: publication(...))`, or `shade(path("alignment.msf"), format: "msf", ...)` on Typst 0.15+],),
     ([`shadingmode`, `shadingcolors`, `threshold`], [`similar`, `identical`, `diverse`, `functional`, or `scoring-mode`, `color-scheme`, `threshold`],),
-    ([`residuesperline`, `setends`], [`lines`, `window`, or `residues-per-line`, `sequence-window`],),
+    ([`residuesperline`, `setends`], [`lines`, `window`, `fit`, `auto-layout`, `auto-page`, or Selection DSL values with `sequence-window`],),
     ([`shownames`, `shownumbering`, `showconsensus`, `showruler`], [`names`, `numbers`, `consensus`, `ruler`, or the fine-grained track helpers],),
     ([`showsequencelogo`, `showsubfamilylogo`, `showlegend`], [`logo`, `subfamily-logo`, `legend`],),
     ([`shaderegion`, `tintregion`, `emphregion`, `feature`], [`highlight`, `tint`, `emphasize`, `mark`, `motif`, `graph`],),
