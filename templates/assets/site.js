@@ -152,7 +152,7 @@ async function copyText(text) {
 }
 
 function projectDateValue(value) {
-  const parts = String(value || "").split("/").map(Number);
+  const parts = String(value || "").split(/[/-]/).map(Number);
   if (parts.length < 3 || parts.some((part) => !Number.isFinite(part))) return 0;
   return parts[0] * 10000 + parts[1] * 100 + parts[2];
 }

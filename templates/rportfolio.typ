@@ -316,11 +316,9 @@
   let kind = extra(entry, "kind", default: "")
   let is-project = kind == "project" or entry.section == "projects"
   let languages = if is-project { entry-languages(entry) } else { () }
-  let published-raw = extra(entry, "published_raw", default: none)
-  let updated-raw = extra(entry, "updated_raw", default: none)
-  let sort-date(value, raw) = if raw != none and raw != "" { str(raw) } else if value == none { "" } else { str(value).replace("-", "/") }
-  let published-sort = sort-date(entry.date, published-raw)
-  let updated-sort = if entry.updated == none { published-sort } else { sort-date(entry.updated, updated-raw) }
+  let sort-date(value) = if value == none { "" } else { str(value) }
+  let published-sort = sort-date(entry.date)
+  let updated-sort = if entry.updated == none { published-sort } else { sort-date(entry.updated) }
   let attrs = if is-project {
     (
       href: entry.url,
