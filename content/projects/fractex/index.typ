@@ -1,17 +1,25 @@
-#import "/content/prelude.typ": *
+---
+title = "FracTeX"
+description = "A comprehensive 2D fractal visualization package for LaTeX."
+date = "2025-08-29"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "FracTeX",
-  description: "A comprehensive 2D fractal visualization package for LaTeX.",
-  languages: ("TeX",),
-  published: "2025/8/29",
-  repo-url: "https://github.com/rice8y/FracTeX",
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2025/8/29"
+languages = ["TeX"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/FracTeX" }]
+---
+
+#import "/content/_prelude.typ": *
+
 This package provides commands to visualize various types of fractals using PGFPlots and LuaTeX.
 
 #img("/images/projects/fractex/mandelbrot.png", alt: "")
 
-*Supported Fractals:*
+#strong[Supported Fractals:]
 
 - Mandelbrot Set
 - Julia Set
@@ -64,7 +72,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \MandelbrotSet[xmin=-2,xmax=1,ymin=-1.5,ymax=1.5,dx=0.02,dy=0.02,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/1)
 - ymin/ymax: Y-axis range (default: -1.5/1.5)
@@ -79,7 +87,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \JuliaSet[xmin=-2,xmax=2,ymin=-1.5,ymax=1.5,dx=0.02,dy=0.02,c_re=-0.8,c_im=0.156,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/2)
 - ymin/ymax: Y-axis range (default: -1.5/1.5)
@@ -95,7 +103,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \BarnsleyFern[num_points=50000,color=green]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - num_points: Number of generated points (default: 50000)
 - color: Base color (default: green)
@@ -107,7 +115,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \BurningShipFractal[xmin=-2,xmax=1.5,ymin=-2,ymax=1,dx=0.02,dy=0.02,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/1.5)
 - ymin/ymax: Y-axis range (default: -2/1)
@@ -122,7 +130,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \NewtonFractal[xmin=-1.5,xmax=1.5,ymin=-1.5,ymax=1.5,dx=0.02,dy=0.02,max_iter=20,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -1.5/1.5)
 - ymin/ymax: Y-axis range (default: -1.5/1.5)
@@ -137,7 +145,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \PhoenixFractal[xmin=-1.5,xmax=1.5,ymin=-1.5,ymax=1.5,dx=0.02,dy=0.02,P=0.3,max_iter=50,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -1.5/1.5)
 - ymin/ymax: Y-axis range (default: -1.5/1.5)
@@ -153,7 +161,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \TricornFractal[xmin=-2,xmax=1,ymin=-1.5,ymax=1.5,dx=0.02,dy=0.02,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/1)
 - ymin/ymax: Y-axis range (default: -1.5/1.5)
@@ -168,7 +176,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \BuffaloFractal[xmin=-2,xmax=1,ymin=-1.5,ymax=1.5,dx=0.02,dy=0.02,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/1)
 - ymin/ymax: Y-axis range (default: -1.5/1.5)
@@ -183,7 +191,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \SierpinskiTriangle[num_points=50000,color=blue]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - num_points: Points count (default: 50000)
 - color: Base color (default: blue)
@@ -195,7 +203,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \LyapunovFractal[amin=2.4,amax=3.6,bmin=2.4,bmax=3.6,da=0.01,db=0.01, max_iter=100,cmap=hot]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - amin/amax: Parameter `a` range (default: 2.4/3.6)
 - bmin/bmax: Parameter `b` range (default: 2.4/3.6)
@@ -210,7 +218,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \MagnetFractal[xmin=-2,xmax=2,ymin=-2,ymax=2,dx=0.02,dy=0.02,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/2)
 - ymin/ymax: Y-axis range (default: -2/2)
@@ -225,7 +233,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \MultibrotSet[xmin=-2,xmax=2,ymin=-2,ymax=2,dx=0.02,dy=0.02,d=3,max_iter=100,cmap=jet]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - xmin/xmax: X-axis range (default: -2/2)
 - ymin/ymax: Y-axis range (default: -2/2)
@@ -241,7 +249,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 % options: \GingerbreadmanMap[num_points=50000, color=red]
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - num_points: Points count (default: 50000)
 - color: Base color (default: red)
@@ -249,4 +257,3 @@ For Linux and macOS, you can use the provided shell script to install the packag
 == License
 
 This package is distributed under the BSD 2-Clause License. See #link("https://raw.githubusercontent.com/rice8y/FracTeX/main/LICENSE")[LICENSE].
-]

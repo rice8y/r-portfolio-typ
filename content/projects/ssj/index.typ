@@ -1,13 +1,21 @@
-#import "/content/prelude.typ": *
+---
+title = "SSJ"
+description = "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection."
+date = "2025-08-29"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "SSJ",
-  description: "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection.",
-  languages: ("Python",),
-  published: "2025/8/29",
-  repo-url: "https://github.com/rice8y/ssj",
-)[
-*SSJ (Scontrol Show Job)* is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection. It provides a user-friendly terminal interface to display SLURM job details with optional filtering, formatting, file inspection, and JSON export.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2025/8/29"
+languages = ["Python"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/ssj" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[SSJ (Scontrol Show Job)] is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection. It provides a user-friendly terminal interface to display SLURM job details with optional filtering, formatting, file inspection, and JSON export.
 
 Ideal for HPC users who frequently monitor job metadata, logs, or scripts via `scontrol`.
 
@@ -28,11 +36,13 @@ This will fetch and install the latest version directly from the repository.
 
 ```bash
 git clone https://github.com/rice8y/ssj.git
-```+ Move into the project directory:
+```
++ Move into the project directory:
 
 ```bash
 cd ssj
-```+ Install the package in editable mode using uv tool:
+```
++ Install the package in editable mode using uv tool:
 
 ```bash
 uv tool install -e .
@@ -86,4 +96,3 @@ Lists script, stdout, stderr, and working directory paths associated with the jo
 == License
 
 This project is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/ssj/main/LICENSE")[LICENSE].
-]

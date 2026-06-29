@@ -1,12 +1,20 @@
-#import "/content/prelude.typ": *
+---
+title = "CeTZuron"
+description = "A Typst package for drawing neural network diagrams."
+date = "2025-08-30"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "CeTZuron",
-  description: "A Typst package for drawing neural network diagrams.",
-  languages: ("Typst",),
-  published: "2025/8/30",
-  repo-url: "https://github.com/rice8y/cetzuron",
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2025/8/30"
+languages = ["Typst"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/cetzuron" }]
+---
+
+#import "/content/_prelude.typ": *
+
 == Installation
 
 === 1. Clone the repository
@@ -95,19 +103,19 @@ Import the package using `#import`.
 
 ```typ
 fcnn(
-    inputNodes: int, 
-    middleNodes: int, 
-    outputNodes: int, 
+    inputNodes: int,
+    middleNodes: int,
+    outputNodes: int,
     middleLayers: int,
     label: bool,
 ) -> content
 ```
 
-*inputNodes:* Number of nodes in the input layer  
-*middleNodes:* Number of nodes in hidden layers  
-*outputNodes:* Number of nodes in the output layer  
-*middleLayers:* Number of hidden layers (default: 3)  
-*label:* Whether to show labels (default: true)
+#strong[inputNodes:] Number of nodes in the input layer
+#strong[middleNodes:] Number of nodes in hidden layers
+#strong[outputNodes:] Number of nodes in the output layer
+#strong[middleLayers:] Number of hidden layers (default: 3)
+#strong[label:] Whether to show labels (default: true)
 
 ==== Example usage of `#fcnn`
 
@@ -135,19 +143,19 @@ fcnn(
 
 ```typ
 rnn(
-    inputNodes: int, 
-    middleNodes: int, 
-    outputNodes: int, 
+    inputNodes: int,
+    middleNodes: int,
+    outputNodes: int,
     middleLayers: int,
     label: bool,
 ) -> content
 ```
 
-*inputNodes:* Number of nodes in the input layer  
-*middleNodes:* Number of nodes in hidden layers  
-*outputNodes:* Number of nodes in the output layer  
-*middleLayers:* Number of hidden layers (default: 3)  
-*label:* Whether to show labels (default: true)
+#strong[inputNodes:] Number of nodes in the input layer
+#strong[middleNodes:] Number of nodes in hidden layers
+#strong[outputNodes:] Number of nodes in the output layer
+#strong[middleLayers:] Number of hidden layers (default: 3)
+#strong[label:] Whether to show labels (default: true)
 
 ==== Example usage of `#rnn`
 
@@ -175,19 +183,19 @@ rnn(
 
 ```typ
 lstm(
-    inputNodes: int, 
-    middleNodes: int, 
-    outputNodes: int, 
+    inputNodes: int,
+    middleNodes: int,
+    outputNodes: int,
     middleLayers: int,
     label: bool,
 ) -> content
 ```
 
-*inputNodes:* Number of nodes in the input layer  
-*middleNodes:* Number of nodes in hidden layers  
-*outputNodes:* Number of nodes in the output layer  
-*middleLayers:* Number of hidden layers (default: 3)  
-*label:* Whether to show labels (default: true)
+#strong[inputNodes:] Number of nodes in the input layer
+#strong[middleNodes:] Number of nodes in hidden layers
+#strong[outputNodes:] Number of nodes in the output layer
+#strong[middleLayers:] Number of hidden layers (default: 3)
+#strong[label:] Whether to show labels (default: true)
 
 ==== Example usage of `#lstm`
 
@@ -215,17 +223,17 @@ lstm(
 
 ```typ
 ae(
-    inputNodes: int, 
-    middleNodes: int, 
+    inputNodes: int,
+    middleNodes: int,
     style: string,
     label: bool,
 ) -> content
 ```
 
-*inputNodes:* Number of nodes in input/output layers  
-*middleNodes:* Number of nodes in hidden layer  
-*style:* Shape of hidden layer \["short", "full"\] (default: "short")  
-*label:* Whether to show labels (default: true)
+#strong[inputNodes:] Number of nodes in input/output layers
+#strong[middleNodes:] Number of nodes in hidden layer
+#strong[style:] Shape of hidden layer \["short", "full"\] (default: "short")
+#strong[label:] Whether to show labels (default: true)
 
 ==== Example usage of `#ae`
 
@@ -250,4 +258,3 @@ ae(
 ```
 
 #img("/images/projects/cetzuron/sample_ae_en.png", alt: "sample")
-]

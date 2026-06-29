@@ -1,14 +1,21 @@
-#import "/content/prelude.typ": *
+---
+title = "CaleTZ"
+description = "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives."
+date = "2025-10-22"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "CaleTZ",
-  description: "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives.",
-  languages: ("Typst", "Rust"),
-  published: "2025/10/22",
-  repo-url: "https://github.com/rice8y/caletz",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/caletz"),),
-)[
-*CaleTZ* is a Typst package for visualizing *Calabi-Yau manifolds* using *CeTZ* 3D drawing primitives.  
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2025/10/22"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/caletz" }, { label = "Typst Universe", url = "https://typst.app/universe/package/caletz" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[CaleTZ] is a Typst package for visualizing #strong[Calabi-Yau manifolds] using #strong[CeTZ] 3D drawing primitives.
 It generates colorful, smooth 3D surfaces with adjustable parameters, making it easy to explore complex geometries directly in Typst.
 
 #image-row((
@@ -75,9 +82,8 @@ This will also install the package locally for Typst usage.
 - `scale-factor`: Optional, default `3.0`. Scales the entire mesh.
 - `rotation`: Optional, default `(30deg, 45deg, 0deg)`. Rotates the 3D view.
 
-> For best results, use a high `subdivisions` value, but note it increases computation.
+#blockquote[For best results, use a high `subdivisions` value, but note it increases computation.]
 
 == License
 
 This project is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/caletz/main/LICENSE")[LICENSE].
-]

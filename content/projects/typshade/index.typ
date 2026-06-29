@@ -1,14 +1,22 @@
-#import "/content/prelude.typ": *
+---
+title = "typshade"
+description = "A Typst package for visualizing multiple-sequence alignments in bioinformatics."
+date = "2026-05-23"
+updated = "2026-06-21"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "typshade",
-  description: "A Typst package for visualizing multiple-sequence alignments in bioinformatics.",
-  languages: ("Typst",),
-  published: "2026/05/23",
-  updated: "2026/06/21",
-  repo-url: "https://github.com/rice8y/typshade",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/typshade/"),),
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/05/23"
+updated_raw = "2026/06/21"
+languages = ["Typst"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/typshade" }, { label = "Typst Universe", url = "https://typst.app/universe/package/typshade/" }]
+---
+
+#import "/content/_prelude.typ": *
+
 #img("/images/projects/typshade/readme-overview.png", alt: "Typshade alignment overview")
 
 Typshade is a Typst package for visualizing multiple sequence alignments in bioinformatics.
@@ -117,16 +125,19 @@ and a ruler:
 
 == TeXshade To Typshade
 
-| TeXshade idea | Typshade API |
-|---|---|
-| `texshade` environment | `shade(read("alignment.msf", encoding: none), format: "msf", figure: publication(...))`, or `shade(path("alignment.msf"), format: "msf", ...)` on Typst 0.15+ |
-| `shadingmode`, `shadingcolors`, `threshold` | `similar`, `identical`, `diverse`, `functional`, or `scoring-mode`, `color-scheme`, `threshold` |
-| `residuesperline`, `setends` | `lines`, `window`, or `residues-per-line`, `sequence-window` |
-| `shownames`, `shownumbering`, `showconsensus`, `showruler` | `names`, `numbers`, `consensus`, `ruler`, or the fine-grained track helpers |
-| `showsequencelogo`, `showsubfamilylogo`, `showlegend` | `logo`, `subfamily-logo`, `legend` |
-| `shaderegion`, `tintregion`, `emphregion`, `feature` | `highlight`, `tint`, `emphasize`, `mark`, `motif`, `graph` |
-| `includeDSSP`, `includeSTRIDE`, `includeHMMTOP`, `includePHD*` | `structure-tracks`, `dssp-track`, `stride-track`, `hmmtop-track`, `phd-topology-track`, `phd-secondary-track` |
-| font and spacing macros | `text-family`, `text-weight`, `text-posture`, `text-size`, `block-gap`, `feature-slot-space` |
+#data-table(
+  headers: ([TeXshade idea], [Typshade API],),
+  rows: (
+    ([`texshade` environment], [`shade(read("alignment.msf", encoding: none), format: "msf", figure: publication(...))`, or `shade(path("alignment.msf"), format: "msf", ...)` on Typst 0.15+],),
+    ([`shadingmode`, `shadingcolors`, `threshold`], [`similar`, `identical`, `diverse`, `functional`, or `scoring-mode`, `color-scheme`, `threshold`],),
+    ([`residuesperline`, `setends`], [`lines`, `window`, or `residues-per-line`, `sequence-window`],),
+    ([`shownames`, `shownumbering`, `showconsensus`, `showruler`], [`names`, `numbers`, `consensus`, `ruler`, or the fine-grained track helpers],),
+    ([`showsequencelogo`, `showsubfamilylogo`, `showlegend`], [`logo`, `subfamily-logo`, `legend`],),
+    ([`shaderegion`, `tintregion`, `emphregion`, `feature`], [`highlight`, `tint`, `emphasize`, `mark`, `motif`, `graph`],),
+    ([`includeDSSP`, `includeSTRIDE`, `includeHMMTOP`, `includePHD*`], [`structure-tracks`, `dssp-track`, `stride-track`, `hmmtop-track`, `phd-topology-track`, `phd-secondary-track`],),
+    ([font and spacing macros], [`text-family`, `text-weight`, `text-posture`, `text-size`, `block-gap`, `feature-slot-space`],),
+  ),
+)
 
 See #link("docs/documentation.typ")[docs/documentation.typ] for the full guide and a
 larger correspondence table.
@@ -210,4 +221,3 @@ You can also mix recipe output with explicit, reproducible helper lists:
 == License
 
 This project is distributed under the GPL v2 License. See #link("https://raw.githubusercontent.com/rice8y/typshade/v0.1.2/LICENSE")[LICENSE] for details.
-]

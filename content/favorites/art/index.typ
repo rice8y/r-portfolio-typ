@@ -1,14 +1,22 @@
-#import "/content/prelude.typ": *
+---
+title = "Art"
+description = "好きな美術作品について."
+date = "2025-09-30"
+updated = "2026-02-22"
+section = "favorites"
+toc = false
 
-#let entry = favorite(
-  title: "Art",
-  description: "好きな美術作品について.",
-  published: "2025/9/30",
-  updated: "2026/02/22",
-)[
+[extra]
+kind = "favorite"
+reading_time = "1 min read"
+published_raw = "2025/9/30"
+updated_raw = "2026/02/22"
+---
+
+#import "/content/_prelude.typ": *
+
 - #link("./masuko_mayu/")[マスコマユ]さん
 - #link("./akina_mihara/")[三原秋奈]さん
 - #link("./mokuha_kawabata/")[川端もくは]さん
 - #link("./chiko_takei/")[武井地子]さん
 - #link("./yue/")[YUE]さん
-]

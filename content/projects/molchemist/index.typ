@@ -1,15 +1,23 @@
-#import "/content/prelude.typ": *
+---
+title = "molchemist"
+description = "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings.."
+date = "2026-03-03"
+updated = "2026-06-21"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "molchemist",
-  description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
-  languages: ("Typst", "Rust", "C++"),
-  published: "2026/03/03",
-  updated: "2026/06/21",
-  repo-url: "https://github.com/rice8y/molchemist",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/molchemist/"),),
-)[
-*molchemist* is a Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/03/03"
+updated_raw = "2026/06/21"
+languages = ["Typst", "Rust", "C++"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/molchemist" }, { label = "Typst Universe", url = "https://typst.app/universe/package/molchemist/" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[molchemist] is a Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings.
 
 It uses a Rust/WASM core to parse molecular graphs and generate `alchemist` ASTs, together with a companion WASM layout plugin for SMILES 2D coordinate generation. Molfile / SDF parsing is powered by #link("https://github.com/hfooladi/sdfrust")[`sdfrust`], SMILES parsing is based on #link("https://crates.io/crates/opensmiles")[`opensmiles`], SMILES 2D coordinate generation uses #link("https://github.com/schrodinger/coordgenlibs")[`CoordgenLibs`], and the final rendering is handled by the declarative drawing engine of #link("https://github.com/Typsium/alchemist")[`alchemist`].
 
@@ -95,7 +103,7 @@ Keep annotations minimal: use monochrome `callout-annotation(...)` labels, avoid
 
 Draws every single atom and bond explicitly exactly as defined in the source file, including all carbons and hydrogens.
 
-*Note: For complex molecules, text overlapping may occur. See #link("#known-limitations")[Known Limitations] for workarounds.*
+#strong[Note: For complex molecules, text overlapping may occur. See #link("#known-limitations")[Known Limitations] for workarounds.]
 
 ```typ
 #render-mol(mol-data)
@@ -144,10 +152,10 @@ Under the hood, `molchemist` parses the graph and generates native `alchemist` e
 
 #img("/images/projects/molchemist/ex04.png", alt: "Custom Appearance")
 
-*Important Note on Configuration:*
+#strong[Important Note on Configuration:]
 
-- *Routing overrides:* Because `molchemist` maps the exact 2D absolute coordinates from the source `.sdf`/`.mol` file, `alchemist`'s automatic routing configs (like `angle-increment`, `base-angle`) are bypassed and have no effect.
-- *Lewis Structures:* `molchemist` does not automatically infer or generate Lewis structures from SDF files, so `lewis-*` configs are not applicable out of the box.
+- #strong[Routing overrides:] Because `molchemist` maps the exact 2D absolute coordinates from the source `.sdf`/`.mol` file, `alchemist`'s automatic routing configs (like `angle-increment`, `base-angle`) are bypassed and have no effect.
+- #strong[Lewis Structures:] `molchemist` does not automatically infer or generate Lewis structures from SDF files, so `lewis-*` configs are not applicable out of the box.
 
 === Advanced: Ejecting to Alchemist Code (Dump Mode)
 
@@ -163,11 +171,11 @@ When `dump: true` is passed, `molchemist` will not render the molecule. Instead,
 
 == Known Limitations
 
-When rendering highly complex or dense molecules (e.g., polycyclic compounds, dense substituents) in the default *Full Mode*, you may encounter overlapping atoms or intersecting bonds. This occurs because the 2D absolute coordinates provided in the source `.sdf`/`.mol` files might not allocate enough physical space on the canvas to draw every explicit text label without collisions.
+When rendering highly complex or dense molecules (e.g., polycyclic compounds, dense substituents) in the default #strong[Full Mode], you may encounter overlapping atoms or intersecting bonds. This occurs because the 2D absolute coordinates provided in the source `.sdf`/`.mol` files might not allocate enough physical space on the canvas to draw every explicit text label without collisions.
 
-*Recommended Workarounds:*
-+ *Use Abbreviated or Skeletal Mode:* For complex organic structures, it is highly recommended to set `abbreviate: true` or `skeletal: true`. This hides redundant atoms, dramatically improving readability and preventing overlaps, which aligns with standard chemical drawing practices.
-+ *Increase Bond Length:* If you strictly require Full Mode, you can increase the distance between atoms to create more physical space for the text labels by adjusting the `atom-sep` property in the `config` argument:
+#strong[Recommended Workarounds:]
++ #strong[Use Abbreviated or Skeletal Mode:] For complex organic structures, it is highly recommended to set `abbreviate: true` or `skeletal: true`. This hides redundant atoms, dramatically improving readability and preventing overlaps, which aligns with standard chemical drawing practices.
++ #strong[Increase Bond Length:] If you strictly require Full Mode, you can increase the distance between atoms to create more physical space for the text labels by adjusting the `atom-sep` property in the `config` argument:
     ```typ
     // The default atom-sep is 3em
     #render-mol(mol-data, config: (atom-sep: 4.5em))
@@ -177,7 +185,7 @@ For SMILES input, the default `render-smiles(...)` mode expands implicit hydroge
 
 == Feature Plan
 
-- *Native depiction for extended chirality:* Extended OpenSMILES chirality classes such as allene (`@AL`), square-planar (`@SP`), trigonal-bipyramidal (`@TB`), and octahedral (`@OH`) are currently preserved as textual stereo annotations. A future version may render these classes natively once the expected 2D depiction conventions and the required `alchemist` primitives are clarified.
+- #strong[Native depiction for extended chirality:] Extended OpenSMILES chirality classes such as allene (`@AL`), square-planar (`@SP`), trigonal-bipyramidal (`@TB`), and octahedral (`@OH`) are currently preserved as textual stereo annotations. A future version may render these classes natively once the expected 2D depiction conventions and the required `alchemist` primitives are clarified.
 
 == API Reference
 
@@ -188,44 +196,56 @@ For SMILES input, the default `render-smiles(...)` mode expands implicit hydroge
 #render-smiles(smiles, ..options)
 ```
 
-| Function | Input | Description |
-| --- | --- | --- |
-| `render-mol` | `data: str`, `bytes`, or Typst 0.15+ `path` | Renders Molfile or SDF data. Coordinates are read from the input. |
-| `render-smiles` | `smiles: str` | Parses SMILES, generates a 2D layout, and renders the result. |
+#data-table(
+  headers: ([Function], [Input], [Description],),
+  rows: (
+    ([`render-mol`], [`data: str`, `bytes`, or Typst 0.15+ `path`], [Renders Molfile or SDF data. Coordinates are read from the input.],),
+    ([`render-smiles`], [`smiles: str`], [Parses SMILES, generates a 2D layout, and renders the result.],),
+  ),
+)
 
 Both renderers accept the same options:
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `abbreviate` | `bool` | `false` | Folds common hydrogens and terminal groups into labels. |
-| `skeletal` | `bool` | `false` | Draws a skeletal formula. Overrides `abbreviate`. |
-| `dump` | `bool` | `false` | Returns generated `alchemist` source instead of rendering. |
-| `config` | `dictionary` | `(:)` | Passes visual settings directly to `alchemist`. |
-| `annotations` | `annotation`, `array`, `none` | `none` | Adds labels, arrows, or custom CeTZ overlays. |
-| `show-indices` | `bool`, `str` | `false` | Shows debug labels for annotation authoring. Use `true`, `"all"`, `"atoms"`, or `"bonds"`. |
+#data-table(
+  headers: ([Option], [Type], [Default], [Description],),
+  rows: (
+    ([`abbreviate`], [`bool`], [`false`], [Folds common hydrogens and terminal groups into labels.],),
+    ([`skeletal`], [`bool`], [`false`], [Draws a skeletal formula. Overrides `abbreviate`.],),
+    ([`dump`], [`bool`], [`false`], [Returns generated `alchemist` source instead of rendering.],),
+    ([`config`], [`dictionary`], [`(:)`], [Passes visual settings directly to `alchemist`.],),
+    ([`annotations`], [`annotation`, `array`, `none`], [`none`], [Adds labels, arrows, or custom CeTZ overlays.],),
+    ([`show-indices`], [`bool`, `str`], [`false`], [Shows debug labels for annotation authoring. Use `true`, `"all"`, `"atoms"`, or `"bonds"`.],),
+  ),
+)
 
 === Anchors
 
 Use anchors to target atoms, bonds, or the whole molecule from annotations.
 
-| Function | Returns | Use |
-| --- | --- | --- |
-| `atom-anchor(index, anchor: "mid")` | anchor selector | Target a rendered atom. |
-| `bond-anchor(index, anchor: "50%")` | anchor selector | Target a rendered bond. |
-| `molecule-anchor(anchor: "center")` | anchor selector | Target the rendered molecule group. |
-| `atom-ref(index)` | `str` | Inspect the generated atom anchor name. |
-| `bond-ref(index)` | `str` | Inspect the generated bond anchor name. |
+#data-table(
+  headers: ([Function], [Returns], [Use],),
+  rows: (
+    ([`atom-anchor(index, anchor: "mid")`], [anchor selector], [Target a rendered atom.],),
+    ([`bond-anchor(index, anchor: "50%")`], [anchor selector], [Target a rendered bond.],),
+    ([`molecule-anchor(anchor: "center")`], [anchor selector], [Target the rendered molecule group.],),
+    ([`atom-ref(index)`], [`str`], [Inspect the generated atom anchor name.],),
+    ([`bond-ref(index)`], [`str`], [Inspect the generated bond anchor name.],),
+  ),
+)
 
 === Annotations
 
 Pass one annotation or an array of annotations to `annotations`.
 
-| Function | Purpose |
-| --- | --- |
-| `callout-annotation(at, label, ..options)` | External publication-style label with a thin leader line. |
-| `arrow-annotation(from, to, ..options)` | Free arrow overlay for process arrows or directional marks. |
-| `label-annotation(at, label, ..options)` | Free text label without a leader line. |
-| `cetz-annotation(body, ..options)` | Low-level CeTZ overlay. The callback receives the generated molecule name. |
+#data-table(
+  headers: ([Function], [Purpose],),
+  rows: (
+    ([`callout-annotation(at, label, ..options)`], [External publication-style label with a thin leader line.],),
+    ([`arrow-annotation(from, to, ..options)`], [Free arrow overlay for process arrows or directional marks.],),
+    ([`label-annotation(at, label, ..options)`], [Free text label without a leader line.],),
+    ([`cetz-annotation(body, ..options)`], [Low-level CeTZ overlay. The callback receives the generated molecule name.],),
+  ),
+)
 
 Common `callout-annotation` controls include `side`, `label-at`, `leader`, `leader-start`, `leader-end`, `leader-points`, `label-gap`, and `target-gap`. Use these when a final figure needs precise spacing.
 
@@ -247,4 +267,3 @@ Use `cetz-annotation` as the escape hatch for advanced figure polishing:
 The `molchemist` package code is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/molchemist/v0.1.2/LICENSE")[LICENSE] for details.
 
 Redistributed third-party code and bundled example-data provenance, including PubChem-derived SDF/example images, are documented separately in #link("https://github.com/rice8y/molchemist/blob/v0.1.2/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md].
-]

@@ -1,15 +1,23 @@
-#import "/content/prelude.typ": *
+---
+title = "typarium"
+description = "A Typst package for building expressive font specimen cards from system fonts, local font files, and mixed metadata dictionaries."
+date = "2026-05-24"
+updated = "2026-06-21"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "typarium",
-  description: "A Typst package for building expressive font specimen cards from system fonts, local font files, and mixed metadata dictionaries.",
-  languages: ("Typst", "Rust"),
-  published: "2026/05/24",
-  updated: "2026/06/21",
-  repo-url: "https://github.com/rice8y/typarium",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/typarium/"),),
-)[
-*typarium* is a Typst package for rendering font specimen cards for system fonts and local fonts.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/05/24"
+updated_raw = "2026/06/21"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/typarium" }, { label = "Typst Universe", url = "https://typst.app/universe/package/typarium/" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[typarium] is a Typst package for rendering font specimen cards for system fonts and local fonts.
 
 Fonts specified only by family name are renderable through Typst, but file-level metadata is only available when you provide a local font as raw bytes, pass a Typst 0.15.0+ `path(...)`, or supply metadata manually.
 
@@ -84,7 +92,7 @@ To inspect parsed glyph metrics, codepoint samples, and table diagnostics with t
 
 #img("/images/projects/typarium/sample07.png", alt: "Inspector renderer")
 
-See also [variation-request.typ](package/examples/variation-request.typ) for a standalone custom renderer that reads `variation-request` and `variation-support` directly.
+See also #link("package/examples/variation-request.typ")[variation-request.typ] for a standalone custom renderer that reads `variation-request` and `variation-support` directly.
 
 === Custom Theme and Renderer
 
@@ -231,7 +239,7 @@ Renders one or more font specimen cards.
 )
 ```
 
-*Key Parameters:*
+#strong[Key Parameters:]
 
 - `fonts` (`auto | str | bytes | path | dictionary | array`): Font sources to render. Use raw bytes for Typst 0.14.x compatibility, or `path(...)` on Typst 0.15.0+ for user-local font files.
 - `theme` (`dictionary`): Showcase-level renderer configuration and design-token payload passed into the active renderer layer.
@@ -320,4 +328,3 @@ If you specify a font only by family name, such as `(name: "Jaldi")`, typarium c
 == License
 
 This project is distributed under the MIT License. See #link("https://github.com/rice8y/typarium/blob/main/LICENSE")[LICENSE] for details.
-]

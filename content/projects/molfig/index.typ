@@ -1,14 +1,21 @@
-#import "/content/prelude.typ": *
+---
+title = "molfig"
+description = "A Typst package for rendering molecular structure files in static documents."
+date = "2026-06-21"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "molfig",
-  description: "A Typst package for rendering molecular structure files in static documents.",
-  languages: ("Typst", "Rust"),
-  published: "2026/06/21",
-  repo-url: "https://github.com/rice8y/molfig",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/molfig/"),),
-)[
-*Molfig* is a Typst package for rendering molecular structure files in static documents.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/06/21"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/molfig" }, { label = "Typst Universe", url = "https://typst.app/universe/package/molfig/" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[Molfig] is a Typst package for rendering molecular structure files in static documents.
 
 It accepts PDB, mmCIF, and BinaryCIF input, converts structures through a CPU-side #link("https://molstar.org/")[Mol#super[#sym.ast]]-style Model/Structure/Unit layer, exports static OBJ/STL/PLY mesh bytes, and delegates final document rendering to #link("https://typst.app/universe/package/maquette")[`maquette`].
 
@@ -50,7 +57,7 @@ The manual uses PDB entry 9R1O as its complete example. Put `9R1O.typ` and `9R1O
 typst compile 9R1O.typ
 ```
 
-*Rendered 9R1O Example*
+#strong[Rendered 9R1O Example]
 
 #img("/images/projects/molfig/9R1O.png", alt: "Example protein structure rendered from PDB entry 9R1O using Molfig with the Mol* representation")
 
@@ -140,4 +147,3 @@ typst compile --root package package/docs/documentation.typ package/docs/documen
 ```
 
 The checked-in `package/molfig.wasm` should be regenerated after Rust changes that affect the Typst plugin. Regenerate `package/docs/documentation.pdf` after public API or documentation changes.
-]

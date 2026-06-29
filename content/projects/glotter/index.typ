@@ -1,16 +1,23 @@
-#import "/content/prelude.typ": *
+---
+title = "glotter"
+description = "A Typst package for detecting the language of text fragments and applying language-aware settings to content."
+date = "2026-05-23"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "glotter",
-  description: "A Typst package for detecting the language of text fragments and applying language-aware settings to content.",
-  languages: ("Typst", "Rust"),
-  published: "2026/05/23",
-  repo-url: "https://github.com/rice8y/glotter",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/glotter/"),),
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/05/23"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/glotter" }, { label = "Typst Universe", url = "https://typst.app/universe/package/glotter/" }]
+---
+
+#import "/content/_prelude.typ": *
+
 #img("/images/projects/glotter/logo.png", alt: "glotter logo")
 
-*glotter* is a Typst package for detecting the language of text fragments and applying language-aware settings to content.
+#strong[glotter] is a Typst package for detecting the language of text fragments and applying language-aware settings to content.
 
 The Typst plugin is compiled to WebAssembly using #link("https://crates.io/crates/fasttext-pure-rs")[`fasttext-pure-rs`], a pure Rust implementation of fastText.
 
@@ -213,4 +220,3 @@ However, this package includes `package/glotter.wasm`, which embeds model data f
 - Creative Commons Attribution-ShareAlike 3.0 Unported for the embedded fastText model data.
 
 The package code is MIT licensed. The embedded fastText model data in `glotter.wasm` is licensed under CC-BY-SA-3.0. See #link("https://raw.githubusercontent.com/rice8y/glotter/main/NOTICE.md")[`NOTICE.md`] for attribution, checksums, modification status, and redistribution notes. License texts are provided in #link("https://raw.githubusercontent.com/rice8y/glotter/main/LICENSE-MIT")[`LICENSE-MIT`] and #link("https://raw.githubusercontent.com/rice8y/glotter/main/LICENSE-CC-BY-SA-3.0")[`LICENSE-CC-BY-SA-3.0`].
-]

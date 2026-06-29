@@ -1,12 +1,21 @@
-#import "/content/prelude.typ": *
+---
+title = "CY3d"
+description = "A LaTeX package for drawing Calabi-Yau manifold."
+date = "2025-08-29"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "CY3d",
-  description: "A LaTeX package for drawing Calabi-Yau manifold.",
-  languages: ("TeX",),
-  published: "2025/8/29",
-  repo-url: "https://github.com/rice8y/cy3d",
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+has_math = true
+published_raw = "2025/8/29"
+languages = ["TeX"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/cy3d" }]
+---
+
+#import "/content/_prelude.typ": *
+
 This LaTeX package provides a command `\CalabiYau`, which can display Calabi-Yau manifold. This package utilizes PGFplots for drawing Calabi-Yau manifold.
 
 #img("/images/projects/cy3d/cy3d.png", alt: "")
@@ -45,7 +54,7 @@ For Linux and macOS, you can use the provided shell script to install the packag
 \CalabiYau[colormap]{power}{angle}{mesh size}
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
  - power: The degree of the Calabi-Yau equation $z_1^n + z_2^n = 1$.
  - angle: The angle parameter to adjust the rotation or perspective of the surface.
@@ -55,4 +64,3 @@ For Linux and macOS, you can use the provided shell script to install the packag
 == License
 
 This package is distributed under the BSD 2-Clause License. See #link("https://raw.githubusercontent.com/rice8y/cy3d/main/LICENSE")[LICENSE].
-]
