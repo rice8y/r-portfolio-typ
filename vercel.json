@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cargo install typage --version 0.1.0 --locked",
-  "buildCommand": "typage build --force --jobs 0",
+  "installCommand": "mkdir -p .bin .cache/typst && curl -fsSL https://github.com/typst/typst/releases/download/v0.15.0/typst-x86_64-unknown-linux-musl.tar.xz | tar -xJf - -C .cache/typst && cp .cache/typst/typst-x86_64-unknown-linux-musl/typst .bin/typst && chmod +x .bin/typst && cargo install typage --version 0.1.0 --locked",
+  "buildCommand": "PATH=\"$PWD/.bin:$PATH\" typage build --force --jobs 0",
   "outputDirectory": "dist",
   "cleanUrls": true
 }
