@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "installCommand": "cargo install typage --locked",
+  "installCommand": "cargo install typage --version 0.1.0 --locked",
   "buildCommand": "typage build --force --jobs 0",
   "outputDirectory": "dist",
   "cleanUrls": true

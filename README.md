@@ -6,12 +6,12 @@ A Typage-powered implementation of `r-portfolio`. The site keeps articles and pr
 
 - Rust and Cargo
 - Typst `0.15.0` or newer
-- Typage `0.24.2` or newer
+- Typage `0.1.0`
 
 Install Typage with:
 
 ```bash
-cargo install typage --locked
+cargo install typage --version 0.1.0 --locked
 ```
 
 ## Commands
