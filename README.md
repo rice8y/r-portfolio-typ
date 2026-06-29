@@ -1,179 +1,80 @@
 # r-Portfolio
 
-A Typst HTML exporter implementation of [`r-portfolio`](https://github.com/rice8y/r-portfolio). It keeps the source content in Typst, generates static multi-page HTML, and deploys as ordinary static files.
-
-## What this repository does
-
-- Uses Typst `0.15.x` experimental bundle + HTML export for page rendering.
-- Builds clean URLs such as `/blog/<slug>/` and `/projects/<slug>/`.
-- Keeps content authoring simple with one `index.typ` per entry.
-- Supports implementation-language badges and filtering on the Projects page.
-- Supports light, dark, and system themes.
-- Ships as static assets in `dist/`, suitable for Vercel and other static hosts.
+A Typage-powered implementation of `r-portfolio`. The site keeps articles and project pages in Typst, renders them with Typst HTML export, and publishes the generated static files from `dist/`.
 
 ## Requirements
 
-- Node.js `20` or newer
+- Rust and Cargo
 - Typst `0.15.0` or newer
+- Typage `0.24.2` or newer
 
-The build can install the official Typst CLI into `.bin/` when `typst` is not available on `PATH`. This is used by Vercel builds as well.
+Install Typage with:
+
+```bash
+cargo install typage --locked
+```
 
 ## Commands
 
 ```bash
-just build
-just dev
+typage build --force --jobs 0
+typage serve --live-reload --jobs 0
+typage doctor
+typage clean
 ```
 
-Without `just`:
+`typage serve --live-reload --jobs 0` builds the site, serves it at `http://127.0.0.1:1111`, watches source files, and injects live reload into served HTML.
+
+The Vercel build uses the same static output model:
 
 ```bash
-npm run build
-npm run dev
+typage build --force --jobs 0
 ```
 
-`just dev` serves `dist/` at `http://localhost:4321`. Press `Ctrl+C` or `q` to stop. The wrapper script temporarily disables terminal `ISIG` so `Ctrl+C` is handled inside the dev server instead of being reported by `just` as an interrupted recipe.
-
-Dev builds include entries marked `draft: true` so unfinished content can be previewed locally. Normal `just build` / Vercel builds exclude drafts.
-
-## Build pipeline
-
-The build is intentionally static and deterministic:
-
-1. `scripts/build.mjs` scans content entries under `content/blog`, `content/projects`, and `content/favorites`.
-2. Source entries are normalized into `content/_build/**/index.typ`.
-3. `content/_generated.typ` imports all generated entries and exposes route data to `main.typ`.
-4. `main.typ` emits a Typst bundle containing one `document(...)` per route and one `asset(...)` per file in `public/`.
-
-   ```bash
-   typst compile --features html,bundle --format bundle --input site_url=<url> main.typ dist
-   ```
-
-5. If `SITE_URL` is set, `sitemap.xml`, `robots.txt`, and RSS feeds are generated.
-
-Generated files are ignored by Git:
+## Project Structure
 
 ```txt
-content/_build/
-content/_generated.typ
-dist/
-.bin/
-```
-
-## Content structure
-
-Each page-like content item is a Typst file:
-
-```txt
+config.toml
 content/
-  profile.typ
-  prelude.typ
-  blog/<slug>/index.typ
-  projects/<slug>/index.typ
-  favorites/<slug>/index.typ
-  awards/index.typ
-  publications/index.typ
+templates/
+static/
+scripts/
+dist/
 ```
 
-The slug is derived from the directory path. For example:
+- `config.toml` defines Typage settings, site metadata, navigation, feeds, and deployment scripts.
+- `content/` contains Typst source pages and entries.
+- `templates/` contains the Typage templates and the r-Portfolio visual system.
+- `static/` contains files copied as-is into the generated site.
+- `scripts/import-r-portfolio.mjs` imports content from the previous Typst-native implementation.
+- `dist/` is generated output for local preview and static deployment.
 
-```txt
-content/projects/molchemist/index.typ
-→ /projects/molchemist/
-```
+## Content
 
-A blog post looks like this:
-
-````typ
-#import "/content/prelude.typ": *
-
-#let entry = post(
-  title: "My new post",
-  description: "Short card and meta description.",
-  published: "2026/05/22",
-  draft: false,
-)[
-  Write ordinary Typst markup here.
-
-  == Section
-
-  - Typst lists work.
-  - Inline `code` works.
-  - Typst strong text uses *stars*.
-
-  ```typ
-  #let x = 1
-  ```
-]
-````
-
-A project entry looks like this:
+Each content file uses TOML front matter followed by Typst markup:
 
 ```typ
-#import "/content/prelude.typ": *
+---
+title = "Example"
+description = "Short description."
+date = "2026-05-23"
+section = "blog"
+toc = false
 
-#let entry = project(
-  title: "my-project",
-  description: "Project description.",
-  languages: ("Typst", "Rust"),
-  published: "2026/05/22",
-  draft: false,
-  repo-url: "https://github.com/user/repo",
-  links: (
-    (label: "Docs", url: "https://example.com"),
-  ),
-)[
-  Project body.
+[extra]
+kind = "post"
+reading_time = "1 min read"
+published_raw = "2026/05/23"
+---
 
-  #img("/images/projects/my-project/screenshot.png", alt: "Screenshot")
-]
+#import "/content/_prelude.typ": *
+
+Write Typst content here.
 ```
 
-`languages` accepts multiple values and is used for the Projects page filter and language badges on project cards. Badges are rendered as Shields.io SVGs with official Simple Icons logos where available. When omitted or empty, the project is treated as `Other`.
+Project entries use `section = "projects"` and can provide project-specific metadata through `[extra]`, including `languages`, `links`, `published_raw`, and `updated_raw`.
 
-
-## Draft entries
-
-Posts, projects, and favorites can be marked as drafts:
-
-```typ
-#let entry = post(
-  title: "Work in progress",
-  description: "Draft-only preview content.",
-  published: "2026/05/23",
-  draft: true,
-)[
-  This page is visible in dev builds only.
-]
-```
-
-Draft behavior:
-
-- `just dev` includes drafts and shows a `Draft` badge on cards and article pages.
-- `just build` excludes drafts from generated routes, lists, sitemap, and RSS feeds.
-- `RPORTFOLIO_INCLUDE_DRAFTS=1 just build` can be used when a static preview build should include drafts.
-- Blog drafts do not load Giscus comments, even when previewed locally.
-
-## RSS feeds
-
-When `SITE_URL` is set, the build generates RSS feeds for blog posts and projects:
-
-```txt
-dist/rss.xml
-dist/blog/rss.xml
-dist/projects/rss.xml
-```
-
-`rss.xml` is a combined feed for blog posts and projects. `blog/rss.xml` and `projects/rss.xml` are collection-specific feeds. Feed items are generated from the `title`, `description`, and `published` metadata in each entry.
-
-The UI exposes RSS in two places:
-
-- the global feed is linked from the footer;
-- collection-specific feeds are linked from the Blog and Projects page headings.
-
-## Writer-facing helpers
-
-`content/prelude.typ` provides small components so article files do not need to call `html.elem(...)` directly:
+Writer-facing helpers live in `content/_prelude.typ`, including:
 
 ```typ
 #img("/path/to/image.png", alt: "Alt text")
@@ -183,75 +84,21 @@ The UI exposes RSS in two places:
   link: "https://example.com",
   image: "/image.png",
 )
-#instagram("https://www.instagram.com/p/.../")
-#data-table(headers: ("Name", "Description"), rows: (("foo", "bar"),))
+#instagram("https://www.instagram.com/p/...")
+#data-table(headers: ([Name], [Description]), rows: (([foo], [bar]),))
 #details(summary: "Details")[...]
 #image-row(((src: "/a.png", alt: "A"), (src: "/b.png", alt: "B")))
 ```
 
-## Rendering architecture
+## Rendering
 
-- `main.typ` is the Typst entry point. It emits the bundle documents and static assets, then delegates each page body to `site.typ`.
-- `site.typ` contains the HTML layout functions, route switch, cards, project language badges/filter UI, article layout, header, footer, RSS links, and OGP/Twitter metadata.
-- `assets/site.css` defines the visual system. It is inlined into every page through `read(...)`, so no CSS bundler is required.
-- The visual system follows the Astro source: sans-serif UI text uses an Inter-first stack and article paragraphs use a Lora-first serif stack. Inter/Lora are self-hosted from `public/fonts/` and preloaded in `site.typ`, mirroring the original Astro build.
-- Typst HTML export can attach font styles to generated leaf spans. `assets/site.css` resets those spans to inherit the component font so the final DOM keeps the Astro-like typography.
-- Light-mode list cards use a white translucent surface over `bg-stone-100`, with `border-black/15`-like borders and a slightly brighter hover state.
-- `assets/site.js` handles theme switching, favicon switching, reveal animation, code-copy buttons, language switching, back-to-top behavior, and the footer collapse animation.
-- `assets/giscus.js` synchronizes the Giscus theme with the current site theme.
+Typage reads `config.toml`, routes the files in `content/`, applies templates from `templates/`, copies `static/`, and writes the final site to `dist/`. The templates preserve the existing r-Portfolio experience, including theme switching, RSS links, project cards, article layouts, link previews, and Giscus theme synchronization.
 
-## Theme and favicon behavior
+Generated files and local-only files are ignored by Git:
 
-The site supports three theme modes:
-
-- Light
-- Dark
-- System
-
-Theme preference is stored in `localStorage`. The favicon is switched by `assets/site.js` between `favicon-light.svg` and `favicon-dark.svg`, so it follows the selected site theme rather than only the OS preference.
-
-## Vercel deployment
-
-This repository includes `vercel.json`:
-
-```json
-{
-  "installCommand": "npm install",
-  "buildCommand": "npm run vercel-build",
-  "outputDirectory": "dist",
-  "cleanUrls": true,
-  "trailingSlash": true
-}
+```txt
+.typage/
+dist/
+.vercel/
+push.sh
 ```
-
-Deploy steps:
-
-1. Import the repository into Vercel.
-2. Keep the framework preset as “Other” or “Static”.
-3. Set the output directory to `dist` if Vercel does not read it automatically.
-4. Set `SITE_URL` to your production URL to generate canonical URLs, sitemap, robots, and RSS feeds.
-
-Example environment variable:
-
-```bash
-SITE_URL=https://portfolio.example.com
-```
-
-## Notes
-
-- Typst bundle and HTML export are experimental. The build targets Typst `0.15.0` or newer and enables both features with `--features html,bundle`.
-- Public assets, including images and favicons in `public/`, are emitted into `dist/` through Typst bundle `asset(...)` elements.
-- `content/_build/` and `content/_generated.typ` are implementation details and should not be edited directly.
-
-
-## Fonts
-
-The site uses Inter for UI and Lora for prose paragraphs, matching the original Astro theme. The fonts are requested through Google Fonts at runtime; no font binaries are committed to this repository.
-
-## License
-
-This project is licensed under the MIT License. See [`LICENSE`](./LICENSE).
-
-This project is inspired by and partially ported from [Astro Nano](https://github.com/markhorn-dev/astro-nano), a portfolio and blog theme for Astro created by Mark Horn. Portions of the visual design, layout structure, theme-switching behavior, and interaction ideas are based on or derived from Astro Nano.
-
-Astro Nano is licensed under the MIT License. See [`THIRD_PARTY_NOTICES.md`](./THIRD_PARTY_NOTICES.md) for details.

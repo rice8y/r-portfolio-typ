@@ -1,7 +1,7 @@
 {
-  "installCommand": "npm install",
-  "buildCommand": "npm run vercel-build",
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cargo install typage --locked",
+  "buildCommand": "typage build --force --jobs 0",
   "outputDirectory": "dist",
-  "cleanUrls": true,
-  "trailingSlash": true
+  "cleanUrls": true
 }

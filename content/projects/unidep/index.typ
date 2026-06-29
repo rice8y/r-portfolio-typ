@@ -1,14 +1,22 @@
-#import "/content/prelude.typ": *
+---
+title = "unidep"
+description = "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ."
+date = "2026-02-27"
+updated = "2026-05-24"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "unidep",
-  description: "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ.",
-  languages: ("Typst", "Rust"),
-  published: "2026/02/27",
-  updated: "2026/05/24",
-  repo-url: "https://github.com/rice8y/unidep",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/unidep/"),),
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/02/27"
+updated_raw = "2026/05/24"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/unidep" }, { label = "Typst Universe", url = "https://typst.app/universe/package/unidep/" }]
+---
+
+#import "/content/_prelude.typ": *
+
 A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and #link("https://github.com/johannes-wolf/cetz")[CeTZ].
 
 This package provides an elegant way to visualize dependency parsing results, syntax trees, and enhanced dependency graphs directly in Typst without relying on external Python scripts or LaTeX's `tikz-dependency`.
@@ -85,7 +93,7 @@ The default `tail-angle`, `head-angle`, and `tail-offset` already produce uprigh
 
 Renders one or more sentences from a CoNLL-U formatted string.
 
-*Parameters:*
+#strong[Parameters:]
 
 - `conllu-text` (String): The raw text in CoNLL-U format.
 - `word-spacing` (Float): Horizontal distance between words. Default: `2.0`.
@@ -110,4 +118,3 @@ Renders one or more sentences from a CoNLL-U formatted string.
 == License
 
 This project is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/unidep/main/LICENSE")[LICENSE] for details.
-]

@@ -1,10 +1,16 @@
-#import "/content/prelude.typ": *
+---
+title = "Awards"
+description = "A showcase of my experiences and achievements."
+section = "pages"
+toc = false
 
-#let entry = page(
-  title: "Awards",
-  description: "A showcase of my experiences and achievements.",
-)[
+[extra]
+kind = "page"
+reading_time = "1 min read"
+---
+
+#import "/content/_prelude.typ": *
+
 === 2025
 
 - 愛媛大学工学部工学科コンピュータ科学コース優秀学生 (3年次)
-]

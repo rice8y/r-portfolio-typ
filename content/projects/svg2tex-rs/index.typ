@@ -1,13 +1,20 @@
-#import "/content/prelude.typ": *
+---
+title = "svg2tex-rs"
+description = "Convert SVGs into PDF literals or LaTeX source for TeX workflows — preserving vector quality with robust hybrid rendering for real-world files."
+date = "2026-05-24"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "svg2tex-rs",
-  description: "Convert SVGs into PDF literals or LaTeX source for TeX workflows — preserving vector quality with robust hybrid rendering for real-world files.",
-  languages: ("Rust",),
-  published: "2026/05/24",
-  repo-url: "https://github.com/rice8y/svg2tex-rs",
-  links: ((label: "crates.io", url: "https://crates.io/crates/svg2tex-rs"),),
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/05/24"
+languages = ["Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/svg2tex-rs" }, { label = "crates.io", url = "https://crates.io/crates/svg2tex-rs" }]
+---
+
+#import "/content/_prelude.typ": *
+
 `svg2tex-rs` provides the `svg2tex` command, which converts SVG artwork into PDF literal operators or complete LaTeX source.
 It is designed for TeX workflows where SVG graphics should stay as vector content whenever possible, while still accepting a broad range of real-world SVG files through hybrid rendering.
 
@@ -137,5 +144,3 @@ For a fuller user guide, see #link("https://github.com/rice8y/svg2tex-rs/blob/ma
 == License
 
 This project is distributed under the MIT License. See #link("https://github.com/rice8y/svg2tex-rs/blob/main/LICENSE")[LICENSE] for details.
-
-]

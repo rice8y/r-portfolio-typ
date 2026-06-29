@@ -1,14 +1,21 @@
-#import "/content/prelude.typ": *
+---
+title = "dtree"
+description = "A Typst package for visualizing directory trees and file structures using indented text."
+date = "2026-02-20"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "dtree",
-  description: "A Typst package for visualizing directory trees and file structures using indented text.",
-  languages: ("Typst",),
-  published: "2026/02/20",
-  repo-url: "https://github.com/rice8y/dtree",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/dtree"),),
-)[
-*dtree* is a flexible and highly customizable directory tree visualization package for Typst. It renders directory structures using simple indented text, supports smart icon mapping, automatic styling rules, and vector-based connecting lines.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/02/20"
+languages = ["Typst"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/dtree" }, { label = "Typst Universe", url = "https://typst.app/universe/package/dtree" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[dtree] is a flexible and highly customizable directory tree visualization package for Typst. It renders directory structures using simple indented text, supports smart icon mapping, automatic styling rules, and vector-based connecting lines.
 
 == Usage
 
@@ -57,7 +64,7 @@ You can customize the tree globally or per line. Use the `|` delimiter to specif
 
 To use images, you must read the file as bytes using `read(..., encoding: none)` and pass it to the `icons` dictionary.
 
-*Note:* When using `regex` patterns, `icon-rules` must be an *array of pairs* (e.g., `((key, val),)`) instead of a dictionary.
+#strong[Note:] When using `regex` patterns, `icon-rules` must be an #strong[array of pairs] (e.g., `((key, val),)`) instead of a dictionary.
 
 ````typ
 #let rust-icon = read("rust-logo.png", encoding: none)
@@ -97,15 +104,16 @@ Each line in the raw block is parsed as follows:
 
 ```text
 [Icon Name], [Key=Value], ... | [Content]
-```+ *Icon Name* (Optional):
+```
++ #strong[Icon Name] (Optional):
    - A key defined in the `icons` dictionary.
    - A raw emoji or text string (e.g., `📁`, `Rs`).
-   - *Note:* Direct file paths (e.g. `image.png`) are not supported inside the raw block. Please load images via the `icons` dictionary.
-+ *Parameters* (Optional): Comma-separated `key=value` pairs.
+   - #strong[Note:] Direct file paths (e.g. `image.png`) are not supported inside the raw block. Please load images via the `icons` dictionary.
++ #strong[Parameters] (Optional): Comma-separated `key=value` pairs.
    - Supported keys: `size`, `dx`, `dy`, `fill` (or `color`), `font`.
-+ *Delimiter*: The `|` character separates metadata from the content name.
++ #strong[Delimiter]: The `|` character separates metadata from the content name.
 
-*Examples:*
+#strong[Examples:]
 
 - `📁 | Documents` (Icon only)
 - `fill=red | Important.txt` (Params only)
@@ -115,9 +123,9 @@ Each line in the raw block is parsed as follows:
 === Icon Priority
 
 Icons are resolved in the following order (highest to lowest priority):
-+ *Inline specification* — Direct icon specified in the line (e.g., `🍣 | sushi.txt`)
-+ *`icon-rules`* — Pattern-based rules that match the content name
-+ *`default-icon`* — Fallback icon if no other match is found
++ #strong[Inline specification] — Direct icon specified in the line (e.g., `🍣 | sushi.txt`)
++ #strong[`icon-rules`] — Pattern-based rules that match the content name
++ #strong[`default-icon`] — Fallback icon if no other match is found
 
 
 == API Reference
@@ -143,4 +151,3 @@ When defining `icon-rules` values or using inline syntax, the following keys are
 == License
 
 This project is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/dtree/main/LICENSE")[LICENSE] for details.
-]

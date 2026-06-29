@@ -1,13 +1,21 @@
-#import "/content/prelude.typ": *
+---
+title = "SDetails"
+description = "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources."
+date = "2025-08-29"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "SDetails",
-  description: "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources.",
-  languages: ("Python",),
-  published: "2025/8/29",
-  repo-url: "https://github.com/rice8y/sdetails",
-)[
-*SDetails* is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources. It provides a user-friendly terminal dashboard showing per-node CPU, memory, and GPU utilization with optional color highlighting, sorting, filtering, and JSON export. Ideal for HPC users and admins who need real-time or static insights into node status.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2025/8/29"
+languages = ["Python"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/sdetails" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[SDetails] is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources. It provides a user-friendly terminal dashboard showing per-node CPU, memory, and GPU utilization with optional color highlighting, sorting, filtering, and JSON export. Ideal for HPC users and admins who need real-time or static insights into node status.
 
 == Installation
 
@@ -34,11 +42,13 @@ This will fetch and install the latest version directly from the repository.
 
 ```bash
 git clone https://github.com/rice8y/sdetails.git
-```+ Move into the project directory:
+```
++ Move into the project directory:
 
 ```bash
 cd sdetails
-```+ Install the package in editable mode using `uv tool` (or `pip`):
+```
++ Install the package in editable mode using `uv tool` (or `pip`):
 
 ```bash
 uv tool install -e .
@@ -80,4 +90,3 @@ This will display only the `gpu` partition, sort by CPU availability, auto-refre
 == License
 
 This project is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/sdetails/main/LICENSE")[LICENSE].
-]

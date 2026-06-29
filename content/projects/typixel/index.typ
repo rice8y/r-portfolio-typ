@@ -1,14 +1,22 @@
-#import "/content/prelude.typ": *
+---
+title = "Typixel"
+description = "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps."
+date = "2026-02-20"
+updated = "2026-06-21"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "Typixel",
-  description: "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps.",
-  languages: ("Typst", "Rust"),
-  published: "2026/02/20",
-  updated: "2026/06/21",
-  repo-url: "https://github.com/rice8y/typixel",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/typixel"),),
-)[
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/02/20"
+updated_raw = "2026/06/21"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/typixel" }, { label = "Typst Universe", url = "https://typst.app/universe/package/typixel" }]
+---
+
+#import "/content/_prelude.typ": *
+
 #img("/images/projects/typixel/logo.png", alt: "Typixel Logo")
 
 A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps.
@@ -63,7 +71,7 @@ A Typst package for creating pixel art directly in your documents. Convert image
 
 Convert raw image data to pixel art.
 
-*Parameters:*
+#strong[Parameters:]
 - `image-data` (bytes/path): Raw image data from `read("path", encoding: none)`, or a project-side `path("path")` value with Typst 0.15.0 or later
 - `columns` (int, default: auto): Number of pixel columns
 - `rows` (int, default: auto): Number of pixel rows
@@ -75,7 +83,7 @@ Convert raw image data to pixel art.
 - `shape` (function, default: square-shape): Shape function for pixels
 - `gap` (length, default: 0pt): Gap between pixels
 
-*Example:*
+#strong[Example:]
 ```typ
 #pixel-image(
   path("logo.png"),
@@ -100,7 +108,7 @@ For Typst 0.13.x through 0.14.x, pass bytes explicitly:
 
 Create pixel art from a text grid.
 
-*Parameters:*
+#strong[Parameters:]
 - `map` (string): Multi-line string defining the pixel grid
 - `palette` (dictionary): Mapping of characters to colors
 - `pixel-size` (length, default: 10pt): Size of each pixel
@@ -108,7 +116,7 @@ Create pixel art from a text grid.
 - `shape` (function/dictionary, default: square-shape): Shape(s) for pixels
 - `gap` (length, default: 0pt): Gap between pixels
 
-*Example:*
+#strong[Example:]
 ```typ
 #pixel-map(
   "
@@ -130,7 +138,7 @@ Create pixel art from a text grid.
 
 Obtain the raw pixel art data (grid and palette) from an image without rendering. Useful for custom processing or debugging.
 
-*Parameters:*
+#strong[Parameters:]
 
 - `image-data` (bytes/path): Raw image data from `read("path", encoding: none)`, or a project-side `path("path")` value with Typst 0.15.0 or later
 - `columns` (int, default: auto): Number of pixel columns
@@ -138,13 +146,13 @@ Obtain the raw pixel art data (grid and palette) from an image without rendering
 - `scale` (float, default: auto): Scale factor for image
 - `colors` (int, default: 64): Number of colors in palette
 
-*Returns:*
+#strong[Returns:]
 A dictionary containing:
 
 - `art` (string): The generated character grid (rows separated by newlines).
 - `palette` (dictionary): Mapping of characters to color values (or `none`).
 
-*Example:*
+#strong[Example:]
 
 ```typ
 #let data = get-pixel-data(
@@ -169,12 +177,12 @@ A dictionary containing:
 
 === Using Shapes
 
-*Single shape for all pixels:*
+#strong[Single shape for all pixels:]
 ```typ
 #pixel-map(map, palette: palette, shape: circle-shape)
 ```
 
-*Different shapes per character:*
+#strong[Different shapes per character:]
 ```typ
 #pixel-map(
   map,
@@ -186,7 +194,7 @@ A dictionary containing:
 )
 ```
 
-*Custom shape parameters:*
+#strong[Custom shape parameters:]
 ```typ
 #pixel-map(
   map,
@@ -297,15 +305,14 @@ A dictionary containing:
 
 == Limitations
 
-When converting images using `pixel-image`, the final output height may not *exactly* match the original image's height.
+When converting images using `pixel-image`, the final output height may not #strong[exactly] match the original image's height.
 
 This occurs because:
-+ Pixel art requires an *integer number of rows*, so the height must be rounded to the nearest whole pixel.
-+ Pixels are forced to be *square* (width = height).
++ Pixel art requires an #strong[integer number of rows], so the height must be rounded to the nearest whole pixel.
++ Pixels are forced to be #strong[square] (width = height).
 
 == License
 
 This project is distributed under the MIT License. See #link("LICENSE")[LICENSE] for details.
 
 The example image `gahag.jpg` is based on an image from #link("https://raw.githubusercontent.com/rice8y/typixel/main/LICENSE")[GAHAG] and is licensed under CC0.
-]

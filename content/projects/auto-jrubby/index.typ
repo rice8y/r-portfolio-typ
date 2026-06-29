@@ -1,26 +1,34 @@
-#import "/content/prelude.typ": *
+---
+title = "auto-jrubby"
+description = "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion."
+date = "2026-01-02"
+updated = "2026-02-20"
+section = "projects"
+toc = false
 
-#let entry = project(
-  title: "auto-jrubby",
-  description: "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.",
-  languages: ("Typst", "Rust"),
-  published: "2026/01/02",
-  updated: "2026/2/20",
-  repo-url: "https://github.com/rice8y/auto-jrubby",
-  links: ((label: "Typst Universe", url: "https://typst.app/universe/package/auto-jrubby/"),),
-)[
-*auto-jrubby* is a Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.
+[extra]
+kind = "project"
+reading_time = "1 min read"
+published_raw = "2026/01/02"
+updated_raw = "2026/2/20"
+languages = ["Typst", "Rust"]
+links = [{ label = "GitHub", url = "https://github.com/rice8y/auto-jrubby" }, { label = "Typst Universe", url = "https://typst.app/universe/package/auto-jrubby/" }]
+---
+
+#import "/content/_prelude.typ": *
+
+#strong[auto-jrubby] is a Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.
 
 It leverages a Rust-based WASM plugin to tokenize text using #link("https://github.com/lindera/lindera")[Lindera] (a morphological analysis library) and uses the #link("https://typst.app/universe/package/rubby")[rubby] package to render the furigana.
 
 == Features
 
-- *Automatic Furigana Generation:* Automatically determines readings for Kanji based on context and renders them as ruby text.
-- *Smart Okurigana Alignment:* Intelligent handling of mixed Kanji/Hiragana words (e.g., `食べる` is rendered with ruby `た` over `食`, leaving `べる` untouched).
-- *Morphological Analysis Table:* Visualize the text structure (Part of Speech, Detailed POS, Readings, Base forms) via a formatted data table.
-- *Customizable Styling:* Supports custom ruby sizing and positioning via the `rubby` package backend.
-- *Flexible Script Output:* Choose between *Hiragana* (default) or *Katakana* for the ruby text.
-- *High Performance:* Powered by a Rust WASM plugin using *Lindera* for fast and accurate tokenization.
+- #strong[Automatic Furigana Generation:] Automatically determines readings for Kanji based on context and renders them as ruby text.
+- #strong[Smart Okurigana Alignment:] Intelligent handling of mixed Kanji/Hiragana words (e.g., `食べる` is rendered with ruby `た` over `食`, leaving `べる` untouched).
+- #strong[Morphological Analysis Table:] Visualize the text structure (Part of Speech, Detailed POS, Readings, Base forms) via a formatted data table.
+- #strong[Customizable Styling:] Supports custom ruby sizing and positioning via the `rubby` package backend.
+- #strong[Flexible Script Output:] Choose between #strong[Hiragana] (default) or #strong[Katakana] for the ruby text.
+- #strong[High Performance:] Powered by a Rust WASM plugin using #strong[Lindera] for fast and accurate tokenization.
 
 == Usage
 
@@ -90,7 +98,7 @@ Renders the input text with automatic furigana.
 )
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - `input-text` (string): The Japanese text to analyze and render.
 - `size` (length): The font size of the ruby text. Defaults to `0.5em`.
@@ -121,47 +129,47 @@ Renders a table displaying the morphological breakdown of the text.
 )
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - `input-text` (string): The text to analyze.
 - `user-dict` (string | array | none): Optional user dictionary for custom tokenization.
 - `dict` (string): The dictionary to use. Must be one of: `"ipadic"` (default) or `"unidic"`.
 
-*Table Columns:*
+#strong[Table Columns:]
 
 The columns displayed depend on the selected `dict`.
 
-*If `dict: "ipadic"` (10 columns):*
-+ *Surface Form (表層形):* The word as it appears in the text.
-+ *Part of Speech (品詞):* Grammatical category (Noun, Verb, etc.).
-+ *POS Subcategory 1 (品詞細分類1)*
-+ *POS Subcategory 2 (品詞細分類2)*
-+ *POS Subcategory 3 (品詞細分類3)*
-+ *Conjugation Form (活用形)*
-+ *Conjugation Type (活用型)*
-+ *Base Form (原形):* The dictionary form of the word.
-+ *Reading (読み):* Katakana reading.
-+ *Pronunciation (発音)*
+#strong[If `dict: "ipadic"` (10 columns):]
++ #strong[Surface Form (表層形):] The word as it appears in the text.
++ #strong[Part of Speech (品詞):] Grammatical category (Noun, Verb, etc.).
++ #strong[POS Subcategory 1 (品詞細分類1)]
++ #strong[POS Subcategory 2 (品詞細分類2)]
++ #strong[POS Subcategory 3 (品詞細分類3)]
++ #strong[Conjugation Form (活用形)]
++ #strong[Conjugation Type (活用型)]
++ #strong[Base Form (原形):] The dictionary form of the word.
++ #strong[Reading (読み):] Katakana reading.
++ #strong[Pronunciation (発音)]
 
-*If `dict: "unidic"` (18 columns):*
-+ *Surface Form (表層形)*
-+ *POS Major (品詞大分類)*
-+ *POS Medium (品詞中分類)*
-+ *POS Minor (品詞小分類)*
-+ *POS Fine (品詞細分類)*
-+ *Conjugation Type (活用型)*
-+ *Conjugation Form (活用形)*
-+ *Lexeme Reading (語彙素読み)*
-+ *Lexeme (語彙素)*
-+ *Orthographic Surface (書字形出現形)*
-+ *Phonological Surface (発音形出現形)*
-+ *Orthographic Base (書字形基本形)*
-+ *Phonological Base (発音形基本形)*
-+ *Word Type (語種)*
-+ *Initial Mutation Type (語頭変化型)*
-+ *Initial Mutation Form (語頭変化形)*
-+ *Final Mutation Type (語末変化型)*
-+ *Final Mutation Form (語末変化形)*
+#strong[If `dict: "unidic"` (18 columns):]
++ #strong[Surface Form (表層形)]
++ #strong[POS Major (品詞大分類)]
++ #strong[POS Medium (品詞中分類)]
++ #strong[POS Minor (品詞小分類)]
++ #strong[POS Fine (品詞細分類)]
++ #strong[Conjugation Type (活用型)]
++ #strong[Conjugation Form (活用形)]
++ #strong[Lexeme Reading (語彙素読み)]
++ #strong[Lexeme (語彙素)]
++ #strong[Orthographic Surface (書字形出現形)]
++ #strong[Phonological Surface (発音形出現形)]
++ #strong[Orthographic Base (書字形基本形)]
++ #strong[Phonological Base (発音形基本形)]
++ #strong[Word Type (語種)]
++ #strong[Initial Mutation Type (語頭変化型)]
++ #strong[Initial Mutation Form (語頭変化形)]
++ #strong[Final Mutation Type (語末変化型)]
++ #strong[Final Mutation Form (語末変化形)]
 
 === `tokenize`
 
@@ -175,13 +183,13 @@ Low-level function that returns the raw JSON data from the WASM plugin. Useful i
 )
 ```
 
-*Parameters:*
+#strong[Parameters:]
 
 - `input-text` (string): The text to tokenize.
 - `user-dict` (string | array | none): Optional user dictionary for custom tokenization.
 - `dict` (string): The dictionary to use. Must be one of: `"ipadic"` or `"unidic"`.
 
-*Returns:* An array of dictionaries containing:
+#strong[Returns:] An array of dictionaries containing:
 
 - `surface` (string): The surface form of the token.
 - `details` (array of strings): The raw detailed information for the token. The content and length depend on the dictionary used (e.g., POS, conjugation, reading, etc.).
@@ -199,9 +207,9 @@ The user dictionary allows you to define custom word segmentation and readings. 
 - `part_of_speech`: Custom part-of-speech label (e.g., "カスタム名詞")
 - `reading`: Katakana reading for the word
 
-*Usage Examples:*
+#strong[Usage Examples:]
 
-*Method 1: Inline string*
+#strong[Method 1: Inline string]
 
 ```typst
 #let sample = "東京タワーの最寄駅は赤羽橋駅です"
@@ -211,7 +219,7 @@ The user dictionary allows you to define custom word segmentation and readings. 
 #show-ruby(sample, user-dict: user-dict-str)
 ```
 
-*Method 2: Array of arrays*
+#strong[Method 2: Array of arrays]
 
 ```typst
 #let sample = "東京タワーの最寄駅は赤羽橋駅です"
@@ -223,7 +231,7 @@ The user dictionary allows you to define custom word segmentation and readings. 
 #show-ruby(sample, user-dict: user-dict-array)
 ```
 
-*Method 3: Load from CSV file*
+#strong[Method 3: Load from CSV file]
 
 ```bash
 $ cat user_dict.csv
@@ -242,10 +250,10 @@ $ cat user_dict.csv
 
 == Under the Hood
 
-This package uses *Lindera* (a Rust port of Kuromoji) with two available dictionary options:
+This package uses #strong[Lindera] (a Rust port of Kuromoji) with two available dictionary options:
 
-* *IPADIC*: Standard Japanese morphological dictionary
-* *UniDic*: Alternative dictionary with different part-of-speech classifications
+- #strong[IPADIC]: Standard Japanese morphological dictionary
+- #strong[UniDic]: Alternative dictionary with different part-of-speech classifications
 
 The processing workflow:
 + The text is passed from Typst to the Rust WASM plugin.
@@ -255,16 +263,18 @@ The processing workflow:
 
 == Optional: Enabling IPADIC-NEologd
 
-*IPADIC-NEologd Support*  
+#strong[IPADIC-NEologd Support]
 
 IPADIC-NEologd (an extended dictionary with contemporary terms and named entities) has been removed from the default distribution due to its large file size. However, you can manually enable it if needed:
 + Navigate to `./wasm-plugins/ipadic-neologd` and build the WASM module:
    ```bash
    cargo build --target wasm32-unknown-unknown --release
-   ```+ Copy the built WASM file to the package directory:
+   ```
+   + Copy the built WASM file to the package directory:
    ```bash
    cp ./target/wasm32-unknown-unknown/release/ipadic_neologd.wasm ../../package/ipadic_neologd.wasm
-   ```+ Navigate to `./package` and update `./package/lib.typ` to allow the `ipadic-neologd` option. Change:
+   ```
+   + Navigate to `./package` and update `./package/lib.typ` to allow the `ipadic-neologd` option. Change:
    ```typst
    if dict not in ("ipadic", "unidic") {
      panic("dict must be one of: ipadic, unidic")
@@ -275,10 +285,12 @@ IPADIC-NEologd (an extended dictionary with contemporary terms and named entitie
    if dict not in ("ipadic", "ipadic-neologd", "unidic") {
      panic("dict must be one of: ipadic, ipadic-neologd, unidic")
    }
-   ```+ Install the package locally:
+   ```
+   + Install the package locally:
    ```bash
    just install
-   ```+ Import and use with `@local`:
+   ```
+   + Import and use with `@local`:
    ```typst
    #import "@local/auto-jrubby:0.3.3": *
    #let sample = "東京スカイツリーの最寄り駅はとうきょうスカイツリー駅です"
@@ -288,4 +300,3 @@ IPADIC-NEologd (an extended dictionary with contemporary terms and named entitie
 == License
 
 This project is distributed under the AGPL-3.0-or-later License. See #link("https://raw.githubusercontent.com/rice8y/auto-jrubby/main/LICENSE")[LICENSE] for details.
-]
