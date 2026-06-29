@@ -6,8 +6,6 @@ section = "projects"
 toc = false
 
 [extra]
-kind = "project"
-published_raw = "2025/8/29"
 languages = ["Python"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/sdetails" }]
 ---

@@ -3,9 +3,6 @@ title = "Awards"
 description = "A showcase of my experiences and achievements."
 section = "pages"
 toc = false
-
-[extra]
-kind = "page"
 ---
 
 #import "/content/_prelude.typ": *

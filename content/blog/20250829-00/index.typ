@@ -4,10 +4,6 @@ description = "ポートフォリオを開設しました."
 date = "2025-08-29"
 section = "blog"
 toc = false
-
-[extra]
-kind = "post"
-published_raw = "2025/08/29"
 ---
 
 #import "/content/_prelude.typ": *

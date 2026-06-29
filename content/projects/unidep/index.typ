@@ -7,9 +7,6 @@ section = "projects"
 toc = false
 
 [extra]
-kind = "project"
-published_raw = "2026/02/27"
-updated_raw = "2026/05/24"
 languages = ["Typst", "Rust"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/unidep" }, { label = "Typst Universe", url = "https://typst.app/universe/package/unidep/" }]
 ---

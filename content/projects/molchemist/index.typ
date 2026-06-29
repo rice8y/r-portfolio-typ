@@ -7,9 +7,6 @@ section = "projects"
 toc = false
 
 [extra]
-kind = "project"
-published_raw = "2026/03/03"
-updated_raw = "2026/06/21"
 languages = ["Typst", "Rust", "C++"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/molchemist" }, { label = "Typst Universe", url = "https://typst.app/universe/package/molchemist/" }]
 ---

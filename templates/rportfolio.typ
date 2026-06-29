@@ -336,8 +336,7 @@
 }
 
 #let card(entry) = {
-  let kind = extra(entry, "kind", default: "")
-  let is-project = kind == "project" or entry.section == "projects"
+  let is-project = entry.section == "projects"
   let languages = if is-project { entry-languages(entry) } else { () }
   let sort-date(value) = if value == none { "" } else { str(value) }
   let published-sort = sort-date(entry.date)

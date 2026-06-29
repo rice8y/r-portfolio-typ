@@ -6,8 +6,6 @@ section = "projects"
 toc = false
 
 [extra]
-kind = "project"
-published_raw = "2026/02/20"
 languages = ["TeX"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/jlreq-tcf" }]
 ---

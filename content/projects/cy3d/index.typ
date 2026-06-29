@@ -6,9 +6,7 @@ section = "projects"
 toc = false
 
 [extra]
-kind = "project"
 has_math = true
-published_raw = "2025/8/29"
 languages = ["TeX"]
 links = [{ label = "GitHub", url = "https://github.com/rice8y/cy3d" }]
 ---

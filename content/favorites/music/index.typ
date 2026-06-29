@@ -7,9 +7,6 @@ section = "favorites"
 toc = false
 
 [extra]
-kind = "favorite"
-published_raw = "2025/9/30"
-updated_raw = "2026/02/20"
 plain_body = "wip…"
 ---
 

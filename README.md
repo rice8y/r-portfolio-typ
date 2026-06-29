@@ -59,10 +59,6 @@ description = "Short description."
 date = "2026-05-23"
 section = "blog"
 toc = false
-
-[extra]
-kind = "post"
-published_raw = "2026/05/23"
 ---
 
 #import "/content/_prelude.typ": *
@@ -70,7 +66,7 @@ published_raw = "2026/05/23"
 Write Typst content here.
 ```
 
-Project entries use `section = "projects"` and can provide project-specific metadata through `[extra]`, including `languages`, `links`, `published_raw`, and `updated_raw`.
+Project entries use `section = "projects"` and can provide project-specific metadata through `[extra]`, including `languages` and `links`.
 
 Writer-facing helpers live in `content/_prelude.typ`, including:
 
