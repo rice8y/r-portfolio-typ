@@ -13,7 +13,7 @@ default_template = "base.typ"
 list_template = "list.typ"
 features = "html"
 bundle_features = "bundle,html"
-build_pdf = false
+build_pdf = true
 build_future = true
 build_expired = false
 fail_on_broken_links = true
@@ -35,8 +35,13 @@ path = "print.pdf"
 title = "r-Portfolio"
 description = "Print version of r-Portfolio."
 template = "print.typ"
-pages = ["awards/index.typ", "publications/index.typ"]
-sections = ["blog", "projects"]
+pages = [
+  "awards/index.typ",
+  "publications/index.typ",
+  "blog/20260523-00/index.typ",
+  "blog/20250829-00/index.typ",
+]
+sections = ["projects"]
 sort_by = "date_desc"
 include_drafts = false
 include_future = true

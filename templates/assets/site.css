@@ -1914,6 +1914,16 @@ html.dark .rss-link:hover {
 .contact-list .rss-link {
   font-size: inherit !important;
 }
+
+.pdf-links {
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 0.28rem !important;
+}
+
+.pdf-links-label {
+  color: var(--fg-muted) !important;
+}
 /* Draft entries ------------------------------------------------------------
    Drafts are included in dev builds only and are marked explicitly so they are
    not confused with published content while previewing locally. */
