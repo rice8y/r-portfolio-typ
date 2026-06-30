@@ -2,7 +2,7 @@
 set -euo pipefail
 
 typst_version="${TYPST_VERSION:-0.15.0}"
-typage_version="${TYPAGE_VERSION:-0.1.2}"
+typage_version="${TYPAGE_VERSION:-0.1.3}"
 typage_path="${TYPAGE_PATH:-}"
 typage_git="${TYPAGE_GIT:-}"
 typage_branch="${TYPAGE_BRANCH:-}"

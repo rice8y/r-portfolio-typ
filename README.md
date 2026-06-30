@@ -6,17 +6,15 @@ A Typage-powered implementation of `r-portfolio`. The site keeps articles and pr
 
 - Rust `1.92` or newer and Cargo
 - Typst `0.15.0` or newer
-- Typage `0.1.2`
+- Typage `0.1.3`
 
-This site uses the combined PDF export added after the published `0.1.2` release.
-Until that update is available on crates.io, build or install Typage from the local checkout:
+Install Typage from crates.io:
 
 ```bash
-cargo build --manifest-path ../typage/Cargo.toml
-PATH="../typage/target/debug:$PATH" typage build --force --jobs 0
+cargo install typage --version 0.1.3 --locked
 ```
 
-To install the local checkout into Cargo's bin directory:
+For Typage development, you can still point the build at a local checkout:
 
 ```bash
 cargo install --path ../typage --locked
@@ -40,11 +38,11 @@ The Vercel build uses the same static output model:
 typage build --force --jobs 0
 ```
 
-While the PDF-capable Typage build is unpublished, point the install step at an updated source checkout or branch:
+By default, Vercel installs Typage `0.1.3` from crates.io. For testing an unreleased Typage change, point the install step at a source checkout or branch:
 
 ```bash
 TYPAGE_PATH=../typage bash scripts/vercel-install.sh
-TYPAGE_GIT=https://github.com/rice8y/typage.git TYPAGE_BRANCH=feat/print-pdf bash scripts/vercel-install.sh
+TYPAGE_GIT=https://github.com/rice8y/typage.git TYPAGE_BRANCH=main bash scripts/vercel-install.sh
 ```
 
 ## Project Structure
