@@ -1914,6 +1914,68 @@ html.dark .rss-link:hover {
 .contact-list .rss-link {
   font-size: inherit !important;
 }
+
+.footer-separator {
+  display: inline-block !important;
+  margin: 0 0.35rem !important;
+}
+
+.pdf-menu {
+  position: relative !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+.pdf-menu-summary {
+  cursor: pointer !important;
+  list-style: none !important;
+}
+
+.pdf-menu-summary::-webkit-details-marker {
+  display: none !important;
+}
+
+.pdf-menu-list {
+  position: absolute !important;
+  right: 0 !important;
+  bottom: calc(100% + 0.45rem) !important;
+  z-index: 10 !important;
+  display: grid !important;
+  min-width: 10.25rem !important;
+  padding: 0.35rem 0 !important;
+  border: 1px solid var(--line) !important;
+  background: var(--bg) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(0.25rem) !important;
+  transition: opacity .16s ease, transform .16s ease !important;
+}
+
+.pdf-menu[open] .pdf-menu-list {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+.pdf-menu-link {
+  display: block !important;
+  padding: 0.35rem 0.7rem !important;
+  color: inherit !important;
+  font-family: var(--sans) !important;
+  font-size: 0.85rem !important;
+  line-height: 1.35 !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+
+.pdf-menu-link:hover {
+  background: var(--surface-hover) !important;
+}
 /* Draft entries ------------------------------------------------------------
    Drafts are included in dev builds only and are marked explicitly so they are
    not confused with published content while previewing locally. */

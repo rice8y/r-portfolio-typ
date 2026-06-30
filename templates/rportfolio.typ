@@ -31,6 +31,7 @@
   description: site.extra.at("description", default: "r-Portfolio is a personal portfolio and blog for sharing research, projects, publications, and notes."),
   email: site.extra.at("email", default: "yoneyama@ai.cs.ehime-u.ac.jp"),
   copyright_year: site.extra.at("copyright_year", default: "2026"),
+  print_path: site.extra.at("print_path", default: none),
   num_posts_on_homepage: site.extra.at("num_posts_on_homepage", default: 3),
   num_projects_on_homepage: site.extra.at("num_projects_on_homepage", default: 3),
   blog_description: site.extra.at("blog_description", default: "A collection of articles on topics I am passionate about."),
@@ -92,6 +93,23 @@
 }
 
 #let rss-link(href, label: "RSS") = elem("a", attrs: (href: href, class: "rss-link", type: "application/rss+xml"))[#label]
+#let pdf-link(href, label) = elem("a", attrs: (href: href, class: "pdf-menu-link", type: "application/pdf"))[#label]
+#let page-pdf-url(path) = {
+  let value = str(path)
+  if value.ends-with("/") { value + "index.pdf" } else { value + "/index.pdf" }
+}
+
+#let pdf-links(profile, current-pdf: none) = {
+  if profile.print_path != none or current-pdf != none {
+    elem("details", attrs: (class: "pdf-menu"))[
+      #elem("summary", attrs: (class: "rss-link pdf-menu-summary"))[PDF]
+      #elem("span", attrs: (class: "pdf-menu-list", role: "list"))[
+        #if profile.print_path != none { pdf-link(profile.print_path, "Full collection") }
+        #if current-pdf != none { pdf-link(current-pdf, "Current page") }
+      ]
+    ]
+  }
+}
 
 #let icon-arrow-right(class: "card-arrow") = elem("svg", attrs: (
   xmlns: "http://www.w3.org/2000/svg",
@@ -154,13 +172,19 @@
 #let back-to-top() = elem("button", attrs: (id: "back-to-top", class: "back-link"))[#icon-arrow-left()#elem("div", attrs: (class: "back-link-text"))[Back to top]]
 #let back-to-prev(href, label) = elem("a", attrs: (id: "back-to-prev", href: href, class: "back-link"))[#icon-arrow-left()#elem("div", attrs: (class: "back-link-text"))[#label]]
 
-#let footer(profile) = elem("footer", attrs: (class: "animate"))[
+#let footer(profile, current-pdf: none) = elem("footer", attrs: (class: "animate"))[
   #elem("div", attrs: (class: "container"))[
     #elem("div", attrs: (class: "footer-inner"))[
       #elem("div", attrs: (class: "back-to-top-wrap"))[#back-to-top()]
     ]
     #elem("div", attrs: (class: "footer-row"))[
-      #elem("div", attrs: (class: "footer-copy"))[© #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")]
+      #elem("div", attrs: (class: "footer-copy"))[
+        © #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")
+        #if profile.print_path != none or current-pdf != none [
+          #elem("span", attrs: (class: "footer-separator", "aria-hidden": "true"))[|]
+          #pdf-links(profile, current-pdf: current-pdf)
+        ]
+      ]
       #elem("div", attrs: (class: "theme-buttons collapse-target"))[
         #theme-button("light-theme-button", "Light theme", sun-icon())
         #theme-button("dark-theme-button", "Dark theme", moon-icon())
@@ -183,7 +207,7 @@
   }
 }
 
-#let head(site, profile, title, description, path, image: none, kind: "website", math-css: true) = {
+#let head(site, profile, title, description, path, image: none, kind: "website", math-css: true, current-pdf: none) = {
   let page-title = full-title(profile, title)
   let page-image = if image == none { profile.image } else { image }
   let og-image = if page-image == none { none } else { absolute-url(site, page-image) }
@@ -221,6 +245,12 @@
     #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Feed", href: "/rss.xml"))
     #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Blog Feed", href: "/blog/rss.xml"))
     #void("link", attrs: (rel: "alternate", type: "application/rss+xml", title: profile.site_title + " Projects Feed", href: "/projects/rss.xml"))
+    #if profile.print_path != none {
+      void("link", attrs: (rel: "alternate", type: "application/pdf", title: profile.site_title + " Full PDF", href: profile.print_path))
+    }
+    #if current-pdf != none {
+      void("link", attrs: (rel: "alternate", type: "application/pdf", title: page-title + " Page PDF", href: current-pdf))
+    }
     #elem("script")[#site-js]
     #elem("style")[#site-css]
     #if math-css {
@@ -229,14 +259,14 @@
   ]
 }
 
-#let layout(site, profile, current, title, description, path, image: none, kind: "website", math-css: true, body) = elem("html", attrs: (lang: profile.lang))[
-  #head(site, profile, title, description, path, image: image, kind: kind, math-css: math-css)
+#let layout(site, profile, current, title, description, path, image: none, kind: "website", math-css: true, current-pdf: none, body) = elem("html", attrs: (lang: profile.lang))[
+  #head(site, profile, title, description, path, image: image, kind: kind, math-css: math-css, current-pdf: current-pdf)
   #elem("body")[
     #header(profile, current)
     #elem("main")[
       #elem("div", attrs: (class: "container"))[#body]
     ]
-    #footer(profile)
+    #footer(profile, current-pdf: current-pdf)
   ]
 ]
 
@@ -257,6 +287,33 @@
     }
   }
 }
+
+#let pdf-page(site, entry, body) = [
+  #let meta-items = ()
+  #if entry.date != none { meta-items.push("Published: " + display-date(entry.date)) }
+  #if entry.updated != none { meta-items.push("Updated: " + display-date(entry.updated)) }
+
+  #set document(title: entry.title)
+  #set page(paper: "a4", margin: (x: 22mm, y: 24mm), numbering: "1")
+  #set text(size: 10pt, lang: site.lang)
+  #set par(justify: true, leading: 0.65em)
+
+  #show heading.where(level: 1): set text(size: 18pt, weight: "bold")
+  #show heading.where(level: 2): set text(size: 14pt, weight: "bold")
+  #show heading.where(level: 3): set text(size: 12pt, weight: "bold")
+
+  #text(size: 22pt, weight: "bold")[#entry.title]
+  #if entry.description != none [
+    #v(0.55em)
+    #text(size: 10pt)[#entry.description]
+  ]
+  #if meta-items.len() > 0 [
+    #v(0.9em)
+    #text(size: 8.5pt)[#meta-items.join("  ")]
+  ]
+  #v(1.4em)
+  #body
+]
 
 #let draft-badge() = elem("span", attrs: (class: "draft-badge", "aria-label": "Draft"))[Draft]
 
@@ -510,7 +567,7 @@
   #elem("script")[#giscus-js]
 ]
 
-#let home-page(site, profile, pages, body) = layout(site, profile, "", "Home", profile.description, "/")[
+#let home-page(site, profile, pages, body) = layout(site, profile, "", "Home", profile.description, "/", current-pdf: page-pdf-url("/"))[
   #elem("h2", attrs: (class: "animate page-title home-title"))[About me]
   #elem("div", attrs: (class: "stack-16 home-stack"))[
     #elem("section", attrs: (class: "about-section"))[
@@ -562,7 +619,7 @@
   } else {
     (href: "/", label: "Back home")
   }
-  layout(site, profile, current, page.title, if page.description == none { "" } else { page.description }, page.url, image: extra(page, "image", default: none), kind: "article", math-css: not extra(page, "has_math", default: false))[
+  layout(site, profile, current, page.title, if page.description == none { "" } else { page.description }, page.url, image: extra(page, "image", default: none), kind: "article", math-css: not extra(page, "has_math", default: false), current-pdf: page-pdf-url(page.url))[
     #elem("div", attrs: (class: "animate"))[#back-to-prev(back.href, back.label)]
     #elem("div", attrs: (class: "article-header stack-1"))[
       #elem("div", attrs: (class: "animate article-meta-line"))[
@@ -583,28 +640,36 @@
   ]
 }
 
-#let simple-page(site, profile, page, body) = layout(site, profile, current-key(page), page.title, if page.description == none { "" } else { page.description }, page.url, math-css: not extra(page, "has_math", default: false))[
+#let simple-page(site, profile, page, body) = layout(site, profile, current-key(page), page.title, if page.description == none { "" } else { page.description }, page.url, math-css: not extra(page, "has_math", default: false), current-pdf: page-pdf-url(page.url))[
   #elem("div", attrs: (class: "stack-10"))[
     #elem("div", attrs: (class: "animate page-title"))[#page.title]
     #elem("article", attrs: (class: "animate prose"))[#body]
   ]
 ]
 
-#let render-page(site: (:), page: (:), pages: (), taxonomies: (:), body) = {
+#let render-page(site: (:), page: (:), pages: (), taxonomies: (:), body) = context {
   let p = profile(site)
-  if page.url == "/" {
-    home-page(site, p, pages, body)
+  if target() == "html" {
+    if page.url == "/" {
+      home-page(site, p, pages, body)
+    } else if page.section == "pages" {
+      simple-page(site, p, page, body)
+    } else {
+      article-page(site, p, page, body)
+    }
   } else if page.section == "pages" {
-    simple-page(site, p, page, body)
+    pdf-page(site, page, body)
   } else {
-    article-page(site, p, page, body)
+    pdf-page(site, page, body)
   }
 }
 
-#let render-list(site: (:), page: (:), pages: (), taxonomies: (:), body) = {
+#let render-list(site: (:), page: (:), pages: (), taxonomies: (:), body) = context {
   let p = profile(site)
   let path = page.url
-  if path.starts-with("/projects/") {
+  if target() != "html" {
+    pdf-page(site, page, body)
+  } else if path.starts-with("/projects/") {
     layout(site, p, "projects", "Projects", p.projects_description, "/projects/")[
       #elem("div", attrs: (class: "stack-10"))[
         #page-head("Projects", rss-href: "/projects/rss.xml")

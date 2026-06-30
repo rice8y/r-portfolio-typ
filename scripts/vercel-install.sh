@@ -2,7 +2,10 @@
 set -euo pipefail
 
 typst_version="${TYPST_VERSION:-0.15.0}"
-typage_version="${TYPAGE_VERSION:-0.1.2}"
+typage_version="${TYPAGE_VERSION:-0.1.3}"
+typage_path="${TYPAGE_PATH:-}"
+typage_git="${TYPAGE_GIT:-}"
+typage_branch="${TYPAGE_BRANCH:-}"
 
 case "$(uname -m)" in
   x86_64 | amd64)
@@ -29,5 +32,18 @@ tar -xJf "$typst_archive" -C "$typst_dir"
 cp "${typst_dir}/typst-${typst_target}/typst" .bin/typst
 chmod +x .bin/typst
 
-echo "[setup] installing Typage ${typage_version}"
-cargo install typage --version "$typage_version" --locked
+if [[ -n "$typage_path" ]]; then
+  echo "[setup] installing Typage from ${typage_path}"
+  cargo install --path "$typage_path" --locked
+elif [[ -n "$typage_git" ]]; then
+  if [[ -n "$typage_branch" ]]; then
+    echo "[setup] installing Typage from ${typage_git} (${typage_branch})"
+    cargo install --git "$typage_git" --branch "$typage_branch" --locked
+  else
+    echo "[setup] installing Typage from ${typage_git}"
+    cargo install --git "$typage_git" --locked
+  fi
+else
+  echo "[setup] installing Typage ${typage_version}"
+  cargo install typage --version "$typage_version" --locked
+fi

@@ -13,7 +13,7 @@ default_template = "base.typ"
 list_template = "list.typ"
 features = "html"
 bundle_features = "bundle,html"
-build_pdf = false
+build_pdf = true
 build_future = true
 build_expired = false
 fail_on_broken_links = true
@@ -29,6 +29,25 @@ robots = false
 jobs = 0 # 0 = auto
 # Start without taxonomies. Add [[taxonomies]] entries when needed.
 taxonomies = []
+
+[[pdf_documents]]
+path = "print.pdf"
+title = "r-Portfolio"
+description = "Print version of r-Portfolio."
+template = "print.typ"
+pages = [
+  "awards/index.typ",
+  "publications/index.typ",
+  "blog/20260523-00/index.typ",
+  "blog/20250829-00/index.typ",
+]
+sections = ["projects"]
+sort_by = "date_desc"
+section_headings = ["blog", "projects"]
+section_heading_level = 1
+include_drafts = false
+include_future = true
+include_expired = false
 
 # Keep the starter minimal. Enable search when you add a search page.
 [search]
@@ -52,6 +71,7 @@ projects_description = "A collection of my projects, with links to repositories 
 favorites_description = "A collection of my favorites."
 email = "yoneyama@ai.cs.ehime-u.ac.jp"
 copyright_year = "2026"
+print_path = "/print.pdf"
 num_posts_on_homepage = 3
 num_projects_on_homepage = 3
 nav = [
