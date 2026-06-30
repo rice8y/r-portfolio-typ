@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "Music",
   description: "好きな音楽について.",
@@ -7,7 +9,5 @@
   toc: false,
   plain_body: "wip…",
 )
-
-#import "/content/_prelude.typ": *
 
 wip...

@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "武井地子",
   description: "武井地子さん",
@@ -10,8 +12,6 @@
     (label: "Web", url: "https://www.chikotakei.com/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #instagram("https://www.instagram.com/p/DCwRIV4ylce/?utm_source=ig_embed&utm_campaign=loading")
 

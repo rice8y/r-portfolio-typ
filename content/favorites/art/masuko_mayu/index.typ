@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "マスコマユ",
   description: "マスコマユさん",
@@ -11,8 +13,6 @@
     (label: "植物の美術解剖学", url: "https://coloso.jp/products/illustrator-masuko-jp"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #instagram("https://www.instagram.com/p/CUFjbeChSUq/?utm_source=ig_embed&utm_campaign=loading")
 

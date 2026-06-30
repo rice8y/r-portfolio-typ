@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "escansel",
   description: "A simple and convenient CLI tool to cancel your SLURM jobs — essentially an easy scancel.",
@@ -9,8 +11,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/escansel"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #strong[escancel] is a simple and convenient CLI tool to cancel your SLURM jobs — essentially an #strong[easy scancel].
 It lists your active jobs and lets you interactively select which ones to cancel, making `scancel` faster and more user-friendly.

@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "glotter",
   description: "A Typst package for detecting the language of text fragments and applying language-aware settings to content.",
@@ -10,8 +12,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/glotter/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #img("/images/projects/glotter/logo.png", alt: "glotter logo")
 

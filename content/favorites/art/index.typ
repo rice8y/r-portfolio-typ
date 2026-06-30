@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "Art",
   description: "好きな美術作品について.",
@@ -6,8 +8,6 @@
   section: "favorites",
   toc: false,
 )
-
-#import "/content/_prelude.typ": *
 
 - #link("./masuko_mayu/")[マスコマユ]さん
 - #link("./akina_mihara/")[三原秋奈]さん

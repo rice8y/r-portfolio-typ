@@ -328,7 +328,7 @@
   let source = read("/content/" + page.source)
   source
     .replace(regex("(?s)^---\\s*\\n.*?\\n---\\s*\\n?"), "")
-    .replace(regex("(?s)^#show:\\s*(page|project)\\.with\\(.*?\\n\\)\\s*\\n?"), "")
+    .replace(regex("(?s)#show:\\s*(page|project)\\.with\\(.*?\\n\\)\\s*\\n?"), "")
     .replace(regex("(?s)```.*?```"), " ")
     .replace(regex("https?://\\S+"), " ")
 }

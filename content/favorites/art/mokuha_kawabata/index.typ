@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "川端もくは",
   description: "川端もくはさん",
@@ -9,8 +11,6 @@
     (label: "Instagram", url: "https://www.instagram.com/mokuha_k/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #instagram("https://www.instagram.com/p/DGYT5XBSbNO/?utm_source=ig_embed&utm_campaign=loading")
 

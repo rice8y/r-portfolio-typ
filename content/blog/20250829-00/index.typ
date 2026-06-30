@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "ポートフォリオ開設",
   description: "ポートフォリオを開設しました.",
@@ -5,8 +7,6 @@
   section: "blog",
   toc: false,
 )
-
-#import "/content/_prelude.typ": *
 
 タイトルにもある通り, ポートフォリオを開設しました. 開設にあたり, #link("https://github.com/markhorn-dev/astro-nano")[Astro Nano] を使用しています.
 

@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "CeTZuron",
   description: "A Typst package for drawing neural network diagrams.",
@@ -9,8 +11,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/cetzuron"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 == Installation
 

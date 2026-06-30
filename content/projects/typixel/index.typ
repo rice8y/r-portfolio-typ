@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "Typixel",
   description: "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps.",
@@ -11,8 +13,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/typixel"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #img("/images/projects/typixel/logo.png", alt: "Typixel Logo")
 

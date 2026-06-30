@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "svg2tex-rs",
   description: "Convert SVGs into PDF literals or LaTeX source for TeX workflows — preserving vector quality with robust hybrid rendering for real-world files.",
@@ -10,8 +12,6 @@
     (label: "crates.io", url: "https://crates.io/crates/svg2tex-rs"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 `svg2tex-rs` provides the `svg2tex` command, which converts SVG artwork into PDF literal operators or complete LaTeX source.
 It is designed for TeX workflows where SVG graphics should stay as vector content whenever possible, while still accepting a broad range of real-world SVG files through hybrid rendering.

@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "FracTeX",
   description: "A comprehensive 2D fractal visualization package for LaTeX.",
@@ -9,8 +11,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/FracTeX"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 This package provides commands to visualize various types of fractals using PGFPlots and LuaTeX.
 

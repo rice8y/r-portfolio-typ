@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "SSJ",
   description: "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection.",
@@ -9,8 +11,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/ssj"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #strong[SSJ (Scontrol Show Job)] is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection. It provides a user-friendly terminal interface to display SLURM job details with optional filtering, formatting, file inspection, and JSON export.
 

@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "CY3d",
   description: "A LaTeX package for drawing Calabi-Yau manifold.",
@@ -10,8 +12,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/cy3d"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 This LaTeX package provides a command `\CalabiYau`, which can display Calabi-Yau manifold. This package utilizes PGFplots for drawing Calabi-Yau manifold.
 

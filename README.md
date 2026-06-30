@@ -53,6 +53,8 @@ dist/
 Each content file uses Typst-native metadata followed by Typst markup:
 
 ```typ
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "Example",
   description: "Short description.",
@@ -60,8 +62,6 @@ Each content file uses Typst-native metadata followed by Typst markup:
   section: "blog",
   toc: false,
 )
-
-#import "/content/_prelude.typ": *
 
 Write Typst content here.
 ```

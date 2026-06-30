@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "三原秋奈",
   description: "三原秋奈さん",
@@ -9,8 +11,6 @@
     (label: "Instagram", url: "https://www.instagram.com/akina_mihara/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #instagram("https://www.instagram.com/p/C4t-ZZgSIBx/?utm_source=ig_embed&utm_campaign=loading")
 

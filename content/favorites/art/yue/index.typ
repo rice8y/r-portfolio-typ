@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: page.with(
   title: "YUE",
   description: "YUEさん",
@@ -11,8 +13,6 @@
     (label: "Web", url: "https://www.yue-art.com/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #instagram("https://www.instagram.com/p/DML8YfDTefJ/?utm_source=ig_embed&utm_campaign=loading")
 

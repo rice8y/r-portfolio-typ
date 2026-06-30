@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "molchemist",
   description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
@@ -11,8 +13,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/molchemist/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #strong[molchemist] is a Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings.
 

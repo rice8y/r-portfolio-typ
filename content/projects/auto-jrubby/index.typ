@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "auto-jrubby",
   description: "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.",
@@ -11,8 +13,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/auto-jrubby/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #strong[auto-jrubby] is a Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.
 

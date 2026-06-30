@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "unidep",
   description: "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ.",
@@ -11,8 +13,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/unidep/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and #link("https://github.com/johannes-wolf/cetz")[CeTZ].
 

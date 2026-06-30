@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "molfig",
   description: "A Typst package for rendering molecular structure files in static documents.",
@@ -10,8 +12,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/molfig/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #strong[Molfig] is a Typst package for rendering molecular structure files in static documents.
 

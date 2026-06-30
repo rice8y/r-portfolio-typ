@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "typshade",
   description: "A Typst package for visualizing multiple-sequence alignments in bioinformatics.",
@@ -11,8 +13,6 @@
     (label: "Typst Universe", url: "https://typst.app/universe/package/typshade/"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #img("/images/projects/typshade/readme-overview.png", alt: "Typshade alignment overview")
 

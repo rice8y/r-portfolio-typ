@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "jlreq-tcf",
   description: "A LaTeX package providing two-column footnotes compatible with the jlreq class.",
@@ -9,8 +11,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/jlreq-tcf"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 This package provides commands to arrange footnotes into two columns (left and right) at the bottom of the page, designed to visually blend with the #link("https://github.com/abenori/jlreq/tree/master?tab=readme-ov-file")[`jlreq`] document class.
 

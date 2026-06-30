@@ -1,3 +1,5 @@
+#import "/content/_prelude.typ": *
+
 #show: project.with(
   title: "SDetails",
   description: "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources.",
@@ -9,8 +11,6 @@
     (label: "GitHub", url: "https://github.com/rice8y/sdetails"),
   ),
 )
-
-#import "/content/_prelude.typ": *
 
 #strong[SDetails] is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources. It provides a user-friendly terminal dashboard showing per-node CPU, memory, and GPU utilization with optional color highlighting, sorting, filtering, and JSON export. Ideal for HPC users and admins who need real-time or static insights into node status.
 
