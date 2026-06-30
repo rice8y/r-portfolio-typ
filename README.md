@@ -4,14 +4,14 @@ A Typage-powered implementation of `r-portfolio`. The site keeps articles and pr
 
 ## Requirements
 
-- Rust and Cargo
+- Rust `1.92` or newer and Cargo
 - Typst `0.15.0` or newer
-- Typage `0.1.0`
+- Typage `0.1.2`
 
 Install Typage with:
 
 ```bash
-cargo install typage --version 0.1.0 --locked
+cargo install typage --version 0.1.2 --locked
 ```
 
 ## Commands
@@ -50,28 +50,23 @@ dist/
 
 ## Content
 
-Each content file uses TOML front matter followed by Typst markup:
+Each content file uses Typst-native metadata followed by Typst markup:
 
 ```typ
----
-title = "Example"
-description = "Short description."
-date = "2026-05-23"
-section = "blog"
-toc = false
-
-[extra]
-kind = "post"
-reading_time = "1 min read"
-published_raw = "2026/05/23"
----
-
 #import "/content/_prelude.typ": *
+
+#show: page.with(
+  title: "Example",
+  description: "Short description.",
+  date: "2026-05-23",
+  section: "blog",
+  toc: false,
+)
 
 Write Typst content here.
 ```
 
-Project entries use `section = "projects"` and can provide project-specific metadata through `[extra]`, including `languages`, `links`, `published_raw`, and `updated_raw`.
+Project entries use `#show: project.with(...)`, keep `section: "projects"` for the flat project listing, and declare project fields such as `languages` and `links` directly. Collection schemas live in `content/config.typ`.
 
 Writer-facing helpers live in `content/_prelude.typ`, including:
 

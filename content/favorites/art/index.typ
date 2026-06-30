@@ -1,19 +1,13 @@
----
-title = "Art"
-description = "好きな美術作品について."
-date = "2025-09-30"
-updated = "2026-02-22"
-section = "favorites"
-toc = false
-
-[extra]
-kind = "favorite"
-reading_time = "1 min read"
-published_raw = "2025/9/30"
-updated_raw = "2026/02/22"
----
-
 #import "/content/_prelude.typ": *
+
+#show: page.with(
+  title: "Art",
+  description: "好きな美術作品について.",
+  date: "2025-09-30",
+  updated: "2026-02-22",
+  section: "favorites",
+  toc: false,
+)
 
 - #link("./masuko_mayu/")[マスコマユ]さん
 - #link("./akina_mihara/")[三原秋奈]さん

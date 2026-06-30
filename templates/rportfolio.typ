@@ -10,7 +10,19 @@
 
 #let asset(site, path) = if site.base_url == "" { path } else { site.base_url + path }
 #let as-array(value) = if type(value) == dictionary { (value,) } else { value }
-#let extra(item, key, default: none) = item.extra.at(key, default: default)
+#let extra(item, key, default: none) = {
+  let direct = item.at(key, default: none)
+  if direct != none {
+    direct
+  } else {
+    let field = item.at("fields", default: (:)).at(key, default: none)
+    if field != none {
+      field.at("value", default: default)
+    } else {
+      item.at("extra", default: (:)).at(key, default: default)
+    }
+  }
+}
 #let is-draft(item) = extra(item, "draft", default: false)
 
 #let profile(site) = (
@@ -312,15 +324,36 @@
   #if entry.updated != none { elem("span")[Updated: #display-date(entry.updated)] }
 ]
 
+#let _reading-source(page) = {
+  let source = read("/content/" + page.source)
+  source
+    .replace(regex("(?s)^---\\s*\\n.*?\\n---\\s*\\n?"), "")
+    .replace(regex("(?s)#show:\\s*(page|project)\\.with\\(.*?\\n\\)\\s*\\n?"), "")
+    .replace(regex("(?s)```.*?```"), " ")
+    .replace(regex("https?://\\S+"), " ")
+}
+
+#let estimated-reading-time(page) = {
+  let source = _reading-source(page)
+  let cjk = source.matches(regex("[\\p{scx:Han}\\p{scx:Hira}\\p{scx:Kana}]")).len()
+  let latin-source = source
+    .replace(regex("[\\p{scx:Han}\\p{scx:Hira}\\p{scx:Kana}]+"), " ")
+    .replace(regex("#[A-Za-z_][A-Za-z0-9_-]*"), " ")
+    .replace(regex("[^A-Za-z0-9]+"), " ")
+  let words = latin-source
+    .split(regex("\\s+"))
+    .filter(word => word != "")
+    .len()
+  let minutes = calc.max(1, calc.ceil(words / 200 + cjk / 500))
+  str(minutes) + if minutes == 1 { " min read" } else { " mins read" }
+}
+
 #let card(entry) = {
-  let kind = extra(entry, "kind", default: "")
-  let is-project = kind == "project" or entry.section == "projects"
+  let is-project = entry.section == "projects"
   let languages = if is-project { entry-languages(entry) } else { () }
-  let published-raw = extra(entry, "published_raw", default: none)
-  let updated-raw = extra(entry, "updated_raw", default: none)
-  let sort-date(value, raw) = if raw != none and raw != "" { str(raw) } else if value == none { "" } else { str(value).replace("-", "/") }
-  let published-sort = sort-date(entry.date, published-raw)
-  let updated-sort = if entry.updated == none { published-sort } else { sort-date(entry.updated, updated-raw) }
+  let sort-date(value) = if value == none { "" } else { str(value) }
+  let published-sort = sort-date(entry.date)
+  let updated-sort = if entry.updated == none { published-sort } else { sort-date(entry.updated) }
   let attrs = if is-project {
     (
       href: entry.url,
@@ -536,11 +569,8 @@
         #if is-draft(page) { draft-badge() }
         #if page.date != none { elem("span")[Published: #display-date(page.date)] }
         #if page.updated != none { elem("span")[Updated: #display-date(page.updated)] }
-        #let reading = extra(page, "reading_time", default: none)
-        #if reading != none {
-          elem("span", attrs: (class: "article-meta-dot", "aria-hidden": "true"))[•]
-          elem("span")[#reading]
-        }
+        #elem("span", attrs: (class: "article-meta-dot", "aria-hidden": "true"))[•]
+        #elem("span")[#estimated-reading-time(page)]
       ]
       #elem("div", attrs: (class: "animate article-title"))[#page.title]
       #entry-links(page)

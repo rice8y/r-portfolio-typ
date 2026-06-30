@@ -1,21 +1,18 @@
----
-title = "typshade"
-description = "A Typst package for visualizing multiple-sequence alignments in bioinformatics."
-date = "2026-05-23"
-updated = "2026-06-30"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2026/05/23"
-updated_raw = "2026/06/21"
-languages = ["Typst"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/typshade" }, { label = "Typst Universe", url = "https://typst.app/universe/package/typshade/" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "typshade",
+  description: "A Typst package for visualizing multiple-sequence alignments in bioinformatics.",
+  date: "2026-05-23",
+  updated: "2026-06-30",
+  section: "projects",
+  toc: false,
+  languages: ("Typst",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/typshade"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/typshade/"),
+  ),
+)
 
 #img("/images/projects/typshade/readme-overview.png", alt: "Typshade alignment overview")
 

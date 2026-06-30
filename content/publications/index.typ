@@ -1,15 +1,11 @@
----
-title = "Publications"
-description = "A showcase of my publications and research work."
-section = "pages"
-toc = false
-
-[extra]
-kind = "page"
-reading_time = "1 min read"
----
-
 #import "/content/_prelude.typ": *
+
+#show: page.with(
+  title: "Publications",
+  description: "A showcase of my publications and research work.",
+  section: "pages",
+  toc: false,
+)
 
 === 国内会議
 

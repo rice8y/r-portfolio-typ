@@ -1,17 +1,12 @@
----
-title = "ポートフォリオリニューアル"
-description = "ポートフォリオをリニューアルしました."
-date = "2026-05-23"
-section = "blog"
-toc = false
-
-[extra]
-kind = "post"
-reading_time = "1 min read"
-published_raw = "2026/05/23"
----
-
 #import "/content/_prelude.typ": *
+
+#show: page.with(
+  title: "ポートフォリオリニューアル",
+  description: "ポートフォリオをリニューアルしました.",
+  date: "2026-05-23",
+  section: "blog",
+  toc: false,
+)
 
 タイトルにもある通り, ポートフォリオをリニューアルしました. 以前までは Astro で実装していましたが, 今回は Typst の HTML exporter を活用した構成に移行しました. 
 

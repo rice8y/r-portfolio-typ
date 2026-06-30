@@ -1,19 +1,17 @@
----
-title = "CaleTZ"
-description = "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives."
-date = "2025-10-22"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2025/10/22"
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/caletz" }, { label = "Typst Universe", url = "https://typst.app/universe/package/caletz" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "CaleTZ",
+  description: "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives.",
+  date: "2025-10-22",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/caletz"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/caletz"),
+  ),
+)
 
 #strong[CaleTZ] is a Typst package for visualizing #strong[Calabi-Yau manifolds] using #strong[CeTZ] 3D drawing primitives.
 It generates colorful, smooth 3D surfaces with adjustable parameters, making it easy to explore complex geometries directly in Typst.

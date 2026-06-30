@@ -1,19 +1,16 @@
----
-title = "jlreq-tcf"
-description = "A LaTeX package providing two-column footnotes compatible with the jlreq class."
-date = "2026-02-20"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2026/02/20"
-languages = ["TeX"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/jlreq-tcf" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "jlreq-tcf",
+  description: "A LaTeX package providing two-column footnotes compatible with the jlreq class.",
+  date: "2026-02-20",
+  section: "projects",
+  toc: false,
+  languages: ("TeX",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/jlreq-tcf"),
+  ),
+)
 
 This package provides commands to arrange footnotes into two columns (left and right) at the bottom of the page, designed to visually blend with the #link("https://github.com/abenori/jlreq/tree/master?tab=readme-ov-file")[`jlreq`] document class.
 

@@ -1,19 +1,16 @@
----
-title = "CeTZuron"
-description = "A Typst package for drawing neural network diagrams."
-date = "2025-08-30"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2025/8/30"
-languages = ["Typst"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/cetzuron" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "CeTZuron",
+  description: "A Typst package for drawing neural network diagrams.",
+  date: "2025-08-30",
+  section: "projects",
+  toc: false,
+  languages: ("Typst",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/cetzuron"),
+  ),
+)
 
 == Installation
 

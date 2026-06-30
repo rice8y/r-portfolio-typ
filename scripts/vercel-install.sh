@@ -2,7 +2,7 @@
 set -euo pipefail
 
 typst_version="${TYPST_VERSION:-0.15.0}"
-typage_version="${TYPAGE_VERSION:-0.1.0}"
+typage_version="${TYPAGE_VERSION:-0.1.2}"
 
 case "$(uname -m)" in
   x86_64 | amd64)

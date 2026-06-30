@@ -1,15 +1,11 @@
----
-title = "Awards"
-description = "A showcase of my experiences and achievements."
-section = "pages"
-toc = false
-
-[extra]
-kind = "page"
-reading_time = "1 min read"
----
-
 #import "/content/_prelude.typ": *
+
+#show: page.with(
+  title: "Awards",
+  description: "A showcase of my experiences and achievements.",
+  section: "pages",
+  toc: false,
+)
 
 === 2025
 

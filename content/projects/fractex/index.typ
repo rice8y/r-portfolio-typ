@@ -1,19 +1,16 @@
----
-title = "FracTeX"
-description = "A comprehensive 2D fractal visualization package for LaTeX."
-date = "2025-08-29"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2025/8/29"
-languages = ["TeX"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/FracTeX" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "FracTeX",
+  description: "A comprehensive 2D fractal visualization package for LaTeX.",
+  date: "2025-08-29",
+  section: "projects",
+  toc: false,
+  languages: ("TeX",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/FracTeX"),
+  ),
+)
 
 This package provides commands to visualize various types of fractals using PGFPlots and LuaTeX.
 

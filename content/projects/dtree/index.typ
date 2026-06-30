@@ -1,19 +1,17 @@
----
-title = "dtree"
-description = "A Typst package for visualizing directory trees and file structures using indented text."
-date = "2026-02-20"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2026/02/20"
-languages = ["Typst"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/dtree" }, { label = "Typst Universe", url = "https://typst.app/universe/package/dtree" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "dtree",
+  description: "A Typst package for visualizing directory trees and file structures using indented text.",
+  date: "2026-02-20",
+  section: "projects",
+  toc: false,
+  languages: ("Typst",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/dtree"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/dtree"),
+  ),
+)
 
 #strong[dtree] is a flexible and highly customizable directory tree visualization package for Typst. It renders directory structures using simple indented text, supports smart icon mapping, automatic styling rules, and vector-based connecting lines.
 

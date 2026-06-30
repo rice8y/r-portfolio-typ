@@ -1,17 +1,12 @@
----
-title = "ポートフォリオ開設"
-description = "ポートフォリオを開設しました."
-date = "2025-08-29"
-section = "blog"
-toc = false
-
-[extra]
-kind = "post"
-reading_time = "1 min read"
-published_raw = "2025/08/29"
----
-
 #import "/content/_prelude.typ": *
+
+#show: page.with(
+  title: "ポートフォリオ開設",
+  description: "ポートフォリオを開設しました.",
+  date: "2025-08-29",
+  section: "blog",
+  toc: false,
+)
 
 タイトルにもある通り, ポートフォリオを開設しました. 開設にあたり, #link("https://github.com/markhorn-dev/astro-nano")[Astro Nano] を使用しています.
 

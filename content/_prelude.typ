@@ -39,7 +39,6 @@
   image: none,
   draft: false,
   links: (),
-  reading-time: "1 min read",
   body,
 ) = (
   title: title,
@@ -50,7 +49,6 @@
   draft: draft,
   published_date: display-date(published),
   updated_date: display-date(updated),
-  reading_time: reading-time,
   links: links,
   body: body,
 )
@@ -65,7 +63,6 @@
   image: none,
   draft: false,
   links: (),
-  reading-time: "1 min read",
   body,
 ) = make-entry(
   title: title,
@@ -75,7 +72,6 @@
   image: image,
   draft: draft,
   links: links,
-  reading-time: reading-time,
   body,
 )
 
@@ -89,7 +85,6 @@
   languages: (),
   repo-url: none,
   links: (),
-  reading-time: "1 min read",
   body,
 ) = {
   let all-links = if repo-url == none { links } else { ((label: "GitHub", url: repo-url),) + links }
@@ -101,7 +96,6 @@
     image: image,
     draft: draft,
     links: all-links,
-    reading-time: reading-time,
     body,
   ) + (languages: languages)
 }
@@ -114,7 +108,6 @@
   image: none,
   draft: false,
   links: (),
-  reading-time: "1 min read",
   body,
 ) = make-entry(
   title: title,
@@ -124,7 +117,6 @@
   image: image,
   draft: draft,
   links: links,
-  reading-time: reading-time,
   body,
 )
 

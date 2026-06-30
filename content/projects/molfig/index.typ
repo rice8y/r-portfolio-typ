@@ -1,19 +1,17 @@
----
-title = "molfig"
-description = "A Typst package for rendering molecular structure files in static documents."
-date = "2026-06-21"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2026/06/21"
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/molfig" }, { label = "Typst Universe", url = "https://typst.app/universe/package/molfig/" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "molfig",
+  description: "A Typst package for rendering molecular structure files in static documents.",
+  date: "2026-06-21",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/molfig"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/molfig/"),
+  ),
+)
 
 #strong[Molfig] is a Typst package for rendering molecular structure files in static documents.
 

@@ -1,21 +1,18 @@
----
-title = "auto-jrubby"
-description = "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion."
-date = "2026-01-02"
-updated = "2026-02-20"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-published_raw = "2026/01/02"
-updated_raw = "2026/2/20"
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/auto-jrubby" }, { label = "Typst Universe", url = "https://typst.app/universe/package/auto-jrubby/" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "auto-jrubby",
+  description: "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.",
+  date: "2026-01-02",
+  updated: "2026-02-20",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/auto-jrubby"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/auto-jrubby/"),
+  ),
+)
 
 #strong[auto-jrubby] is a Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.
 

@@ -1,20 +1,17 @@
----
-title = "CY3d"
-description = "A LaTeX package for drawing Calabi-Yau manifold."
-date = "2025-08-29"
-section = "projects"
-toc = false
-
-[extra]
-kind = "project"
-reading_time = "1 min read"
-has_math = true
-published_raw = "2025/8/29"
-languages = ["TeX"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/cy3d" }]
----
-
 #import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "CY3d",
+  description: "A LaTeX package for drawing Calabi-Yau manifold.",
+  date: "2025-08-29",
+  section: "projects",
+  toc: false,
+  has_math: true,
+  languages: ("TeX",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/cy3d"),
+  ),
+)
 
 This LaTeX package provides a command `\CalabiYau`, which can display Calabi-Yau manifold. This package utilizes PGFplots for drawing Calabi-Yau manifold.
 
