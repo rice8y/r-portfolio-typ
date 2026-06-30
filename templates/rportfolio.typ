@@ -31,6 +31,7 @@
   description: site.extra.at("description", default: "r-Portfolio is a personal portfolio and blog for sharing research, projects, publications, and notes."),
   email: site.extra.at("email", default: "yoneyama@ai.cs.ehime-u.ac.jp"),
   copyright_year: site.extra.at("copyright_year", default: "2026"),
+  print_path: site.extra.at("print_path", default: none),
   num_posts_on_homepage: site.extra.at("num_posts_on_homepage", default: 3),
   num_projects_on_homepage: site.extra.at("num_projects_on_homepage", default: 3),
   blog_description: site.extra.at("blog_description", default: "A collection of articles on topics I am passionate about."),
@@ -160,7 +161,10 @@
       #elem("div", attrs: (class: "back-to-top-wrap"))[#back-to-top()]
     ]
     #elem("div", attrs: (class: "footer-row"))[
-      #elem("div", attrs: (class: "footer-copy"))[© #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")]
+      #elem("div", attrs: (class: "footer-copy"))[
+        © #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")
+        #if profile.print_path != none { [ | #elem("a", attrs: (href: profile.print_path, class: "rss-link", type: "application/pdf"))[PDF]] }
+      ]
       #elem("div", attrs: (class: "theme-buttons collapse-target"))[
         #theme-button("light-theme-button", "Light theme", sun-icon())
         #theme-button("dark-theme-button", "Dark theme", moon-icon())

@@ -5,6 +5,8 @@
 #let _elem(tag, attrs: (:), body) = html.elem(tag, attrs: attrs, body)
 #let _void(tag, attrs: (:)) = html.elem(tag, attrs: attrs)
 
+#let _pdf-src(src) = if type(src) == str and src.starts-with("/") { "/static" + src } else { src }
+
 #let _pad2(value) = {
   let s = str(value)
   if s.len() == 1 { "0" + s } else { s }
@@ -135,77 +137,151 @@
 )
 
 #let img(src, alt: "", caption: none) = {
-  let image = _void("img", attrs: (src: src, alt: alt))
-  if caption == none {
-    image
-  } else {
-    _elem("figure")[#image #_elem("figcaption")[#caption]]
+  context {
+    if target() == "html" {
+      let image = _void("img", attrs: (src: src, alt: alt))
+      if caption == none {
+        image
+      } else {
+        _elem("figure")[#image #_elem("figcaption")[#caption]]
+      }
+    } else if type(src) == str and src.starts-with("http") {
+      if alt == "" { link(src)[#src] } else { link(src)[#alt] }
+    } else if caption == none {
+      image(_pdf-src(src), width: 100%)
+    } else {
+      figure(image(_pdf-src(src), width: 100%), caption: caption)
+    }
   }
 }
 
-#let link-preview(title: none, description: "", link: none, image: none) = _elem("a", attrs: (
-  class: if image == none { "link-preview" } else { "link-preview has-image" },
-  href: link,
-  target: "_blank",
-  rel: "noreferrer",
-  title: link,
-))[
-  #if image != none {
-    _elem("span", attrs: (class: "link-preview-thumb"))[
-      #_void("img", attrs: (
-        src: image,
-        alt: "",
-        onerror: "this.closest('.link-preview')?.classList.remove('has-image'); this.closest('.link-preview-thumb')?.remove();",
-      ))
-    ]
-  }
-  #_elem("span", attrs: (class: "link-preview-copy"))[
-    #_elem("span", attrs: (class: "link-preview-title"))[#title]
-    #_elem("span", attrs: (class: "link-preview-desc"))[#description]
-    #_elem("span", attrs: (class: "link-preview-url"))[#link]
-  ]
-]
-
-#let instagram(url) = [
-  #_elem("blockquote", attrs: (
-    class: "instagram-media instagram-lite",
-    "data-instgrm-permalink": url,
-    "data-instgrm-version": "14",
-  ))[
-    #_elem("p")[Instagram embed]
-    #_elem("a", attrs: (href: url, target: "_blank", rel: "noreferrer"))[View this post on Instagram]
-  ]
-  #_elem("script", attrs: (async: "true", src: "//www.instagram.com/embed.js"))[]
-]
-
-#let data-table(headers: (), rows: ()) = _elem("div", attrs: (class: "table-scroll"))[
-  #_elem("table")[
-    #if headers.len() > 0 {
-      _elem("thead")[
-        #_elem("tr")[
-          #for head in headers { _elem("th")[#head] }
-        ]
-      ]
-    }
-    #_elem("tbody")[
-      #for row in rows {
-        _elem("tr")[
-          #for cell in row { _elem("td")[#cell] }
+#let link-preview(title: none, description: "", link: none, image: none) = context {
+  if target() == "html" {
+    _elem("a", attrs: (
+      class: if image == none { "link-preview" } else { "link-preview has-image" },
+      href: link,
+      target: "_blank",
+      rel: "noreferrer",
+      title: link,
+    ))[
+      #if image != none {
+        _elem("span", attrs: (class: "link-preview-thumb"))[
+          #_void("img", attrs: (
+            src: image,
+            alt: "",
+            onerror: "this.closest('.link-preview')?.classList.remove('has-image'); this.closest('.link-preview-thumb')?.remove();",
+          ))
         ]
       }
+      #_elem("span", attrs: (class: "link-preview-copy"))[
+        #_elem("span", attrs: (class: "link-preview-title"))[#title]
+        #_elem("span", attrs: (class: "link-preview-desc"))[#description]
+        #_elem("span", attrs: (class: "link-preview-url"))[#link]
+      ]
     ]
-  ]
-]
-
-#let image-row(images) = _elem("div", attrs: (class: "image-row"))[
-  #for item in images {
-    _void("img", attrs: (src: item.src, alt: item.at("alt", default: "")))
+  } else {
+    block(inset: 8pt, stroke: luma(190))[
+      #if title != none { strong[#title] }
+      #if description != "" [
+        #linebreak()
+        #description
+      ]
+      #if link != none [
+        #linebreak()
+        #link
+      ]
+    ]
   }
-]
+}
 
-#let details(summary: "Details", body) = _elem("details")[
-  #_elem("summary")[#summary]
-  #body
-]
+#let instagram(url) = context {
+  if target() == "html" {
+    [
+      #_elem("blockquote", attrs: (
+        class: "instagram-media instagram-lite",
+        "data-instgrm-permalink": url,
+        "data-instgrm-version": "14",
+      ))[
+        #_elem("p")[Instagram embed]
+        #_elem("a", attrs: (href: url, target: "_blank", rel: "noreferrer"))[View this post on Instagram]
+      ]
+      #_elem("script", attrs: (async: "true", src: "//www.instagram.com/embed.js"))[]
+    ]
+  } else {
+    link(url)[Instagram]
+  }
+}
 
-#let blockquote(body) = _elem("blockquote")[#body]
+#let data-table(headers: (), rows: ()) = context {
+  if target() == "html" {
+    _elem("div", attrs: (class: "table-scroll"))[
+      #_elem("table")[
+        #if headers.len() > 0 {
+          _elem("thead")[
+            #_elem("tr")[
+              #for head in headers { _elem("th")[#head] }
+            ]
+          ]
+        }
+        #_elem("tbody")[
+          #for row in rows {
+            _elem("tr")[
+              #for cell in row { _elem("td")[#cell] }
+            ]
+          }
+        ]
+      ]
+    ]
+  } else {
+    let cols = if headers.len() > 0 { headers.len() } else if rows.len() > 0 { rows.first().len() } else { 1 }
+    let cells = ()
+    if headers.len() > 0 {
+      cells.push(table.header(..headers.map(head => strong(head))))
+    }
+    for row in rows {
+      for cell in row {
+        cells.push(cell)
+      }
+    }
+    table(columns: cols, ..cells)
+  }
+}
+
+#let image-row(images) = context {
+  if target() == "html" {
+    _elem("div", attrs: (class: "image-row"))[
+      #for item in images {
+        _void("img", attrs: (src: item.src, alt: item.at("alt", default: "")))
+      }
+    ]
+  } else if images.len() > 0 {
+    grid(
+      columns: images.len(),
+      gutter: 0.75em,
+      ..images.map(item => image(_pdf-src(item.src), width: 100%)),
+    )
+  }
+}
+
+#let details(summary: "Details", body) = context {
+  if target() == "html" {
+    _elem("details")[
+      #_elem("summary")[#summary]
+      #body
+    ]
+  } else {
+    block(inset: 8pt, stroke: luma(190))[
+      #strong[#summary]
+      #linebreak()
+      #body
+    ]
+  }
+}
+
+#let blockquote(body) = context {
+  if target() == "html" {
+    _elem("blockquote")[#body]
+  } else {
+    block(inset: 8pt, stroke: luma(190))[#body]
+  }
+}
