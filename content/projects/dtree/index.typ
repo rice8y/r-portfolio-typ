@@ -1,14 +1,15 @@
----
-title = "dtree"
-description = "A Typst package for visualizing directory trees and file structures using indented text."
-date = "2026-02-20"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/dtree" }, { label = "Typst Universe", url = "https://typst.app/universe/package/dtree" }]
----
+#show: project.with(
+  title: "dtree",
+  description: "A Typst package for visualizing directory trees and file structures using indented text.",
+  date: "2026-02-20",
+  section: "projects",
+  toc: false,
+  languages: ("Typst",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/dtree"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/dtree"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

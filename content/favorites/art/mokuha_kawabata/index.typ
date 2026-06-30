@@ -1,14 +1,14 @@
----
-title = "川端もくは"
-description = "川端もくはさん"
-date = "2025-09-30"
-updated = "2026-02-22"
-section = "favorites"
-toc = false
-
-[extra]
-links = [{ label = "Instagram", url = "https://www.instagram.com/mokuha_k/" }]
----
+#show: page.with(
+  title: "川端もくは",
+  description: "川端もくはさん",
+  date: "2025-09-30",
+  updated: "2026-02-22",
+  section: "favorites",
+  toc: false,
+  links: (
+    (label: "Instagram", url: "https://www.instagram.com/mokuha_k/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

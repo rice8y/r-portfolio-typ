@@ -1,14 +1,15 @@
----
-title = "glotter"
-description = "A Typst package for detecting the language of text fragments and applying language-aware settings to content."
-date = "2026-05-23"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/glotter" }, { label = "Typst Universe", url = "https://typst.app/universe/package/glotter/" }]
----
+#show: project.with(
+  title: "glotter",
+  description: "A Typst package for detecting the language of text fragments and applying language-aware settings to content.",
+  date: "2026-05-23",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/glotter"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/glotter/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

@@ -1,14 +1,15 @@
----
-title = "svg2tex-rs"
-description = "Convert SVGs into PDF literals or LaTeX source for TeX workflows — preserving vector quality with robust hybrid rendering for real-world files."
-date = "2026-05-24"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/svg2tex-rs" }, { label = "crates.io", url = "https://crates.io/crates/svg2tex-rs" }]
----
+#show: project.with(
+  title: "svg2tex-rs",
+  description: "Convert SVGs into PDF literals or LaTeX source for TeX workflows — preserving vector quality with robust hybrid rendering for real-world files.",
+  date: "2026-05-24",
+  section: "projects",
+  toc: false,
+  languages: ("Rust",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/svg2tex-rs"),
+    (label: "crates.io", url: "https://crates.io/crates/svg2tex-rs"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

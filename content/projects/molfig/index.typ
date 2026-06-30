@@ -1,14 +1,15 @@
----
-title = "molfig"
-description = "A Typst package for rendering molecular structure files in static documents."
-date = "2026-06-21"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/molfig" }, { label = "Typst Universe", url = "https://typst.app/universe/package/molfig/" }]
----
+#show: project.with(
+  title: "molfig",
+  description: "A Typst package for rendering molecular structure files in static documents.",
+  date: "2026-06-21",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/molfig"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/molfig/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

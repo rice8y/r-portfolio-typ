@@ -1,14 +1,14 @@
----
-title = "escansel"
-description = "A simple and convenient CLI tool to cancel your SLURM jobs — essentially an easy scancel."
-date = "2025-10-22"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Python"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/escansel" }]
----
+#show: project.with(
+  title: "escansel",
+  description: "A simple and convenient CLI tool to cancel your SLURM jobs — essentially an easy scancel.",
+  date: "2025-10-22",
+  section: "projects",
+  toc: false,
+  languages: ("Python",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/escansel"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

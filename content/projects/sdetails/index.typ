@@ -1,14 +1,14 @@
----
-title = "SDetails"
-description = "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources."
-date = "2025-08-29"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Python"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/sdetails" }]
----
+#show: project.with(
+  title: "SDetails",
+  description: "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources.",
+  date: "2025-08-29",
+  section: "projects",
+  toc: false,
+  languages: ("Python",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/sdetails"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

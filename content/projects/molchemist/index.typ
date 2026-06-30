@@ -1,15 +1,16 @@
----
-title = "molchemist"
-description = "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings.."
-date = "2026-03-03"
-updated = "2026-06-21"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust", "C++"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/molchemist" }, { label = "Typst Universe", url = "https://typst.app/universe/package/molchemist/" }]
----
+#show: project.with(
+  title: "molchemist",
+  description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
+  date: "2026-03-03",
+  updated: "2026-06-21",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust", "C++"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/molchemist"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/molchemist/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

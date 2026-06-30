@@ -1,14 +1,14 @@
----
-title = "CeTZuron"
-description = "A Typst package for drawing neural network diagrams."
-date = "2025-08-30"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/cetzuron" }]
----
+#show: project.with(
+  title: "CeTZuron",
+  description: "A Typst package for drawing neural network diagrams.",
+  date: "2025-08-30",
+  section: "projects",
+  toc: false,
+  languages: ("Typst",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/cetzuron"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

@@ -1,15 +1,16 @@
----
-title = "unidep"
-description = "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ."
-date = "2026-02-27"
-updated = "2026-05-24"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/unidep" }, { label = "Typst Universe", url = "https://typst.app/universe/package/unidep/" }]
----
+#show: project.with(
+  title: "unidep",
+  description: "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ.",
+  date: "2026-02-27",
+  updated: "2026-05-24",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/unidep"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/unidep/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

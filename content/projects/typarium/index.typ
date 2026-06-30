@@ -1,15 +1,16 @@
----
-title = "typarium"
-description = "A Typst package for building expressive font specimen cards from system fonts, local font files, and mixed metadata dictionaries."
-date = "2026-05-24"
-updated = "2026-06-21"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/typarium" }, { label = "Typst Universe", url = "https://typst.app/universe/package/typarium/" }]
----
+#show: project.with(
+  title: "typarium",
+  description: "A Typst package for building expressive font specimen cards from system fonts, local font files, and mixed metadata dictionaries.",
+  date: "2026-05-24",
+  updated: "2026-06-21",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/typarium"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/typarium/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

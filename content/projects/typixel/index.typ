@@ -1,15 +1,16 @@
----
-title = "Typixel"
-description = "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps."
-date = "2026-02-20"
-updated = "2026-06-21"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/typixel" }, { label = "Typst Universe", url = "https://typst.app/universe/package/typixel" }]
----
+#show: project.with(
+  title: "Typixel",
+  description: "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps.",
+  date: "2026-02-20",
+  updated: "2026-06-21",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/typixel"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/typixel"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

@@ -1,11 +1,11 @@
----
-title = "Art"
-description = "好きな美術作品について."
-date = "2025-09-30"
-updated = "2026-02-22"
-section = "favorites"
-toc = false
----
+#show: page.with(
+  title: "Art",
+  description: "好きな美術作品について.",
+  date: "2025-09-30",
+  updated: "2026-02-22",
+  section: "favorites",
+  toc: false,
+)
 
 #import "/content/_prelude.typ": *
 

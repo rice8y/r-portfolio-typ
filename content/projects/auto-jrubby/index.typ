@@ -1,15 +1,16 @@
----
-title = "auto-jrubby"
-description = "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion."
-date = "2026-01-02"
-updated = "2026-02-20"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/auto-jrubby" }, { label = "Typst Universe", url = "https://typst.app/universe/package/auto-jrubby/" }]
----
+#show: project.with(
+  title: "auto-jrubby",
+  description: "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.",
+  date: "2026-01-02",
+  updated: "2026-02-20",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/auto-jrubby"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/auto-jrubby/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

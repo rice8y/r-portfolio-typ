@@ -1,14 +1,15 @@
----
-title = "CaleTZ"
-description = "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives."
-date = "2025-10-22"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Typst", "Rust"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/caletz" }, { label = "Typst Universe", url = "https://typst.app/universe/package/caletz" }]
----
+#show: project.with(
+  title: "CaleTZ",
+  description: "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives.",
+  date: "2025-10-22",
+  section: "projects",
+  toc: false,
+  languages: ("Typst", "Rust"),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/caletz"),
+    (label: "Typst Universe", url: "https://typst.app/universe/package/caletz"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

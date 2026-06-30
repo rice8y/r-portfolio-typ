@@ -1,9 +1,9 @@
----
-title = "Publications"
-description = "A showcase of my publications and research work."
-section = "pages"
-toc = false
----
+#show: page.with(
+  title: "Publications",
+  description: "A showcase of my publications and research work.",
+  section: "pages",
+  toc: false,
+)
 
 #import "/content/_prelude.typ": *
 

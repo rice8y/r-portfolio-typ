@@ -1,14 +1,16 @@
----
-title = "YUE"
-description = "YUEさん"
-date = "2025-09-30"
-updated = "2026-02-22"
-section = "favorites"
-toc = false
-
-[extra]
-links = [{ label = "Instagram", url = "https://www.instagram.com/y_u_e/" }, { label = "X", url = "https://twitter.com/memento1113" }, { label = "Web", url = "https://www.yue-art.com/" }]
----
+#show: page.with(
+  title: "YUE",
+  description: "YUEさん",
+  date: "2025-09-30",
+  updated: "2026-02-22",
+  section: "favorites",
+  toc: false,
+  links: (
+    (label: "Instagram", url: "https://www.instagram.com/y_u_e/"),
+    (label: "X", url: "https://twitter.com/memento1113"),
+    (label: "Web", url: "https://www.yue-art.com/"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

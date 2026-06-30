@@ -1,10 +1,10 @@
----
-title = "ポートフォリオリニューアル"
-description = "ポートフォリオをリニューアルしました."
-date = "2026-05-23"
-section = "blog"
-toc = false
----
+#show: page.with(
+  title: "ポートフォリオリニューアル",
+  description: "ポートフォリオをリニューアルしました.",
+  date: "2026-05-23",
+  section: "blog",
+  toc: false,
+)
 
 #import "/content/_prelude.typ": *
 

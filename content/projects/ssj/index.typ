@@ -1,14 +1,14 @@
----
-title = "SSJ"
-description = "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection."
-date = "2025-08-29"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["Python"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/ssj" }]
----
+#show: project.with(
+  title: "SSJ",
+  description: "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection.",
+  date: "2025-08-29",
+  section: "projects",
+  toc: false,
+  languages: ("Python",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/ssj"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

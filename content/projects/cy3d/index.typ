@@ -1,15 +1,15 @@
----
-title = "CY3d"
-description = "A LaTeX package for drawing Calabi-Yau manifold."
-date = "2025-08-29"
-section = "projects"
-toc = false
-
-[extra]
-has_math = true
-languages = ["TeX"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/cy3d" }]
----
+#show: project.with(
+  title: "CY3d",
+  description: "A LaTeX package for drawing Calabi-Yau manifold.",
+  date: "2025-08-29",
+  section: "projects",
+  toc: false,
+  has_math: true,
+  languages: ("TeX",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/cy3d"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

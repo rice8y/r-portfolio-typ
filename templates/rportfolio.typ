@@ -10,7 +10,19 @@
 
 #let asset(site, path) = if site.base_url == "" { path } else { site.base_url + path }
 #let as-array(value) = if type(value) == dictionary { (value,) } else { value }
-#let extra(item, key, default: none) = item.extra.at(key, default: default)
+#let extra(item, key, default: none) = {
+  let direct = item.at(key, default: none)
+  if direct != none {
+    direct
+  } else {
+    let field = item.at("fields", default: (:)).at(key, default: none)
+    if field != none {
+      field.at("value", default: default)
+    } else {
+      item.at("extra", default: (:)).at(key, default: default)
+    }
+  }
+}
 #let is-draft(item) = extra(item, "draft", default: false)
 
 #let profile(site) = (
@@ -316,6 +328,7 @@
   let source = read("/content/" + page.source)
   source
     .replace(regex("(?s)^---\\s*\\n.*?\\n---\\s*\\n?"), "")
+    .replace(regex("(?s)^#show:\\s*(page|project)\\.with\\(.*?\\n\\)\\s*\\n?"), "")
     .replace(regex("(?s)```.*?```"), " ")
     .replace(regex("https?://\\S+"), " ")
 }

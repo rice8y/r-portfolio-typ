@@ -1,14 +1,14 @@
----
-title = "jlreq-tcf"
-description = "A LaTeX package providing two-column footnotes compatible with the jlreq class."
-date = "2026-02-20"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["TeX"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/jlreq-tcf" }]
----
+#show: project.with(
+  title: "jlreq-tcf",
+  description: "A LaTeX package providing two-column footnotes compatible with the jlreq class.",
+  date: "2026-02-20",
+  section: "projects",
+  toc: false,
+  languages: ("TeX",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/jlreq-tcf"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 

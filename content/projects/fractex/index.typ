@@ -1,14 +1,14 @@
----
-title = "FracTeX"
-description = "A comprehensive 2D fractal visualization package for LaTeX."
-date = "2025-08-29"
-section = "projects"
-toc = false
-
-[extra]
-languages = ["TeX"]
-links = [{ label = "GitHub", url = "https://github.com/rice8y/FracTeX" }]
----
+#show: project.with(
+  title: "FracTeX",
+  description: "A comprehensive 2D fractal visualization package for LaTeX.",
+  date: "2025-08-29",
+  section: "projects",
+  toc: false,
+  languages: ("TeX",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/FracTeX"),
+  ),
+)
 
 #import "/content/_prelude.typ": *
 
