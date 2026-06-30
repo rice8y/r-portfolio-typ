@@ -43,6 +43,8 @@ pages = [
 ]
 sections = ["projects"]
 sort_by = "date_desc"
+section_headings = ["blog", "projects"]
+section_heading_level = 1
 include_drafts = false
 include_future = true
 include_expired = false

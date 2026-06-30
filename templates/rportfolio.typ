@@ -93,7 +93,7 @@
 }
 
 #let rss-link(href, label: "RSS") = elem("a", attrs: (href: href, class: "rss-link", type: "application/rss+xml"))[#label]
-#let pdf-link(href, label) = elem("a", attrs: (href: href, class: "rss-link pdf-link", type: "application/pdf"))[#label]
+#let pdf-link(href, label) = elem("a", attrs: (href: href, class: "pdf-menu-link", type: "application/pdf"))[#label]
 #let page-pdf-url(path) = {
   let value = str(path)
   if value.ends-with("/") { value + "index.pdf" } else { value + "/index.pdf" }
@@ -101,11 +101,12 @@
 
 #let pdf-links(profile, current-pdf: none) = {
   if profile.print_path != none or current-pdf != none {
-    elem("span", attrs: (class: "pdf-links", "aria-label": "PDF downloads"))[
-      #elem("span", attrs: (class: "pdf-links-label"))[PDF:]
-      #if profile.print_path != none { pdf-link(profile.print_path, "All") }
-      #if profile.print_path != none and current-pdf != none { elem("span", attrs: ("aria-hidden": "true"))[/] }
-      #if current-pdf != none { pdf-link(current-pdf, "Page") }
+    elem("details", attrs: (class: "pdf-menu"))[
+      #elem("summary", attrs: (class: "rss-link pdf-menu-summary"))[PDF]
+      #elem("span", attrs: (class: "pdf-menu-list", role: "list"))[
+        #if profile.print_path != none { pdf-link(profile.print_path, "Full collection") }
+        #if current-pdf != none { pdf-link(current-pdf, "Current page") }
+      ]
     ]
   }
 }
@@ -179,7 +180,10 @@
     #elem("div", attrs: (class: "footer-row"))[
       #elem("div", attrs: (class: "footer-copy"))[
         © #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")
-        #if profile.print_path != none or current-pdf != none { [ | #pdf-links(profile, current-pdf: current-pdf)] }
+        #if profile.print_path != none or current-pdf != none [
+          #elem("span", attrs: (class: "footer-separator", "aria-hidden": "true"))[|]
+          #pdf-links(profile, current-pdf: current-pdf)
+        ]
       ]
       #elem("div", attrs: (class: "theme-buttons collapse-target"))[
         #theme-button("light-theme-button", "Light theme", sun-icon())

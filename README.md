@@ -104,7 +104,7 @@ Writer-facing helpers live in `content/_prelude.typ`, including:
 
 Typage reads `config.toml`, routes the files in `content/`, applies templates from `templates/`, copies `static/`, and writes the final site to `dist/`. The templates preserve the existing r-Portfolio experience, including theme switching, RSS links, project cards, article layouts, link previews, and Giscus theme synchronization.
 
-`[[pdf_documents]]` in `config.toml` defines `print.pdf`. It combines Awards, Publications, Blog, and Projects in that order; Blog entries are listed explicitly so they are not interleaved with Projects by date. `build_pdf = true` enables per-page PDFs, and the HTML footer exposes both `PDF: All` and `PDF: Page` when a page-level PDF exists. HTML-only writing helpers in `content/_prelude.typ` provide PDF fallbacks so the same content can be used for both targets.
+`[[pdf_documents]]` in `config.toml` defines `print.pdf`. It combines Awards, Publications, Blog, and Projects in that order; Blog entries are listed explicitly so they are not interleaved with Projects by date, while `section_headings` keeps Blog and Projects as top-level PDF sections. `build_pdf = true` enables per-page PDFs, and the HTML footer exposes a compact PDF menu with full-site and current-page choices. HTML-only writing helpers in `content/_prelude.typ` provide PDF fallbacks so the same content can be used for both targets.
 
 Generated files and local-only files are ignored by Git:
 
