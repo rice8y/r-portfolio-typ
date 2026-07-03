@@ -179,11 +179,7 @@
     ]
     #elem("div", attrs: (class: "footer-row"))[
       #elem("div", attrs: (class: "footer-copy"))[
-        © #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")
-        #if profile.print_path != none or current-pdf != none [
-          #elem("span", attrs: (class: "footer-separator", "aria-hidden": "true"))[|]
-          #pdf-links(profile, current-pdf: current-pdf)
-        ]
+        © #profile.copyright_year | #elem("span", attrs: (id: "collapse-trigger"))[#profile.site_title] | #rss-link("/rss.xml")#if profile.print_path != none or current-pdf != none { [#elem("span", attrs: (class: "footer-separator", "aria-hidden": "true"))[|]#pdf-links(profile, current-pdf: current-pdf)] }
       ]
       #elem("div", attrs: (class: "theme-buttons collapse-target"))[
         #theme-button("light-theme-button", "Light theme", sun-icon())
