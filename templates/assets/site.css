@@ -1785,22 +1785,49 @@ article.prose :where(ul, ol) + :where(h2, h3, h4) {
   display: none !important;
 }
 
-article.prose [role="doc-bibliography"] ul {
+article.prose:not(.home-compact-prose) [role="doc-bibliography"] ul {
   display: grid !important;
   gap: 0.85rem !important;
-  padding-left: 0 !important;
+  margin: 0 !important;
+  padding-left: 1.25rem !important;
+  list-style-position: outside !important;
+  list-style-type: disc !important;
 }
 
-article.prose [role="doc-bibliography"] li {
+article.prose:not(.home-compact-prose) [role="doc-bibliography"] li {
   position: relative !important;
+  display: list-item !important;
   margin: 0 !important;
+}
+
+article.prose.home-compact-prose [role="doc-bibliography"] ul {
+  display: grid !important;
+  gap: 0.45rem !important;
+  margin: 0 !important;
+  padding-left: 1.25rem !important;
+  list-style-type: disc !important;
+}
+
+article.prose.home-compact-prose [role="doc-bibliography"] li {
+  margin: 0 !important;
+  line-height: 1.8 !important;
+}
+
+article.prose.home-compact-prose [role="doc-bibliography"] + :where(h2, h3, h4) {
+  margin-top: 1.4rem !important;
 }
 
 .publication-cite-menu {
   position: relative !important;
   display: inline-flex !important;
-  margin-left: 0.45rem !important;
-  vertical-align: -0.18em !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 0 0 0.45rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  vertical-align: 0.02em !important;
   font-family: var(--sans) !important;
 }
 
@@ -1808,12 +1835,16 @@ article.prose [role="doc-bibliography"] li {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 1.45rem !important;
-  height: 1.45rem !important;
+  gap: 0.28rem !important;
+  min-height: 1.5rem !important;
+  padding: 0.16rem 0.45rem !important;
   border: 1px solid var(--line) !important;
   border-radius: 0.35rem !important;
   background: var(--surface) !important;
   color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.78rem !important;
+  line-height: 1 !important;
   cursor: pointer !important;
   list-style: none !important;
 }
@@ -1823,13 +1854,16 @@ article.prose [role="doc-bibliography"] li {
 }
 
 .publication-cite-button svg {
-  width: 0.9rem !important;
-  height: 0.9rem !important;
-  fill: none !important;
-  stroke: currentColor !important;
-  stroke-width: 1.7 !important;
-  stroke-linecap: round !important;
-  stroke-linejoin: round !important;
+  width: 0.92rem !important;
+  height: 0.92rem !important;
+  fill: currentColor !important;
+  stroke: none !important;
+  flex: 0 0 auto !important;
+}
+
+.publication-cite-button span {
+  font: inherit !important;
+  line-height: 1 !important;
 }
 
 .publication-cite-button:hover,
@@ -1842,6 +1876,7 @@ article.prose [role="doc-bibliography"] li {
 
 .publication-cite-options {
   position: absolute !important;
+  left: auto !important;
   right: 0 !important;
   top: calc(100% + 0.35rem) !important;
   z-index: 30 !important;

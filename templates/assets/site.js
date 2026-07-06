@@ -261,6 +261,8 @@ function initProjectControls() {
 }
 
 function initPublicationBibTools() {
+  initPublicationCiteMenuDismissal();
+
   document.querySelectorAll("[data-bib-tools]").forEach((root) => {
     if (root.dataset.bibToolsReady) return;
     root.dataset.bibToolsReady = "true";
@@ -275,6 +277,26 @@ function initPublicationBibTools() {
       if (!entry) return;
       item.appendChild(createPublicationCiteMenu(entry));
     });
+  });
+}
+
+function initPublicationCiteMenuDismissal() {
+  if (document.documentElement.dataset.publicationCiteDismissReady) return;
+  document.documentElement.dataset.publicationCiteDismissReady = "true";
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest?.(".publication-cite-menu")) return;
+    closePublicationCiteMenus();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closePublicationCiteMenus();
+  });
+}
+
+function closePublicationCiteMenus(except = null) {
+  document.querySelectorAll(".publication-cite-menu[open]").forEach((menu) => {
+    if (menu !== except) menu.removeAttribute("open");
   });
 }
 
@@ -335,11 +357,14 @@ function createPublicationCiteMenu(entry) {
   summary.setAttribute("aria-label", "Export BibTeX citation");
   summary.title = "Export BibTeX citation";
   summary.innerHTML = [
-    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">',
-    '<path d="M7 7h6M7 11h10M7 15h7"/>',
-    '<path d="M5 4h14v16H5z"/>',
+    '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">',
+    '<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>',
+    '<path d="M8.646 6.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 9 8.646 7.354a.5.5 0 0 1 0-.708m-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 9l1.647-1.646a.5.5 0 0 0 0-.708"/>',
     '</svg>',
+    '<span>BibTeX</span>',
   ].join("");
+
+  summary.addEventListener("click", () => closePublicationCiteMenus(menu));
 
   const options = document.createElement("span");
   options.className = "publication-cite-options";

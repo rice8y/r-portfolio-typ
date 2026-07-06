@@ -16,7 +16,7 @@
 
 #bibliography(
   "/content/publications/domestic.bib",
-  style: "/content/publications/enlp-domestic.csl",
+  style: "/content/publications/domestic.csl",
   title: none,
   full: true,
 )
@@ -31,7 +31,7 @@
 #text(lang: "en")[
   #bibliography(
     "/content/publications/international.bib",
-    style: "/content/publications/association-for-computational-linguistics-blinky.csl",
+    style: "/content/publications/international.csl",
     title: none,
     full: true,
   )
