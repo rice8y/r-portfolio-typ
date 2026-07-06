@@ -136,6 +136,24 @@
   body: body,
 )
 
+#let bibtex-export(bib-path, filename: "publications.bib") = context {
+  if target() == "html" {
+    let bib-source = read(bib-path)
+    _elem("div", attrs: (
+      class: "publication-bib-tools",
+      "data-bib-tools": "true",
+      "data-bib-filename": filename,
+    ))[
+      #_elem("div", attrs: (class: "publication-bib-actions", role: "group", "aria-label": "BibTeX export"))[
+        #_elem("button", attrs: ("type": "button", class: "publication-bib-button", "data-bib-copy": "true"))[Copy BibTeX]
+        #_elem("button", attrs: ("type": "button", class: "publication-bib-button", "data-bib-download": "true"))[Download .bib]
+      ]
+      #_elem("span", attrs: (class: "publication-bib-status", "aria-live": "polite"))[]
+      #_elem("script", attrs: (type: "application/x-bibtex", class: "publication-bib-source"))[#bib-source]
+    ]
+  }
+}
+
 #let img(src, alt: "", caption: none) = {
   context {
     if target() == "html" {

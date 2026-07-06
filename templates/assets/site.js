@@ -7,6 +7,7 @@ function initPortfolio() {
   initNoCopyEmail();
   initCodeCopyButtons();
   initProjectControls();
+  initPublicationBibTools();
 
   const backToTop = document.getElementById("back-to-top");
   backToTop?.addEventListener("click", (event) => scrollToTop(event));
@@ -242,6 +243,52 @@ function initProjectControls() {
 
   const initialSort = params.get("sort") === "updated" ? "updated" : "published";
   setSort(initialSort, false);
+}
+
+function initPublicationBibTools() {
+  document.querySelectorAll("[data-bib-tools]").forEach((root) => {
+    if (root.dataset.bibToolsReady) return;
+    root.dataset.bibToolsReady = "true";
+
+    const source = root.querySelector(".publication-bib-source");
+    const copyButton = root.querySelector("[data-bib-copy]");
+    const downloadButton = root.querySelector("[data-bib-download]");
+    const status = root.querySelector(".publication-bib-status");
+    const filename = root.dataset.bibFilename || "publications.bib";
+    const bibText = () => `${source?.textContent.trim() || ""}\n`;
+
+    const setStatus = (message) => {
+      if (!status) return;
+      status.textContent = message;
+      window.setTimeout(() => {
+        if (status.textContent === message) status.textContent = "";
+      }, 1800);
+    };
+
+    copyButton?.addEventListener("click", async () => {
+      const ok = await copyText(bibText());
+      copyButton.textContent = ok ? "Copied" : "Failed";
+      copyButton.classList.toggle("is-copied", ok);
+      setStatus(ok ? "Copied to clipboard." : "Clipboard copy failed.");
+      window.setTimeout(() => {
+        copyButton.textContent = "Copy BibTeX";
+        copyButton.classList.remove("is-copied");
+      }, 1400);
+    });
+
+    downloadButton?.addEventListener("click", () => {
+      const blob = new Blob([bibText()], { type: "application/x-bibtex;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Download started.");
+    });
+  });
 }
 
 function initNoCopyEmail() {
