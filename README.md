@@ -82,7 +82,7 @@ Write Typst content here.
 
 Project entries use `#show: project.with(...)`, keep `section: "projects"` for the flat project listing, and declare project fields such as `languages` and `links` directly. Collection schemas live in `content/config.typ`.
 
-Publications are registered in `content/publications/publications.bib` and rendered with `content/publications/association-for-computational-linguistics-blinky.csl`. The publications page also exposes BibTeX clipboard copy and `.bib` download controls from the same source file.
+Publications are registered in `content/publications/domestic.bib` and `content/publications/international.bib`. Domestic entries use the ENLP-inspired CSL, international entries use the ACL/Blinky-derived CSL, and the publications page exposes per-entry BibTeX clipboard copy and `.bib` download controls.
 
 Writer-facing helpers live in `content/_prelude.typ`, including:
 

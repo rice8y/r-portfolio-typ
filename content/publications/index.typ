@@ -7,14 +7,30 @@
   toc: false,
 )
 
-#bibtex-export(
-  "/content/publications/publications.bib",
-  filename: "r-portfolio-publications.bib",
+=== 国内会議
+
+#bibtex-entry-data(
+  "/content/publications/domestic.bib",
+  filename: "r-portfolio-domestic-publications.bib",
+)
+
+#bibliography(
+  "/content/publications/domestic.bib",
+  style: "/content/publications/enlp-domestic.csl",
+  title: none,
+  full: true,
+)
+
+=== 国際会議
+
+#bibtex-entry-data(
+  "/content/publications/international.bib",
+  filename: "r-portfolio-international-publications.bib",
 )
 
 #text(lang: "en")[
   #bibliography(
-    "/content/publications/publications.bib",
+    "/content/publications/international.bib",
     style: "/content/publications/association-for-computational-linguistics-blinky.csl",
     title: none,
     full: true,

@@ -132,8 +132,23 @@ async function copyText(text) {
       await navigator.clipboard.writeText(text);
       return true;
     } catch (_) {
-      // Fall back to the legacy path below.
+      // Fall back to legacy paths below.
     }
+  }
+
+  let eventCopied = false;
+  const onCopy = (event) => {
+    event.clipboardData?.setData("text/plain", text);
+    event.preventDefault();
+    eventCopied = true;
+  };
+  document.addEventListener("copy", onCopy);
+  try {
+    if (document.execCommand("copy") && eventCopied) return true;
+  } catch (_) {
+    eventCopied = false;
+  } finally {
+    document.removeEventListener("copy", onCopy);
   }
 
   const textarea = document.createElement("textarea");
@@ -251,44 +266,150 @@ function initPublicationBibTools() {
     root.dataset.bibToolsReady = "true";
 
     const source = root.querySelector(".publication-bib-source");
-    const copyButton = root.querySelector("[data-bib-copy]");
-    const downloadButton = root.querySelector("[data-bib-download]");
-    const status = root.querySelector(".publication-bib-status");
-    const filename = root.dataset.bibFilename || "publications.bib";
-    const bibText = () => `${source?.textContent.trim() || ""}\n`;
+    const entries = splitBibEntries(source?.textContent || "");
+    const bibliography = nextBibliography(root);
+    const items = Array.from(bibliography?.querySelectorAll("li") || []);
 
-    const setStatus = (message) => {
-      if (!status) return;
-      status.textContent = message;
-      window.setTimeout(() => {
-        if (status.textContent === message) status.textContent = "";
-      }, 1800);
-    };
-
-    copyButton?.addEventListener("click", async () => {
-      const ok = await copyText(bibText());
-      copyButton.textContent = ok ? "Copied" : "Failed";
-      copyButton.classList.toggle("is-copied", ok);
-      setStatus(ok ? "Copied to clipboard." : "Clipboard copy failed.");
-      window.setTimeout(() => {
-        copyButton.textContent = "Copy BibTeX";
-        copyButton.classList.remove("is-copied");
-      }, 1400);
-    });
-
-    downloadButton?.addEventListener("click", () => {
-      const blob = new Blob([bibText()], { type: "application/x-bibtex;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
-      setStatus("Download started.");
+    items.forEach((item, index) => {
+      const entry = entries[index];
+      if (!entry) return;
+      item.appendChild(createPublicationCiteMenu(entry));
     });
   });
+}
+
+function nextBibliography(root) {
+  let element = root.nextElementSibling;
+  while (element) {
+    if (element.getAttribute("role") === "doc-bibliography") return element;
+    element = element.nextElementSibling;
+  }
+  return null;
+}
+
+function splitBibEntries(source) {
+  const entries = [];
+  let index = 0;
+
+  while (index < source.length) {
+    const start = source.indexOf("@", index);
+    if (start === -1) break;
+
+    const openBrace = source.indexOf("{", start);
+    const openParen = source.indexOf("(", start);
+    const open = openBrace === -1 ? openParen : openParen === -1 ? openBrace : Math.min(openBrace, openParen);
+    if (open === -1) break;
+
+    const openChar = source[open];
+    const closeChar = openChar === "{" ? "}" : ")";
+    let depth = 0;
+    let end = open;
+
+    for (; end < source.length; end += 1) {
+      const char = source[end];
+      if (char === openChar) depth += 1;
+      else if (char === closeChar) {
+        depth -= 1;
+        if (depth === 0) {
+          end += 1;
+          break;
+        }
+      }
+    }
+
+    const text = source.slice(start, end).trim();
+    const key = text.match(/^@\w+\s*[\{\(]\s*([^,\s]+)\s*,/)?.[1] || `citation-${entries.length + 1}`;
+    if (text) entries.push({ key, text: `${text}\n` });
+    index = end;
+  }
+
+  return entries;
+}
+
+function createPublicationCiteMenu(entry) {
+  const menu = document.createElement("details");
+  menu.className = "publication-cite-menu";
+
+  const summary = document.createElement("summary");
+  summary.className = "publication-cite-button";
+  summary.setAttribute("aria-label", "Export BibTeX citation");
+  summary.title = "Export BibTeX citation";
+  summary.innerHTML = [
+    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">',
+    '<path d="M7 7h6M7 11h10M7 15h7"/>',
+    '<path d="M5 4h14v16H5z"/>',
+    '</svg>',
+  ].join("");
+
+  const options = document.createElement("span");
+  options.className = "publication-cite-options";
+
+  const copyButton = document.createElement("button");
+  copyButton.type = "button";
+  copyButton.className = "publication-cite-option";
+  copyButton.textContent = "Copy BibTeX";
+
+  const downloadButton = document.createElement("button");
+  downloadButton.type = "button";
+  downloadButton.className = "publication-cite-option";
+  downloadButton.textContent = "Download .bib";
+
+  const runCopy = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (copyButton.dataset.copyBusy === "true") return;
+    copyButton.dataset.copyBusy = "true";
+    copyButton.focus();
+    const ok = await copyText(entry.text);
+    copyButton.textContent = ok ? "Copied" : "Select text";
+    summary.classList.toggle("is-copied", ok);
+    if (!ok) showManualBibCopy(options, entry.text);
+    window.setTimeout(() => {
+      summary.classList.remove("is-copied");
+      copyButton.dataset.copyBusy = "false";
+      if (ok) {
+        copyButton.textContent = "Copy BibTeX";
+        menu.removeAttribute("open");
+      }
+    }, 1400);
+  };
+
+  copyButton.addEventListener("pointerdown", runCopy);
+  copyButton.addEventListener("click", runCopy);
+
+  downloadButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const blob = new Blob([entry.text], { type: "application/x-bibtex;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${entry.key}.bib`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    menu.removeAttribute("open");
+  });
+
+  options.append(copyButton, downloadButton);
+  menu.append(summary, options);
+  return menu;
+}
+
+function showManualBibCopy(container, text) {
+  let textarea = container.querySelector(".publication-cite-fallback");
+  if (!textarea) {
+    textarea = document.createElement("textarea");
+    textarea.className = "publication-cite-fallback";
+    textarea.setAttribute("readonly", "");
+    textarea.setAttribute("aria-label", "BibTeX citation text");
+    container.appendChild(textarea);
+  }
+  textarea.value = text;
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
 }
 
 function initNoCopyEmail() {
