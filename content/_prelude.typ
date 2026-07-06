@@ -136,6 +136,19 @@
   body: body,
 )
 
+#let bibtex-entry-data(bib-path, filename: "publication.bib") = context {
+  if target() == "html" {
+    let bib-source = read(bib-path)
+    _elem("div", attrs: (
+      class: "publication-bib-data",
+      "data-bib-tools": "true",
+      "data-bib-filename": filename,
+    ))[
+      #_elem("script", attrs: (type: "application/x-bibtex", class: "publication-bib-source"))[#bib-source]
+    ]
+  }
+}
+
 #let img(src, alt: "", caption: none) = {
   context {
     if target() == "html" {

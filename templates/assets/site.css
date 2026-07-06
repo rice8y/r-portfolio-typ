@@ -1780,6 +1780,157 @@ article.prose :where(ul, ol) + :where(h2, h3, h4) {
   margin-top: 1.65rem !important;
 }
 
+.publication-bib-data,
+.publication-bib-source {
+  display: none !important;
+}
+
+article.prose:not(.home-compact-prose) [role="doc-bibliography"] ul {
+  display: grid !important;
+  gap: 0.85rem !important;
+  margin: 0 !important;
+  padding-left: 1.25rem !important;
+  list-style-position: outside !important;
+  list-style-type: disc !important;
+}
+
+article.prose:not(.home-compact-prose) [role="doc-bibliography"] li {
+  position: relative !important;
+  display: list-item !important;
+  margin: 0 !important;
+}
+
+article.prose.home-compact-prose [role="doc-bibliography"] ul {
+  display: grid !important;
+  gap: 0.45rem !important;
+  margin: 0 !important;
+  padding-left: 1.25rem !important;
+  list-style-type: disc !important;
+}
+
+article.prose.home-compact-prose [role="doc-bibliography"] li {
+  margin: 0 !important;
+  line-height: 1.8 !important;
+}
+
+article.prose.home-compact-prose [role="doc-bibliography"] + :where(h2, h3, h4) {
+  margin-top: 1.4rem !important;
+}
+
+.publication-cite-menu {
+  position: relative !important;
+  display: inline-flex !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 0 0 0.45rem !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  vertical-align: 0.02em !important;
+  font-family: var(--sans) !important;
+}
+
+.publication-cite-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.28rem !important;
+  min-height: 1.5rem !important;
+  padding: 0.16rem 0.45rem !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 0.35rem !important;
+  background: var(--surface) !important;
+  color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.78rem !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+  list-style: none !important;
+}
+
+.publication-cite-button::-webkit-details-marker {
+  display: none !important;
+}
+
+.publication-cite-button svg {
+  width: 0.92rem !important;
+  height: 0.92rem !important;
+  fill: currentColor !important;
+  stroke: none !important;
+  flex: 0 0 auto !important;
+}
+
+.publication-cite-button span {
+  font: inherit !important;
+  line-height: 1 !important;
+}
+
+.publication-cite-button:hover,
+.publication-cite-button.is-copied,
+.publication-cite-menu[open] .publication-cite-button {
+  border-color: var(--line-hover) !important;
+  background: var(--surface-hover) !important;
+  color: var(--fg-strong) !important;
+}
+
+.publication-cite-options {
+  position: absolute !important;
+  left: auto !important;
+  right: 0 !important;
+  top: calc(100% + 0.35rem) !important;
+  z-index: 30 !important;
+  display: grid !important;
+  min-width: 8.75rem !important;
+  padding: 0.3rem 0 !important;
+  border: 1px solid var(--line) !important;
+  background: var(--bg) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateY(-0.15rem) !important;
+  transition: opacity .16s ease, transform .16s ease !important;
+}
+
+.publication-cite-menu[open] .publication-cite-options {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+.publication-cite-option {
+  display: block !important;
+  width: 100% !important;
+  padding: 0.38rem 0.7rem !important;
+  border: 0 !important;
+  background: transparent !important;
+  color: inherit !important;
+  font-family: var(--sans) !important;
+  font-size: 0.82rem !important;
+  line-height: 1.25 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+}
+
+.publication-cite-option:hover {
+  background: var(--surface-hover) !important;
+}
+
+.publication-cite-fallback {
+  width: min(22rem, 70vw) !important;
+  min-height: 6rem !important;
+  margin: 0.35rem 0.5rem 0.45rem !important;
+  padding: 0.45rem 0.55rem !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 0.35rem !important;
+  background: var(--surface) !important;
+  color: var(--fg) !important;
+  font-family: var(--mono, monospace) !important;
+  font-size: 0.75rem !important;
+  line-height: 1.35 !important;
+  resize: vertical !important;
+}
+
 /* Project filter buttons: use Shields.io badges as the button surface.
    The previous version placed a Shields badge inside another rounded button,
    which made the language filters look like a badge floating in a mismatched
