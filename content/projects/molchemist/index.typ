@@ -4,7 +4,7 @@
   title: "molchemist",
   description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
   date: "2026-03-03",
-  updated: "2026-06-21",
+  updated: "2026-08-08",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust", "C++"),
@@ -18,14 +18,14 @@
 
 It uses a Rust/WASM core to parse molecular graphs and generate `alchemist` ASTs, together with a companion WASM layout plugin for SMILES 2D coordinate generation. Molfile / SDF parsing is powered by #link("https://github.com/hfooladi/sdfrust")[`sdfrust`], SMILES parsing is based on #link("https://crates.io/crates/opensmiles")[`opensmiles`], SMILES 2D coordinate generation uses #link("https://github.com/schrodinger/coordgenlibs")[`CoordgenLibs`], and the final rendering is handled by the declarative drawing engine of #link("https://github.com/Typsium/alchemist")[`alchemist`].
 
-Third-party license notices and bundled example-data provenance are collected in #link("https://github.com/rice8y/molchemist/blob/v0.1.2/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md].
+Third-party license notices and bundled example-data provenance are collected in #link("https://github.com/rice8y/molchemist/blob/v0.1.4/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md].
 
 == Usage
 
 Import `render-mol` for Molfile/SDF inputs, or `render-smiles` for SMILES inputs.
 
 ```typ
-#import "@preview/molchemist:0.1.2": render-mol, render-smiles
+#import "@preview/molchemist:0.1.4": render-mol, render-smiles
 
 // Read your molecule data
 // Example: https://pubchem.ncbi.nlm.nih.gov/compound/93406
@@ -34,9 +34,11 @@ Import `render-mol` for Molfile/SDF inputs, or `render-smiles` for SMILES inputs
 
 On Typst 0.15.0 and later, you may also pass `path("Structure2D_COMPOUND_CID_93406.sdf")` directly to `render-mol`; `molchemist` will read the file inside the package. The examples in this README use `read(...)` for compatibility with older Typst versions.
 
-The bundled documentation and README screenshots use small PubChem-derived example structures. See #link("https://github.com/rice8y/molchemist/blob/v0.1.2/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md] for source URLs and NCBI data-usage notes.
+The bundled documentation and README screenshots use small PubChem-derived example structures. See #link("https://github.com/rice8y/molchemist/blob/v0.1.4/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md] for source URLs and NCBI data-usage notes.
 
 For SMILES, `molchemist` generates a 2D layout internally before sending the structure to `alchemist`.
+
+SMILES parsing is strict: malformed branch, dot, bond, bracket-property, charge, isotope, atom-class, directional-bond, and aromatic notation is rejected instead of being normalized silently. Atom classes from `0` through `9999` are accepted, and aromatic systems must satisfy Hückel's rule and admit a valence-compatible Kekulé assignment.
 
 ```typ
 // Example: https://pubchem.ncbi.nlm.nih.gov/compound/896
@@ -50,7 +52,7 @@ For SMILES, `molchemist` generates a 2D layout internally before sending the str
 You can overlay arrows and labels on top of a rendered molecule with the `annotations` argument. `molchemist` provides helpers for atom-level, bond-level, and molecule-level annotations without leaving the package API.
 
 ```typ
-#import "@preview/molchemist:0.1.2": (
+#import "@preview/molchemist:0.1.4": (
   render-smiles,
   atom-anchor,
   bond-anchor,
@@ -128,6 +130,120 @@ A pure skeletal formula. All backbone carbons and their attached hydrogens are c
 
 #img("/images/projects/molchemist/ex03.png", alt: "Skeletal Mode")
 
+=== SDF Versions and Record Selection
+
+Molfile/SDF input is detected as V2000 or V3000 for each selected record. For a multi-record SDF, pass the one-based `record` option; the default is the first record.
+
+```typ
+#let sdf-data = read("structures.sdf")
+
+#grid(
+  columns: 2,
+  gutter: 2em,
+  align: top,
+  align(center)[
+    *V2000 · record 1*
+    #v(0.6em)
+    #render-mol(sdf-data, record: 1, abbreviate: true)
+  ],
+  align(center)[
+    *V3000 · record 2*
+    #v(0.6em)
+    #render-mol(sdf-data, record: 2, abbreviate: true)
+  ],
+)
+```
+
+#img("/images/projects/molchemist/ex07.png", alt: "V2000 and V3000 record selection")
+
+The CLI uses the same selection and validation path:
+
+```sh
+molchemist dump structures.sdf --record 2 --mode skeletal
+```
+
+Empty structures, malformed records, non-finite coordinates, and out-of-range record numbers produce an explicit error instead of an empty drawing.
+
+Usable 2D coordinates are preserved exactly. If all bonded atoms collapse onto the same XY positions, a 3D record has no usable XY projection, or bond lengths are numerically unstable, `molchemist` generates a fresh 2D layout with Coordgen. Atom metadata, bond semantics, and stereochemical wedges/dashes still come from the selected SDF record.
+
+=== Bond Semantics
+
+SDF bond orders are retained through the complete parser, AST, package, and CLI pipeline. In addition to single, double, and triple bonds, `molchemist` distinguishes aromatic, single-or-double, single-or-aromatic, double-or-aromatic, any, coordination/dative, and hydrogen bonds. V2000 `either` stereochemistry is also preserved instead of being drawn as an ordinary single bond. SMILES quadruple bonds written with `$`, such as `[Cr]$[Cr]`, are rendered as four parallel lines.
+
+Extended bonds use conventional visual cues: partial dashed or dotted parallel lines for aromatic and query bonds, a wavy line for any/either bonds, a direction-preserving filled arrow for coordination bonds, and a dotted line for hydrogen bonds. These helpers inherit the configured `single` or `double` stroke where applicable. Long hydrogen bonds are excluded from bond-length normalization when covalent bonds are available, so they do not shrink the rest of the structure.
+
+```typ
+#let bond-data = read("bond-semantics.sdf")
+
+#grid(
+  columns: 1,
+  row-gutter: 1em,
+  align(center)[
+    *V3000 extended bond types*
+    #v(0.6em)
+    #render-mol(bond-data, abbreviate: true, config: (atom-sep: 3.0em))
+  ],
+  align(center)[
+    *SMILES quadruple bond*
+    #v(0.6em)
+    #render-smiles("[Cr]$[Cr]")
+  ],
+)
+```
+
+#img("/images/projects/molchemist/ex08.png", alt: "Extended SDF bond types and a SMILES quadruple bond")
+
+=== Stereochemistry
+
+For Molfile/SDF input, up/down single bonds remain wedge/dash bonds. Undefined double-bond geometry (V2000 stereo code 3 or V3000 double-bond `CFG=2`) is rendered as a crossed double bond. Atom `CFG` parity and V3000 enhanced stereo groups (`STEABS`, `STEREL`, and `STERAC`) are retained as stereo annotations below the structure and in dump/CLI source.
+
+Extended OpenSMILES chirality classes are depicted natively when their topology permits an unambiguous 2D projection. Allene (`@AL`) configurations use complementary terminal wedge/dash bonds; square-planar (`@SP`) configurations use the specified U, 4, or Z ligand path; and trigonal-bipyramidal (`@TB`) and octahedral (`@OH`) configurations combine the specified ligand winding with solid/hashed viewing-axis bonds.
+
+```typ
+#grid(
+  columns: 2,
+  gutter: 2em,
+  align: top,
+  align(center)[
+    *D-alanine · (R)*
+    #v(0.6em)
+    #render-smiles("N[C@H](C)C(=O)O", skeletal: true)
+  ],
+  align(center)[
+    *L-alanine · (S)*
+    #v(0.6em)
+    #render-smiles("N[C@@H](C)C(=O)O", skeletal: true)
+  ],
+)
+```
+
+#img("/images/projects/molchemist/ex09.png", alt: "D- and L-alanine stereochemistry")
+
+=== Multi-component Structures
+
+Disconnected Molfile/SDF graphs and dot-separated SMILES are rendered as distinct components in one figure. Components keep their source order and global atom/bond indices, but are separated by whitespace without adding a visible chemical operator.
+
+```typ
+#grid(
+  columns: 1,
+  row-gutter: 1em,
+  align(center)[
+    *Dot-separated salt*
+    #v(0.6em)
+    #render-smiles("[Na+].[Cl-]", abbreviate: true)
+  ],
+  align(center)[
+    *Visible isolated components*
+    #v(0.6em)
+    #render-smiles("[H+].C.[Cl-]", skeletal: true)
+  ],
+)
+```
+
+#img("/images/projects/molchemist/ex10.png", alt: "Dot-separated and isolated SMILES component")
+
+Isolated atoms remain visible in abbreviated and skeletal modes, including standalone hydrogen and zero-heavy-neighbor carbon components such as methane. Annotation anchors and `show-indices` continue to address the original input-wide indices across every component.
+
 === Customizing Appearance
 
 Under the hood, `molchemist` parses the graph and generates native `alchemist` elements. You can customize the look of your molecules by passing styling arguments via the `config` dictionary, which are passed directly to `alchemist`'s `skeletize` function.
@@ -166,9 +282,42 @@ When `dump: true` is passed, `molchemist` will not render the molecule. Instead,
 
 #img("/images/projects/molchemist/ex05.png", alt: "Dump Mode")
 
+=== Command-Line Export
+
+For scripts and editor workflows, install the optional `molchemist` executable from the `molchemist-cli` crate. It accepts Molfile/SDF files, SMILES strings, or standard input and writes formatted `alchemist` source to standard output.
+
+```sh
+cargo install --locked molchemist-cli
+
+molchemist dump molecule.sdf > molecule.typ
+molchemist dump --smiles 'CC(=O)O' --mode skeletal --standalone --output acetic-acid.typ
+```
+
+For example:
+
+```console
+$ molchemist dump --smiles 'CC(=O)O' --mode skeletal
+#let base-sep = 3em
+#skeletize({
+  hook("a0")
+  single(absolute: 29.79036703670196deg, atom-sep: base-sep * 1, name: "b0")
+  hook("a1")
+  branch({
+    double(absolute: 89.79373607661383deg, atom-sep: base-sep * 1.000062954206203, name: "b1")
+    fragment("O", name: "a2")
+  })
+  single(absolute: −30.20116835518715deg, atom-sep: base-sep * 0.9999817671902098, name: "b2")
+  fragment("OH", name: "a3")
+})
+```
+
+The CLI embeds the same WASM conversion modules as this Typst package, so its default source matches `dump: true`. Use `molchemist dump --help` for format, record-selection, indentation, and standalone-document options.
+
 == Known Limitations
 
-When rendering highly complex or dense molecules (e.g., polycyclic compounds, dense substituents) in the default #strong[Full Mode], you may encounter overlapping atoms or intersecting bonds. This occurs because the 2D absolute coordinates provided in the source `.sdf`/`.mol` files might not allocate enough physical space on the canvas to draw every explicit text label without collisions.
+=== Dense Full-Mode Labels
+
+Highly complex or dense molecules can contain overlapping atom labels or intersecting bonds in #strong[Full Mode]. Explicit hydrogens and atom text occupy page space that is not represented in the underlying 2D coordinates.
 
 #strong[Recommended Workarounds:]
 + #strong[Use Abbreviated or Skeletal Mode:] For complex organic structures, it is highly recommended to set `abbreviate: true` or `skeletal: true`. This hides redundant atoms, dramatically improving readability and preventing overlaps, which aligns with standard chemical drawing practices.
@@ -178,11 +327,18 @@ When rendering highly complex or dense molecules (e.g., polycyclic compounds, de
     #render-mol(mol-data, config: (atom-sep: 4.5em))
     ```
 
-For SMILES input, the default `render-smiles(...)` mode expands implicit hydrogens into explicit `H` atoms so that `full` mode stays closer to the behavior of `render-mol(...)`. Highly complex or dense molecules can still become visually busy in `full` mode, so `abbreviate: true` or `skeletal: true` will often produce a clearer result. The current implementation also supports tetrahedral `@` / `@@` centers and `/` / `\` double-bond geometry as stereochemical depictions. Extended OpenSMILES chirality classes such as `@AL`, `@SP`, `@TB`, and `@OH` are accepted as well; because the current `alchemist`-based renderer does not have native glyphs for those geometries, they are preserved as stereo annotations below the rendered structure instead of wedge/dash depictions.
+=== Layout Boundaries
 
-== Feature Plan
+- A valid Molfile/SDF 2D layout is preserved even when its full-mode labels are crowded. Automatic relayout is limited to collapsed or numerically unstable XY coordinates.
+- SMILES and unusable SDF coordinates are laid out with Coordgen. The result is deterministic for a given bundled plugin, but it may differ from an external chemical drawing program.
+- Relayout preserves explicit SDF wedge, parity, and enhanced-stereo metadata. It does not infer stereochemistry solely from 3D coordinates.
 
-- #strong[Native depiction for extended chirality:] Extended OpenSMILES chirality classes such as allene (`@AL`), square-planar (`@SP`), trigonal-bipyramidal (`@TB`), and octahedral (`@OH`) are currently preserved as textual stereo annotations. A future version may render these classes natively once the expected 2D depiction conventions and the required `alchemist` primitives are clarified.
+=== Fallbacks and Test Boundaries
+
+- If an invalid or cyclic extended-chirality topology prevents ligand branches from being placed independently, the original chirality tag is retained as a textual stereo annotation.
+- Annotation helpers cover common callouts and arrows, not automatic collision-free figure composition. Use `cetz-annotation(...)` or dumped Alchemist source for complex layouts.
+- Rendering CI catches compilation failures and package/CLI source divergence on the listed Typst versions. It is not a pixel-snapshot guarantee, so fonts and final PDF appearance should still be reviewed for publication output.
+- Maintainers can use `scripts/check-pubchem-visual-regression.py` with the ignored local PubChem corpus for opt-in pixel regression checks; its baseline is machine-local and is not distributed with the package.
 
 == API Reference
 
@@ -196,7 +352,7 @@ For SMILES input, the default `render-smiles(...)` mode expands implicit hydroge
 #data-table(
   headers: ([Function], [Input], [Description],),
   rows: (
-    ([`render-mol`], [`data: str`, `bytes`, or Typst 0.15+ `path`], [Renders Molfile or SDF data. Coordinates are read from the input.],),
+    ([`render-mol`], [`data: str`, `bytes`, or Typst 0.15+ `path`], [Renders V2000/V3000 Molfile or SDF data. Usable input coordinates are preserved; unusable coordinates receive a generated 2D layout.],),
     ([`render-smiles`], [`smiles: str`], [Parses SMILES, generates a 2D layout, and renders the result.],),
   ),
 )
@@ -214,6 +370,8 @@ Both renderers accept the same options:
     ([`show-indices`], [`bool`, `str`], [`false`], [Shows debug labels for annotation authoring. Use `true`, `"all"`, `"atoms"`, or `"bonds"`.],),
   ),
 )
+
+`render-mol` additionally accepts `record: int`, a one-based SDF record number whose default is `1`.
 
 === Anchors
 
@@ -261,6 +419,8 @@ Use `cetz-annotation` as the escape hatch for advanced figure polishing:
 
 == License
 
-The `molchemist` package code is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/molchemist/v0.1.2/LICENSE")[LICENSE] for details.
+The molchemist-authored Typst source is distributed under the MIT License. See #link("https://raw.githubusercontent.com/rice8y/molchemist/v0.1.4/LICENSE")[LICENSE] for its terms.
 
-Redistributed third-party code and bundled example-data provenance, including PubChem-derived SDF/example images, are documented separately in #link("https://github.com/rice8y/molchemist/blob/v0.1.2/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md].
+The published package also contains precompiled WASM components, so its manifest uses the aggregate SPDX expression `MIT AND BSD-3-Clause AND Apache-2.0 AND (Apache-2.0 WITH LLVM-exception)`. In particular, `molchemist_plugin.wasm` contains MIT- and Apache-2.0-licensed components, and `molchemist_smiles_plugin.wasm` contains MIT-, BSD-3-Clause-, and Apache-2.0-with-LLVM-exception components. `wasm-minimal-protocol`, incorporated into the Rust plugin, is released under the Unlicense and is recorded in the notices rather than the manifest expression.
+
+The complete file-to-license mapping, required license texts, and bundled example-data provenance are documented in #link("https://github.com/rice8y/molchemist/blob/v0.1.4/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md].
