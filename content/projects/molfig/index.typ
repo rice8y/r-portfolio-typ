@@ -4,6 +4,7 @@
   title: "molfig",
   description: "A Typst package for rendering molecular structure files in static documents.",
   date: "2026-06-21",
+  updated: "2026-08-08",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),
@@ -22,7 +23,7 @@ It accepts PDB, mmCIF, and BinaryCIF input, converts structures through a CPU-si
 == Quickstart
 
 ```typst
-#import "@preview/molfig:0.1.1"
+#import "@preview/molfig:0.1.3"
 #set page(width: auto, height: auto, margin: 0mm)
 
 // Uses structural data from RCSB PDB / wwPDB.
@@ -66,16 +67,16 @@ For reproducible documents, prefer explicit `format`, `representation`, `assembl
 
 == Examples
 
-The #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples")[`package/examples`] directory contains complete example sources, rendered PDFs, and their accompanying structural data files. The example data files are kept under #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data")[`package/examples/data`], together with attribution metadata.
+The #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/examples")[`package/examples`] directory contains complete example sources, rendered PDFs, and their accompanying structural data files. The example data files are kept under #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/examples/data")[`package/examples/data`], together with attribution metadata.
 
 == Features
 
 - Inputs: PDB, text CIF/mmCIF, and BinaryCIF.
 - Structure layer: Mol#super[#sym.ast]-style Model/Structure/Unit concepts, assembly operators, altLoc handling, bond metadata, lookup3d/boundary summaries, secondary structure, coarse IHM spheres/gaussians, and semantic render-object metadata.
-- Representations: Mol#super[#sym.ast] default, spacefill, ball-and-stick, cartoon, ribbon, and backbone.
+- Representations: `default` follows the Mol#super[#sym.ast] Viewer preset, including pLDDT, QMEAN, and SB-NCBR partial-charge annotation themes before automatic size routing; `cartoon` is the Viewer Quick Styles Cartoon preset; `spacefill` is the Viewer illustrative Spacefill preset; and `polymer-cartoon` exposes the standalone Mol#super[#sym.ast] Cartoon provider defaults. Ball-and-stick, ribbon, and backbone are also available.
 - Assembly support: biological assemblies are represented as source model plus unit operators before static mesh export.
 - Alternate locations: select a concrete altLoc, all altLocs, or the highest-occupancy conformer.
-- Color themes: `color-theme: "chain-id"` assigns Mol#super[#sym.ast] Chain ID colors and forwards OBJ materials to maquette.
+- Color themes: `color-theme` supports `chain-id`, `element-symbol`, `entity-id`, `operator-name`, `plddt-confidence`, `qmean-score`, and `sb-ncbr-partial-charges`. The optional `theme` dictionary mirrors Mol#super[#sym.ast] Viewer overrides such as `globalName`, `carbonColor`, and `symmetryColor`; OBJ materials are forwarded to maquette.
 - Outputs: OBJ, companion MTL, binary STL, and ASCII PLY.
 - Rendering: `render` passes generated mesh bytes to maquette; `render-object` exposes the mesh, rendered content, and normalized metadata for advanced documents.
 
@@ -86,9 +87,8 @@ The #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples")[`pack
 - `to-obj(data, ...)`, `to-mtl(data, ...)`, `to-stl(data, ...)`, and `to-ply(data, ...)` return export bytes.
 - `info(data, ...)` returns molecular and mesh-planning metadata without rendering.
 - `mesh-info(data, mesh-format: "obj", config: (:), ...)` delegates to maquette's mesh metadata helpers for the generated mesh.
-- `v15-or-later()` returns whether the active Typst compiler supports project-side `path(...)` values.
 
-Common options include `format`, `representation`, `color-theme`, `assembly`, `alt-loc`, `block-index`, `block-header`, `quality`, `sphere-detail`, `linear-segments`, `radial-segments`, `radius-scale`, `atom-radius`, `bond-radius`, `ribbon-radius`, `ribbon-width`, `helix-profile`, `round-cap`, `sheet-arrow-factor`, `tubular-helices`, `infer-bonds`, and `center`.
+Common options include `format`, `representation`, `color-theme`, `theme`, `assembly`, `alt-loc`, `block-index`, `block-header`, `quality`, `decimate`, `sphere-detail`, `linear-segments`, `radial-segments`, `radius-scale`, `atom-radius`, `bond-radius`, `ribbon-radius`, `ribbon-width`, `helix-profile`, `round-cap`, `sheet-arrow-factor`, `tubular-helices`, `infer-bonds`, and `center`.
 
 The `data` argument accepts bytes from `read(..., encoding: none)`, inline string data for small examples, and Typst 0.15+ path values created with `path("...")`.
 
@@ -102,7 +102,7 @@ OBJ output can be paired with `to-mtl`. During `render`, OBJ material colors are
 
 == Documentation
 
-The full Molfig manual is available at #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/docs/documentation.pdf")[`package/docs/documentation.pdf`]. It documents:
+The full Molfig manual is available at #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/docs/documentation.pdf")[`package/docs/documentation.pdf`]. It documents:
 
 - installation and import conventions;
 - input format handling and BinaryCIF block selection;
@@ -114,23 +114,23 @@ The full Molfig manual is available at #link("https://github.com/rice8y/molfig/t
 - troubleshooting and development commands;
 - the embedded 9R1O rendering and its data source.
 
-The manual source is #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/docs/documentation.typ")[`package/docs/documentation.typ`], and it reads the package version from #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/typst.toml")[`package/typst.toml`].
+The manual source is #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/docs/documentation.typ")[`package/docs/documentation.typ`], and it reads the package version from #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/typst.toml")[`package/typst.toml`].
 
 == Notes And Limits
 
-Molfig emits static presentation meshes. It does not implement Mol#super[#sym.ast]'s interactive WebGL surface or volume rendering pipeline. Molecular surface, gaussian surface, gaussian volume, and density/volume visuals are outside the current static export contract.
+Molfig emits static presentation meshes. `representation: "surface"` implements the #super[#sym.ast] Viewer Quick Styles Molecular Surface preset on the CPU and exports the result as OBJ/STL/PLY. Gaussian volume and density/volume visuals remain outside the static export contract; the size-dependent ViewerAuto path uses a CPU Gaussian surface for Huge and Gigantic structures.
 
-IHM coarse gaussian rows remain available as coarse model units, but they are not converted into gaussian surface or volume visuals.
+IHM coarse sphere and gaussian rows remain available as coarse model units and participate in the size-dependent ViewerAuto Gaussian-surface path.
 
 == License And Notices
 
-Molfig project code is licensed under the MIT License. See #link("https://github.com/rice8y/molfig/tree/v0.1.1/LICENSE")[`LICENSE`].
+Molfig project code is licensed under the MIT License. See #link("https://github.com/rice8y/molfig/tree/v0.1.3/LICENSE")[`LICENSE`].
 
 Molfig ports or adapts #link("https://github.com/molstar/molstar")[Mol#super[#sym.ast]] behavior and includes Mol#super[#sym.ast]-derived reference data in the Rust/WASM implementation. Mol#super[#sym.ast] is licensed under the MIT License, copyright (c) 2017 - now, Mol#super[#sym.ast] contributors.
 
-Bundled example structure files under #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data")[`package/examples/data`] are PDB archive data from RCSB PDB / wwPDB and are available under CC0 1.0. Per-file PDB IDs, DOIs, and recommended attributions are listed in #link("https://github.com/rice8y/molfig/tree/v0.1.1/package/examples/data/README.md")[`package/examples/data/README.md`].
+Bundled example structure files under #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/examples/data")[`examples/data`] are PDB archive data from RCSB PDB / wwPDB and are available under CC0 1.0. Per-file PDB IDs, DOIs, and recommended attributions are listed in #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/examples/data/README.md")[`examples/data/README.md`].
 
-See #link("https://github.com/rice8y/molfig/tree/v0.1.1/NOTICE.md")[`NOTICE.md`] and #link("https://github.com/rice8y/molfig/tree/v0.1.1/THIRD_PARTY_NOTICES.md")[`THIRD_PARTY_NOTICES.md`] for the full distribution notice.
+See #link("https://github.com/rice8y/molfig/tree/v0.1.3/NOTICE.md")[`NOTICE.md`] and #link("https://github.com/rice8y/molfig/tree/v0.1.3/THIRD_PARTY_NOTICES.md")[`THIRD_PARTY_NOTICES.md`] for the full distribution notice.
 
 == Development
 
