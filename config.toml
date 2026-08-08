@@ -74,6 +74,11 @@ copyright_year = "2026"
 print_path = "/print.pdf"
 num_posts_on_homepage = 3
 num_projects_on_homepage = 3
+interests = [
+  "Typesetting System",
+  "Scientific Visualization",
+  "Computational Biology",
+]
 nav = [
   { key = "blog", label = "blog", href = "/blog/" },
   { key = "awards", label = "awards", href = "/awards/" },

@@ -40,6 +40,14 @@
   awards_description: site.extra.at("awards_description", default: "A showcase of my experiences and achievements."),
   publications_description: site.extra.at("publications_description", default: "A showcase of my publications and research work."),
   image: site.extra.at("image", default: "/logo.png"),
+  interests: site.extra.at("interests", default: (
+    "Natural Language Processing",
+    "Computational Linguistics",
+    "Dialogue Corpora",
+    "Typst",
+    "Rust",
+    "Scientific Visualization",
+  )),
   nav: site.extra.at("nav", default: (
     (key: "blog", label: "blog", href: "/blog/"),
     (key: "awards", label: "awards", href: "/awards/"),
@@ -565,6 +573,12 @@
 
 #let about-field(label, value) = [#elem("span", attrs: (class: "about-label"))[#label] #elem("span", attrs: (class: "about-value"))[#value]]
 
+#let interest-list(items) = elem("ul", attrs: (class: "interest-list"))[
+  #for item in items {
+    elem("li")[#item]
+  }
+]
+
 #let home-page(site, profile, pages, body) = layout(site, profile, "", "Home", profile.description, "/", current-pdf: page-pdf-url("/"))[
   #elem("h2", attrs: (class: "animate page-title home-title"))[About me]
   #elem("div", attrs: (class: "stack-16 home-stack"))[
@@ -602,6 +616,12 @@
         #include "/content/_home_publications.typ"
       ]
     ]
+    #if profile.interests.len() > 0 {
+      elem("section", attrs: (class: "animate stack-4"))[
+        #section-title("Interests")
+        #interest-list(profile.interests)
+      ]
+    }
     #elem("section", attrs: (class: "animate stack-4"))[
       #elem("h5", attrs: (class: "section-title"))[Contact]
       #elem("ul", attrs: (class: "contact-list"))[

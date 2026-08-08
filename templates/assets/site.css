@@ -375,6 +375,24 @@ html.scrolled #back-to-top { opacity: 1; pointer-events: auto; }
 .about-value { color: color-mix(in srgb, var(--fg-strong) 70%, var(--fg) 30%); }
 .contact-list { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; list-style: none; }
 .contact-list li { display: flex; gap: 0.5rem; white-space: nowrap; margin: 0; }
+.interest-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  list-style: none;
+}
+.interest-list li {
+  margin: 0;
+  padding: 0.25rem 0.58rem;
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  color: color-mix(in srgb, var(--fg-strong) 70%, var(--fg) 30%);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
 
 /* Home compact prose: Awards / Publications */
 .home-compact-prose {
