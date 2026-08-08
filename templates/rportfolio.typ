@@ -563,13 +563,23 @@
   #elem("script")[#giscus-js]
 ]
 
+#let about-field(label, value) = [#elem("span", attrs: (class: "about-label"))[#label] #elem("span", attrs: (class: "about-value"))[#value]]
+
 #let home-page(site, profile, pages, body) = layout(site, profile, "", "Home", profile.description, "/", current-pdf: page-pdf-url("/"))[
   #elem("h2", attrs: (class: "animate page-title home-title"))[About me]
   #elem("div", attrs: (class: "stack-16 home-stack"))[
     #elem("section", attrs: (class: "about-section"))[
       #elem("article", attrs: (class: "about-text stack-4"))[
-        #elem("p", attrs: (class: "animate lang-ja block"))[#elem("b")[氏名:] 米山 瑛人#void("br")#elem("b")[所属:] 愛媛大学大学院理工学研究科理工学専攻数理情報プログラム 自然言語処理研究室#void("br")#elem("b")[学年:] 修士1年]
-        #elem("p", attrs: (class: "animate lang-en hidden"))[#elem("b")[Name:] Eito Yoneyama#void("br")#elem("b")[Affiliation:] Natural Language Processing Lab, Mathematical and Information Science Program, Graduate School of Science and Engineering, Ehime University#void("br")#elem("b")[Grade:] Master’s Student (M1)]
+        #elem("p", attrs: (class: "animate lang-ja block"))[
+          #about-field([氏名:], [米山 瑛人])#void("br")
+          #about-field([所属:], [愛媛大学大学院理工学研究科理工学専攻数理情報プログラム 自然言語処理研究室])#void("br")
+          #about-field([学年:], [修士1年])
+        ]
+        #elem("p", attrs: (class: "animate lang-en hidden"))[
+          #about-field([Name:], [Eito Yoneyama])#void("br")
+          #about-field([Affiliation:], [Natural Language Processing Lab, Mathematical and Information Science Program, Graduate School of Science and Engineering, Ehime University])#void("br")
+          #about-field([Grade:], [Master’s Student (M1)])
+        ]
       ]
     ]
     #elem("section", attrs: (class: "animate stack-6"))[
