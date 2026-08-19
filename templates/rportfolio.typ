@@ -350,6 +350,7 @@
     "OCaml": "https://img.shields.io/badge/OCaml-ec6813?style=flat&logo=ocaml&logoColor=white",
     "Node.js": "https://img.shields.io/badge/Node.js-5fa04e?style=flat&logo=nodedotjs&logoColor=white",
     "Astro": "https://img.shields.io/badge/Astro-bc52ee?style=flat&logo=astro&logoColor=white",
+    "Vue": "https://img.shields.io/badge/-Vue.js-4fc08d?style=flat&logo=vuedotjs&logoColor=white",
     "Other": "https://img.shields.io/badge/Other-6b7280?style=flat",
   )
   shields.at(str(language), default: "https://img.shields.io/badge/Other-6b7280?style=flat")
