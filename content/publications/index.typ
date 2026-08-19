@@ -7,6 +7,11 @@
   toc: false,
 )
 
+#let _publication-bibliography-deps = (
+  read("domestic.bib"),
+  read("international.bib"),
+)
+
 === 国内会議
 
 #bibtex-entry-data(

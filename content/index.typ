@@ -4,3 +4,8 @@
   section: "pages",
   toc: false,
 )
+
+#let _publication-bibliography-deps = (
+  read("publications/domestic.bib"),
+  read("publications/international.bib"),
+)
