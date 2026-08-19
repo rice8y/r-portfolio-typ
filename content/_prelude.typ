@@ -149,10 +149,15 @@
   }
 }
 
-#let img(src, alt: "", caption: none) = {
+#let img(src, alt: "", caption: none, class: "") = {
   context {
     if target() == "html" {
-      let image = _void("img", attrs: (src: src, alt: alt))
+      let attrs = if class == "" {
+        (src: src, alt: alt)
+      } else {
+        (src: src, alt: alt, class: class)
+      }
+      let image = _void("img", attrs: attrs)
       if caption == none {
         image
       } else {

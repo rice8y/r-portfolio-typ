@@ -491,6 +491,9 @@ article.prose > img {
   border-radius: 0.75rem;
   border: 1px solid var(--line);
 }
+article.prose img.content-image-wide {
+  width: 100%;
+}
 article.prose figcaption { margin-top: 0.5rem; text-align: center; color: var(--muted); font-family: var(--sans); font-size: 0.8rem; }
 article.prose blockquote {
   margin-inline: 0;
