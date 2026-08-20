@@ -1913,8 +1913,8 @@ article.prose.home-compact-prose [role="doc-bibliography"] + :where(h2, h3, h4) 
   top: calc(100% + 0.35rem) !important;
   z-index: 30 !important;
   display: grid !important;
-  min-width: 8.75rem !important;
-  padding: 0.3rem 0 !important;
+  min-width: 11rem !important;
+  padding: 0.25rem 0 !important;
   border: 1px solid var(--line) !important;
   background: var(--bg) !important;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
@@ -1928,6 +1928,37 @@ article.prose.home-compact-prose [role="doc-bibliography"] + :where(h2, h3, h4) 
   opacity: 1 !important;
   pointer-events: auto !important;
   transform: translateY(0) !important;
+}
+
+.publication-cite-menu.is-above .publication-cite-options {
+  top: auto !important;
+  bottom: calc(100% + 0.35rem) !important;
+  transform: translateY(0.15rem) !important;
+}
+
+.publication-cite-menu[open].is-above .publication-cite-options {
+  transform: translateY(0) !important;
+}
+
+.publication-cite-group {
+  display: grid !important;
+  gap: 0.08rem !important;
+  padding: 0.24rem 0 !important;
+}
+
+.publication-cite-group + .publication-cite-group {
+  border-top: 1px solid var(--line) !important;
+}
+
+.publication-cite-heading {
+  display: block !important;
+  padding: 0.22rem 0.7rem 0.16rem !important;
+  color: var(--muted) !important;
+  font-family: var(--sans) !important;
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
 }
 
 .publication-cite-option {
