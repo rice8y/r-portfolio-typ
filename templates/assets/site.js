@@ -292,12 +292,42 @@ function initPublicationCiteMenuDismissal() {
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closePublicationCiteMenus();
   });
+
+  window.addEventListener("resize", updateOpenPublicationCiteMenus);
+  window.addEventListener("scroll", updateOpenPublicationCiteMenus, { passive: true });
 }
 
 function closePublicationCiteMenus(except = null) {
   document.querySelectorAll(".publication-cite-menu[open]").forEach((menu) => {
     if (menu !== except) menu.removeAttribute("open");
   });
+}
+
+function updateOpenPublicationCiteMenus() {
+  document.querySelectorAll(".publication-cite-menu[open]").forEach((menu) => {
+    positionPublicationCiteMenu(menu);
+  });
+}
+
+function positionPublicationCiteMenu(menu) {
+  const panel = menu.querySelector(".publication-cite-options");
+  if (!menu.open || !panel) {
+    menu.classList.remove("is-above");
+    return;
+  }
+
+  menu.classList.remove("is-above");
+  const belowRect = panel.getBoundingClientRect();
+  const footerTop = document.querySelector("footer")?.getBoundingClientRect().top ?? Number.POSITIVE_INFINITY;
+  const lowerLimit = Math.min(window.innerHeight - 12, footerTop - 12);
+
+  if (belowRect.bottom <= lowerLimit) return;
+
+  menu.classList.add("is-above");
+  const aboveRect = panel.getBoundingClientRect();
+  if (aboveRect.top < 12 && belowRect.bottom <= window.innerHeight - 12) {
+    menu.classList.remove("is-above");
+  }
 }
 
 function nextBibliography(root) {
@@ -348,89 +378,219 @@ function splitBibEntries(source) {
   return entries;
 }
 
+let hayagrivaWasmPromise;
+
+function loadHayagrivaWasm() {
+  if (!hayagrivaWasmPromise) {
+    hayagrivaWasmPromise = fetch("/wasm/hayagriva_export.wasm")
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`failed to load Hayagriva WASM: ${response.status}`);
+        const bytes = await response.arrayBuffer();
+        return WebAssembly.instantiate(bytes, {});
+      })
+      .then((result) => result.instance.exports);
+  }
+  return hayagrivaWasmPromise;
+}
+
+async function bibtexToHayagrivaYaml(bibtex) {
+  const exports = await loadHayagrivaWasm();
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  const input = encoder.encode(bibtex);
+  const inputPtr = exports.hayagriva_alloc(input.length);
+  new Uint8Array(exports.memory.buffer, inputPtr, input.length).set(input);
+
+  let outputPtr = 0;
+  try {
+    outputPtr = exports.hayagriva_bibtex_to_yaml(inputPtr, input.length);
+  } finally {
+    exports.hayagriva_dealloc(inputPtr, input.length);
+  }
+
+  const outputLen = exports.hayagriva_last_result_len();
+  const output = new Uint8Array(exports.memory.buffer, outputPtr, outputLen).slice();
+  exports.hayagriva_result_free(outputPtr, outputLen);
+
+  const text = decoder.decode(output);
+  if (text.startsWith("ok\n")) return text.slice(3);
+  throw new Error(text.startsWith("err\n") ? text.slice(4) : text);
+}
+
 function createPublicationCiteMenu(entry) {
   const menu = document.createElement("details");
   menu.className = "publication-cite-menu";
 
   const summary = document.createElement("summary");
   summary.className = "publication-cite-button";
-  summary.setAttribute("aria-label", "Export BibTeX citation");
-  summary.title = "Export BibTeX citation";
+  summary.setAttribute("aria-label", "Export citation");
+  summary.title = "Export citation";
   summary.innerHTML = [
     '<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">',
     '<path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>',
     '<path d="M8.646 6.646a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1 0 .708l-2 2a.5.5 0 0 1-.708-.708L10.293 9 8.646 7.354a.5.5 0 0 1 0-.708m-1.292 0a.5.5 0 0 0-.708 0l-2 2a.5.5 0 0 0 0 .708l2 2a.5.5 0 0 0 .708-.708L5.707 9l1.647-1.646a.5.5 0 0 0 0-.708"/>',
     '</svg>',
-    '<span>BibTeX</span>',
+    '<span>Export</span>',
   ].join("");
 
   summary.addEventListener("click", () => closePublicationCiteMenus(menu));
+  menu.addEventListener("toggle", () => {
+    if (menu.open) {
+      requestAnimationFrame(() => positionPublicationCiteMenu(menu));
+    } else {
+      menu.classList.remove("is-above");
+    }
+  });
 
   const options = document.createElement("span");
   options.className = "publication-cite-options";
+  const hayagrivaText = () => bibtexToHayagrivaYaml(entry.text);
 
-  const copyButton = document.createElement("button");
-  copyButton.type = "button";
-  copyButton.className = "publication-cite-option";
-  copyButton.textContent = "Copy BibTeX";
-
-  const downloadButton = document.createElement("button");
-  downloadButton.type = "button";
-  downloadButton.className = "publication-cite-option";
-  downloadButton.textContent = "Download .bib";
-
-  const runCopy = async (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (copyButton.dataset.copyBusy === "true") return;
-    copyButton.dataset.copyBusy = "true";
-    copyButton.focus();
-    const ok = await copyText(entry.text);
-    copyButton.textContent = ok ? "Copied" : "Select text";
-    summary.classList.toggle("is-copied", ok);
-    if (!ok) showManualBibCopy(options, entry.text);
-    window.setTimeout(() => {
-      summary.classList.remove("is-copied");
-      copyButton.dataset.copyBusy = "false";
-      if (ok) {
-        copyButton.textContent = "Copy BibTeX";
-        menu.removeAttribute("open");
-      }
-    }, 1400);
-  };
-
-  copyButton.addEventListener("pointerdown", runCopy);
-  copyButton.addEventListener("click", runCopy);
-
-  downloadButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    const blob = new Blob([entry.text], { type: "application/x-bibtex;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${entry.key}.bib`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    menu.removeAttribute("open");
+  const copyBibButton = createPublicationCiteOption("Copy BibTeX");
+  attachPublicationCopy(copyBibButton, {
+    text: entry.text,
+    resetLabel: "Copy BibTeX",
+    fallbackLabel: "BibTeX citation text",
+    summary,
+    menu,
+    options,
   });
 
-  options.append(copyButton, downloadButton);
+  const downloadBibButton = createPublicationCiteOption("Download .bib");
+  attachPublicationDownload(downloadBibButton, {
+    text: entry.text,
+    filename: `${entry.key}.bib`,
+    type: "application/x-bibtex;charset=utf-8",
+    menu,
+  });
+
+  const copyHayagrivaButton = createPublicationCiteOption("Copy Hayagriva");
+  attachPublicationCopy(copyHayagrivaButton, {
+    text: hayagrivaText,
+    resetLabel: "Copy Hayagriva",
+    fallbackLabel: "Hayagriva YAML citation text",
+    summary,
+    menu,
+    options,
+  });
+
+  const downloadHayagrivaButton = createPublicationCiteOption("Download .yml");
+  attachPublicationDownload(downloadHayagrivaButton, {
+    text: hayagrivaText,
+    filename: `${entry.key}.yml`,
+    type: "application/x-yaml;charset=utf-8",
+    menu,
+  });
+
+  options.append(
+    createPublicationCiteGroup("BibTeX", copyBibButton, downloadBibButton),
+    createPublicationCiteGroup("Hayagriva", copyHayagrivaButton, downloadHayagrivaButton),
+  );
   menu.append(summary, options);
   return menu;
 }
 
-function showManualBibCopy(container, text) {
+function createPublicationCiteGroup(label, ...buttons) {
+  const group = document.createElement("span");
+  group.className = "publication-cite-group";
+  group.setAttribute("role", "group");
+  group.setAttribute("aria-label", `${label} export options`);
+
+  const heading = document.createElement("span");
+  heading.className = "publication-cite-heading";
+  heading.textContent = label;
+
+  group.append(heading, ...buttons);
+  return group;
+}
+
+function createPublicationCiteOption(label) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "publication-cite-option";
+  button.textContent = label;
+  return button;
+}
+
+function attachPublicationCopy(button, { text, resetLabel, fallbackLabel, summary, menu, options }) {
+  const runCopy = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (button.dataset.copyBusy === "true") return;
+    button.dataset.copyBusy = "true";
+    button.focus();
+    button.textContent = "Preparing";
+    let ok = false;
+    try {
+      const resolvedText = await resolvePublicationExportText(text);
+      ok = await copyText(resolvedText);
+      button.textContent = ok ? "Copied" : "Select text";
+      summary.classList.toggle("is-copied", ok);
+      if (!ok) showManualBibCopy(options, resolvedText, fallbackLabel);
+    } catch (error) {
+      console.error(error);
+      button.textContent = "Failed";
+      summary.classList.remove("is-copied");
+    } finally {
+      window.setTimeout(() => {
+        summary.classList.remove("is-copied");
+        button.dataset.copyBusy = "false";
+        button.textContent = resetLabel;
+        if (ok) menu.removeAttribute("open");
+      }, 1400);
+    }
+  };
+
+  button.addEventListener("pointerdown", runCopy);
+  button.addEventListener("click", runCopy);
+}
+
+function attachPublicationDownload(button, { text, filename, type, menu }) {
+  button.addEventListener("click", async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (button.dataset.downloadBusy === "true") return;
+    button.dataset.downloadBusy = "true";
+    const resetLabel = button.textContent;
+    button.textContent = "Preparing";
+    try {
+      const resolvedText = await resolvePublicationExportText(text);
+      const blob = new Blob([resolvedText], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      menu.removeAttribute("open");
+    } catch (error) {
+      console.error(error);
+      button.textContent = "Failed";
+      window.setTimeout(() => {
+        button.textContent = resetLabel;
+      }, 1400);
+    } finally {
+      button.dataset.downloadBusy = "false";
+      if (button.textContent === "Preparing") button.textContent = resetLabel;
+    }
+  });
+}
+
+async function resolvePublicationExportText(text) {
+  return typeof text === "function" ? await text() : text;
+}
+
+function showManualBibCopy(container, text, label = "Citation text") {
   let textarea = container.querySelector(".publication-cite-fallback");
   if (!textarea) {
     textarea = document.createElement("textarea");
     textarea.className = "publication-cite-fallback";
     textarea.setAttribute("readonly", "");
-    textarea.setAttribute("aria-label", "BibTeX citation text");
     container.appendChild(textarea);
   }
+  textarea.setAttribute("aria-label", label);
   textarea.value = text;
   textarea.focus();
   textarea.select();
