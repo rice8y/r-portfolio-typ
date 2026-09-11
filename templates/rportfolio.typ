@@ -691,6 +691,14 @@
   }
 }
 
+#let project-language-chart() = {
+  elem("section", attrs: (id: "project-language-chart", "aria-labelledby": "project-language-title"))[
+    #elem("h2", attrs: (id: "project-language-title", class: "section-title"))[Languages]
+    #elem("p", attrs: (class: "language-chart-status"))[Language data is generated during the build.]
+    #elem("ol", attrs: (class: "language-chart-bars", "aria-label": "Language share by code bytes"))[]
+  ]
+}
+
 #let render-list(site: (:), page: (:), pages: (), taxonomies: (:), body) = context {
   let p = profile(site)
   let path = page.url
@@ -708,6 +716,7 @@
           #card-list(page.items)
           #elem("p", attrs: (class: "project-filter-empty hidden"))[No projects match this language.]
         ]
+        #if path == "/projects/" { project-language-chart() }
       ]
     ]
   } else if path.starts-with("/blog/") {
