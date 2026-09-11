@@ -53,7 +53,7 @@ Await `autoRuby()` before passing its result to minitype. `p()` expects an array
 
 Use `createRubinate(config)` when you want to share settings across calls or supply a custom tokenizer. It is not required for the example above.
 
-See the #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.0/docs/documentation.pdf")[documentation] for executable examples, their rendered results and the complete public API.
+See the #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.1/docs/documentation.pdf")[documentation] for executable examples, their rendered results and the complete public API.
 
 == TSX
 
@@ -135,7 +135,7 @@ A complete example is in [examples/tsx.tsx](examples/tsx.tsx); run it from this 
 )
 
 
-`autoRuby`, `analyze` and `segments` are also top-level imports using a shared default instance. To use a shorter local name, import `autoRuby as ruby` from `minitype-plugin-rubinate`; keep it distinct from minitype's manual `ruby` helper. See the #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.0/src/index.ts")[public types] and #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.0/docs/documentation.pdf")[manual].
+`autoRuby`, `analyze` and `segments` are also top-level imports using a shared default instance. To use a shorter local name, import `autoRuby as ruby` from `minitype-plugin-rubinate`; keep it distinct from minitype's manual `ruby` helper. See the #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.1/src/index.ts")[public types] and #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.1/docs/documentation.pdf")[manual].
 
 == Readings
 
@@ -339,7 +339,7 @@ Rubinate uses IPADIC and UniDic analyzers, okurigana alignment and furigana corr
 
 The WASM assets are about 11 MiB for IPADIC, 44 MiB for UniDic and 5.4 MiB for correspondence. All are packaged, but only the selected analyzer loads. They load lazily and are shared per process. Processing is synchronous inside the async API; a worker is appropriate when event-loop latency matters. `config.tokenizer` can replace the analyzer; see the manual's custom tokenizer example and contract.
 
-== Development and documentation
+== Development
 
 ```sh
 npm test                 # Build, type-check and run regression tests
@@ -349,12 +349,12 @@ npm run documentation:images # Regenerate standalone README images
 npm pack                 # Package binaries, sources and documentation
 ```
 
-Exact binary hashes and source provenance are in #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.0/assets/manifest.json")[assets/manifest.json]. The package maintains the corresponding Rust sources and dictionary data under #link("https://github.com/rice8y/minitype-plugin-rubinate/tree/v0.1.0/wasm-plugins")[wasm-plugins]. Optional WASM rebuild instructions are in the manual.
+Exact binary hashes and source provenance are in #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.1/assets/manifest.json")[assets/manifest.json]. The package maintains the corresponding Rust sources and dictionary data under #link("https://github.com/rice8y/minitype-plugin-rubinate/tree/v0.1.1/wasm-plugins")[wasm-plugins]. Optional WASM rebuild instructions are in the manual.
 
 == License
 
-Rubinate is licensed under #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.0/LICENSE")[MIT]. Correspondence data is CC BY-SA 4.0. UniDic uses its BSD-3-Clause option; IPADIC and Lindera retain their respective notices. minitype 0.1.6 uses a separate PolyForm Noncommercial license.
+Rubinate is licensed under #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.1/LICENSE")[MIT]. Correspondence data is CC BY-SA 4.0. UniDic uses its BSD-3-Clause option; IPADIC and Lindera retain their respective notices. minitype 0.1.6 uses a separate PolyForm Noncommercial license.
 
-See #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.0/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md] for attribution and the host dependency audit status.
+See #link("https://github.com/rice8y/minitype-plugin-rubinate/blob/v0.1.1/THIRD_PARTY_NOTICES.md")[THIRD_PARTY_NOTICES.md] for attribution and the host dependency audit status.
 
 Rubinate provides automatic Japanese ruby functionality equivalent to #link("https://github.com/rice8y/auto-jrubby")[auto-jrubby], with ruby layout handled by minitype.
