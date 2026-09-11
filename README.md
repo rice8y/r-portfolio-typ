@@ -82,6 +82,8 @@ Write Typst content here.
 
 Project entries use `#show: project.with(...)`, keep `section: "projects"` for the flat project listing, and declare project fields such as `languages` and `links` directly. Collection schemas live in `content/config.typ`.
 
+The Projects root page displays a descending language bar chart above the footer. The `post_build` hook runs `scripts/build-project-languages.mjs` (Node.js 22+) to read freshly generated Typage metadata, fetch the GitHub languages API for each unique project repository, and embed the chart in `dist/projects/index.html`. Percentages use summed code bytes, not repository averages. The browser makes no API requests and needs no JavaScript to display the chart. Every build fetches fresh data; repositories returning 404 are excluded with a visible note, while other failed or rate-limited requests fail the build. Set `GITHUB_TOKEN` or `GH_TOKEN` in the build environment for authenticated API limits; tokens are never included in the output. Run `node scripts/test-project-languages.mjs` to check aggregation.
+
 Publications are registered in `content/publications/domestic.bib` and `content/publications/international.bib`. Domestic entries use the ENLP-inspired CSL, international entries use the ACL/Blinky-derived CSL, and the publications page exposes per-entry BibTeX clipboard copy and `.bib` download controls.
 
 Writer-facing helpers live in `content/_prelude.typ`, including:

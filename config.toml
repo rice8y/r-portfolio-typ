@@ -122,7 +122,7 @@ deploy-check = "deploy doctor"
 # Hooks run from the site root. They may call external commands or `typage ...`.
 # Nested typage commands run from hooks do not trigger hooks again.
 # pre_build = "echo before build"
-# post_build = "echo after build"
+post_build = "node scripts/build-project-languages.mjs"
 # pre_serve = "echo before serve"
 # post_serve = "echo after serve"
 # pre_deploy = "echo before deploy"

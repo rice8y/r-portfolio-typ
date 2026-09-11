@@ -646,6 +646,18 @@ html.dark .giscus-frame { color-scheme: dark; }
 }
 .email-no-copy::before { content: attr(data-email); }
 
+#project-language-chart { border-top: 1px solid var(--line); padding-top: 2rem; }
+.language-chart-status { font-size: 0.8rem; margin-block: 0.75rem 1.25rem; }
+.language-chart-bars { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.7rem; }
+.language-chart-bars li { display: grid; grid-template-columns: minmax(0, 8rem) minmax(0, 1fr) 3.5rem; gap: 0.75rem; align-items: center; font-size: 0.8rem; }
+.language-chart-label { overflow-wrap: anywhere; color: var(--fg-strong); }
+.language-chart-track { height: 0.6rem; background: var(--code-bg); }
+.language-chart-track > span { display: block; height: 100%; min-width: 1px; background: var(--fg); }
+.language-chart-value { text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 480px) {
+  .language-chart-bars li { grid-template-columns: minmax(0, 6rem) minmax(0, 1fr) 3.25rem; gap: 0.5rem; }
+}
+
 /* Reveal animation and playful footer collapse hook. */
 .animate { opacity: 0; transform: translateY(0.75rem); transition: opacity .7s ease-out, transform .7s ease-out; }
 .animate.show { opacity: 1; transform: translateY(0); }
