@@ -4,6 +4,7 @@
   title: "axodendron",
   description: "A Typst package for validating, analyzing, transforming, and rendering neuronal morphologies from SWC data, with publication-ready figures, quantitative measurements, and document-native annotations through a concise API.",
   date: "2026-08-09",
+  updated: "2026-09-11",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),
@@ -20,7 +21,7 @@ Axodendron validates, analyzes, transforms, and renders neuronal morphologies fr
 == Quick start
 
 ```typ
-#import "@preview/axodendron:0.1.0" as swc
+#import "@preview/axodendron:0.1.1" as swc
 
 #set page(width: auto, height: auto, margin: 3mm)
 
@@ -46,7 +47,7 @@ Read the SWC at the call site and pass its bytes to `load`, because a package fu
 `analyze` returns versioned morphology summary, topology, section, tortuosity, path-distance, radial-distance, branch-order, and Strahler fields in one WASM call. The example below colors both results by analyzed branch order, then uses the pure `prune` transformation to remove type 2 axon nodes and their descendant subtrees without mutating `cell`.
 
 ```typ
-#import "@preview/axodendron:0.1.0" as swc
+#import "@preview/axodendron:0.1.1" as swc
 
 #set page(width: auto, height: auto, margin: 3mm)
 
@@ -87,6 +88,12 @@ This is the actual output of #link("https://github.com/rice8y/axodendron/blob/ma
 
 All transformations return a new cell with transform reports, old/new ID mappings, and interpolation lineage where applicable. Selection never invents bridging edges, resampling preserves topology boundaries, and node-aligned analysis fields carry a morphology fingerprint so fields from a different cell are rejected by `render`.
 
+For definition-sensitive work, `measure` returns tagged morphology, node, section, or bifurcation fields with a metric ID, independent definition version, resolved parameters, common selection query, provenance, fingerprints, and explicit missing reasons. Branch metrics include local and remote bifurcation angle, sibling ratio, terminal partition asymmetry, diameter power/Rall ratio, taper rate, and segment meander angle; spatial metrics include cable- or node-weighted centroid/PCA, extents, anisotropy, separate 2D/3D convex-hull measures, and volume density. Basic counts, cable length, maximum path length, neurite surface and volume, topology fields, section length, and section contraction use the same comparable result model.
+
+`available-metrics` exposes a machine-readable parameter schema for each metric, and irrelevant parameters are rejected instead of being ignored. `branch-order` and `strahler-order` selectors support an exact order or inclusive range on the selected induced forest.
+
+`principal-frame` exposes degeneracy tolerances and deterministic axis decisions, and principal projections are available as `"principal-xy"`, `"principal-xz"`, and `"principal-yz"`. SWC-compatible translate, rotate, uniform-scale, reflect, center, and PCA-align operations are separate from general affine transforms, whose unavoidable radius approximation is recorded explicitly.
+
 == Rendering
 
 Named projections are `"xy"`, `"xz"`, and `"yz"`; arbitrary orthographic views use a `(direction:, up:)` camera dictionary. The example below renders the same cell in XY, XZ, and oblique views with matched canvas and Typst aspect ratios.
@@ -94,7 +101,7 @@ Named projections are `"xy"`, `"xz"`, and `"yz"`; arbitrary orthographic views u
 The default `color-by: "type"` mapping uses red for soma, green for basal and apical dendrites, and blue for axon; exact fallback and scalar-palette rules, scientific definitions, and the complete public API are collected in the #link("https://github.com/rice8y/axodendron/blob/main/package/docs/documentation.pdf")[Axodendron manual].
 
 ```typ
-#import "@preview/axodendron:0.1.0" as swc
+#import "@preview/axodendron:0.1.1" as swc
 
 #set page(width: auto, height: auto, margin: 3mm)
 
@@ -148,7 +155,7 @@ This is the actual output of #link("https://github.com/rice8y/axodendron/blob/ma
 Axodendron can pass the final fitted position of a requested SWC node to #link("https://github.com/cetz-package/cetz")[CeTZ] without making CeTZ a mandatory dependency. Import CeTZ explicitly, pass the module to `render`, and build an arrow label with `cetz-label`; the node is protected from display simplification and registered as a named CeTZ anchor in the same render call.
 
 ```typ
-#import "@preview/axodendron:0.1.0" as swc
+#import "@preview/axodendron:0.1.1" as swc
 #import "@preview/cetz:0.5.2"
 
 #set page(width: auto, height: auto, margin: 3mm)
@@ -182,6 +189,14 @@ This is the actual output of #link("https://github.com/rice8y/axodendron/blob/ma
 
 For caller-owned CeTZ drawings, use `anchor-nodes: (447, ...)` with `return-report: true`, retrieve exact top-left-relative lengths and normalized coordinates through `node-anchor`, and compose them with `cetz-annotate`.
 
+== Topology, TMD, and populations
+
+`render-tree` draws a dendrogram with topological, root-path-length, or radial-distance depth while keeping branch and Strahler order as discrete color fields. `tmd` computes provenance-bearing terminal–merge pairs for radial or path-distance filtrations, and `persistence-barcode` and `persistence-diagram` render them as native Typst geometry. Root-path length is measured from each selected arbor root and does not accept a center; radial distance uses the soma by default or an explicitly selected arbor root. Radial non-monotonicity is reported instead of silently clamped.
+
+Persistence plots label their filtration axes and physical units. Pass one `persistence-scale` result to both plots for directly comparable coordinates; blue denotes ordinary pairs and red denotes the essential survivor retained for each selected arbor. Barcode rows have a versioned deterministic order recorded in TMD provenance.
+
+`population`, `feature-column`, and `feature-table` build Typst-native comparable feature tables. Field aggregation is explicit and strict about partial missingness by default; structured morphology metrics require an explicit component such as centroid `x`, bounding-box `span-x`, or principal-extent `major`; resolved metric definitions, parameters, components, and units must agree across morphologies. CSV is a separate serialization function so the primary result retains missing reasons and descriptive summaries.
+
 == Public API
 
 #table(
@@ -196,20 +211,38 @@ For caller-owned CeTZ drawings, use `anchor-nodes: (447, ...)` with `return-repo
   [`load`, `from-text`, `diagnostics`, `metadata`],
   [Parse SWC, validate topology, and retain provenance],
 
-  [`analyze`, `sholl`, `sholl-2d`],
-  [Compute versioned 3D morphometrics and 2D/3D Sholl intersections],
+  [`analyze`, `metric`, `measure`, `principal-frame`],
+  [Compute fixed and definition-sensitive morphometrics and deterministic principal frames],
+
+  [`sholl`, `sholl-2d`, `tmd`],
+  [Compute 2D/3D Sholl intersections and radial/path-distance TMD pairs],
+
+  [`select-node-ids`, `branch-points`, `terminals`, `soma-nodes`, `branch-order-nodes`, `strahler-order-nodes`],
+  [Query topology or exact/ranged orders under a common domain/kind/subtree/node selection],
+
+  [`field-to-nodes`],
+  [Explicitly convert section or bifurcation fields for node-based visualization],
 
   [`select-nodes`, `select-kinds`, `subtree`, `path`],
   [Select induced forests, descendant trees, or a unique path],
 
   [`reroot`, `prune`, `resample`, `simplify`],
-  [Return traceable topology-preserving transformations],
+  [Return traceable topology transformations],
+
+  [`translate`, `rotate`, `uniform-scale`, `reflect`, `center-morphology`, `pca-align`, `affine-transform`],
+  [Apply provenance-bearing geometry transforms with explicit SWC radius semantics],
 
   [`export-swc`],
   [Produce deterministic canonical SWC],
 
-  [`render`, `node-anchor`],
-  [Produce compact deterministic SVG and expose requested fitted node coordinates],
+  [`render`, `render-tree`, `node-anchor`],
+  [Render physical projections or abstract trees and expose requested fitted node coordinates],
+
+  [`persistence-scale`, `persistence-barcode`, `persistence-diagram`, `persistence-legend`],
+  [Share TMD plot scales and render labeled native Typst geometry with an explicit color key],
+
+  [`population`, `feature-column`, `feature-table`, `feature-table-csv`],
+  [Compute comparable population features and optional CSV text],
 
   [`label`, `marker`, `legend`, `color-bar`, `scale-bar`],
   [Construct native Typst publication-figure annotations],
@@ -224,25 +257,29 @@ For caller-owned CeTZ drawings, use `anchor-nodes: (447, ...)` with `return-repo
 
 == Examples
 
-Typst sources live directly under #link("https://github.com/rice8y/axodendron/tree/main/package/examples")[`examples/`], while all input morphologies live separately under #link("https://github.com/rice8y/axodendron/tree/main/package/examples/data")[`examples/data/`]; `.typ` and `.swc` files are never mixed at one directory level.
+Typst sources live directly under #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples")[`examples/`], while all input morphologies live separately under #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/data")[`examples/data/`]; `.typ` and `.swc` files are never mixed at one directory level.
 
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/basic.typ")[`examples/basic.typ`] demonstrates analysis, labels, scalar coloring, Sholl analysis, and a two-panel figure with the attributed AA0109 reconstruction.
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/cetz.typ")[`examples/cetz.typ`] uses a routed CeTZ arrow to label an exact projected terminal node in the AA0109 reconstruction.
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/overview.typ")[`examples/overview.typ`] lays out three real morphologies in parallel without frames or figure-level decoration and produces the overview image.
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/readme.typ")[`examples/readme.typ`] renders the attributed Sst morphology used by Quick start.
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/analysis.typ")[`examples/analysis.typ`] visualizes branch-order analysis and a pure pruning transformation.
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/rendering.typ")[`examples/rendering.typ`] compares named and arbitrary orthographic projections.
-- #link("https://github.com/rice8y/axodendron/tree/main/package/examples/data")[`examples/data/`] contains the four attributed NeuroMorpho.Org examples listed in #link("https://github.com/rice8y/axodendron/blob/main/package/THIRD_PARTY_NOTICES.md")[`THIRD_PARTY_NOTICES.md`].
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/basic.typ")[`examples/basic.typ`] demonstrates analysis, labels, scalar coloring, Sholl analysis, and a two-panel figure with the attributed AA0109 reconstruction.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/cetz.typ")[`examples/cetz.typ`] uses a routed CeTZ arrow to label an exact projected terminal node in the AA0109 reconstruction.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/morphometrics.typ")[`examples/morphometrics.typ`] computes a pairwise bifurcation field, explicitly maps it to branch nodes, and renders local angle.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/overview.typ")[`examples/overview.typ`] lays out three real morphologies in parallel without frames or figure-level decoration and produces the overview image.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/population.typ")[`examples/population.typ`] creates a three-morphology feature table with explicit field aggregation and missing policy.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/readme.typ")[`examples/readme.typ`] renders the attributed Sst morphology used by Quick start.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/analysis.typ")[`examples/analysis.typ`] visualizes branch-order analysis and a pure pruning transformation.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/rendering.typ")[`examples/rendering.typ`] compares named and arbitrary orthographic projections.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/tmd.typ")[`examples/tmd.typ`] renders a path-distance TMD barcode and persistence diagram.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/topology.typ")[`examples/topology.typ`] renders a path-length dendrogram colored by Strahler order.
+- #link("https://github.com/rice8y/axodendron/blob/v0.1.1/package/examples/data")[`examples/data/`] contains the four attributed NeuroMorpho.Org examples listed in #link("https://github.com/rice8y/axodendron/blob/main/package/THIRD_PARTY_NOTICES.md")[`THIRD_PARTY_NOTICES.md`].
 
 == Development
 
-Install Rust with the `wasm32-unknown-unknown` target, Typst 0.14.0 or newer, and `wasm-tools`, then run from the repository root:
+Install Rust with the `wasm32-unknown-unknown` target, Typst 0.14.0 or newer, Binaryen 132, and `wasm-tools`, then run from the repository root:
 
 ```sh
 ./scripts/check.sh
 ```
 
-The check performs formatting, warnings-as-errors linting and documentation, normal and adversarial tests, the 250,000-node limit suite, performance budgets, two byte-identical clean WASM builds, package-boundary verification, README synchronization, and Typst smoke compilation.
+The check performs formatting, warnings-as-errors linting and documentation, normal and adversarial tests, the 250,000-node limit suite, performance budgets, two byte-identical clean WASM builds, package-boundary verification, and README synchronization. CI additionally recomputes pinned NeuroM 4.0.5 and L-Measure 5.0 revision 434 cross-validation values.
 
 For the checksum-pinned private NeuroMorpho regression and 1,000 render cases, run:
 
