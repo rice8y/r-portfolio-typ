@@ -8,7 +8,7 @@
   toc: false,
   languages: ("Python",),
   links: (
-    (label: "GitHub", url: "https://github.com/rice8y/escansel"),
+    (label: "GitHub", url: "https://github.com/rice8y/escancel"),
   ),
 )
 
