@@ -49,7 +49,7 @@ Run:
 npx tsx index.ts
 ```
 
-Await `autoRuby()` before passing its result to minitype. `p()` expects an array of lines, so wrap the returned inline array: `p([await autoRuby(text)])`. The tagged form `` p`${await autoRuby(text)}` `` is also supported.
+Await `autoRuby()` before passing its result to minitype. `p()` expects an array of lines, so wrap the returned inline array: `p([await autoRuby(text)])`. The tagged form ``` p`${await autoRuby(text)}` ``` is also supported.
 
 Use `createRubinate(config)` when you want to share settings across calls or supply a custom tokenizer. It is not required for the example above.
 
