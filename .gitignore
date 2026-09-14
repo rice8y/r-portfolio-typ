@@ -4,3 +4,5 @@ dist/
 .vercel/
 push.sh
 target/
+
+content/favorites/typesetting
