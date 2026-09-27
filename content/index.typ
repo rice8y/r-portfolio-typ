@@ -9,3 +9,9 @@
   read("publications/domestic.bib"),
   read("publications/international.bib"),
 )
+
+// Track the partial and helper used by the home template for incremental builds.
+#let _experience-deps = (
+  read("_home_experience.typ"),
+  read("_prelude.typ"),
+)

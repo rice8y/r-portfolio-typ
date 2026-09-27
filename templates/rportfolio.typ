@@ -617,6 +617,12 @@
         #include "/content/_home_publications.typ"
       ]
     ]
+    #elem("section", attrs: (class: "animate stack-4"))[
+      #section-title("Experience")
+      #elem("article", attrs: (class: "prose home-compact-prose"))[
+        #include "/content/_home_experience.typ"
+      ]
+    ]
     #if profile.interests.len() > 0 {
       elem("section", attrs: (class: "animate stack-4"))[
         #section-title("Interests")

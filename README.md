@@ -86,6 +86,17 @@ The Projects root page displays a descending language bar chart above the footer
 
 Publications are registered in `content/publications/domestic.bib` and `content/publications/international.bib`. Domestic entries use the ENLP-inspired CSL, international entries use the ACL/Blinky-derived CSL, and the publications page exposes per-entry BibTeX clipboard copy and `.bib` download controls.
 
+The home-only Experience section is maintained in `content/_home_experience.typ`. Add categories with `=== Internship`, `=== Teaching Assistant`, or other level-three headings, then add `experience` entries beneath them. This partial does not generate a dedicated page. `period` and `title` are required; `department` and `description` are optional. Text or Typst content (including links) can be used for each field.
+
+```typ
+#experience(
+  period: "2026.08 - 2026.09",
+  title: "Company name or assistant role",
+  department: "Research team",
+  description: [Research and development.],
+)
+```
+
 Writer-facing helpers live in `content/_prelude.typ`, including:
 
 ```typ
