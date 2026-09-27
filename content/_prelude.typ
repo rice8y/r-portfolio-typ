@@ -7,6 +7,35 @@
 
 #let _pdf-src(src) = if type(src) == str and src.starts-with("/") { "/static" + src } else { src }
 
+#let experience(period: none, title: none, department: none, description: none) = context {
+  assert(period != none and title != none, message: "experience requires period and title")
+  if target() == "html" {
+    _elem("div", attrs: (class: "experience-entry"))[
+      #_elem("div", attrs: (class: "experience-period"))[#period]
+      #_elem("div", attrs: (class: "experience-content"))[
+        #_elem("div", attrs: (class: "experience-title"))[#title]
+        #if department != none {
+          _elem("div", attrs: (class: "experience-department"))[#department]
+        }
+        #if description != none {
+          _elem("div", attrs: (class: "experience-description"))[#description]
+        }
+      ]
+    ]
+  } else {
+    block(breakable: false, above: 0.8em, below: 0.8em)[
+      #grid(columns: (auto, 1fr), gutter: 1.5em,
+        text(size: 0.85em, fill: luma(100))[#period],
+        [
+          #strong[#title]
+          #if department != none [#linebreak()#department]
+          #if description != none [#linebreak()#description]
+        ],
+      )
+    ]
+  }
+}
+
 #let _pad2(value) = {
   let s = str(value)
   if s.len() == 1 { "0" + s } else { s }
