@@ -268,13 +268,15 @@ function initPublicationBibTools() {
     root.dataset.bibToolsReady = "true";
 
     const source = root.querySelector(".publication-bib-source");
-    const entries = splitBibEntries(source?.textContent || "");
+    const entries = new Map(splitBibEntries(source?.textContent || "").map((entry) => [entry.key, entry]));
     const bibliography = nextBibliography(root);
-    const items = Array.from(bibliography?.querySelectorAll("li") || []);
 
-    items.forEach((item, index) => {
-      const entry = entries[index];
-      if (!entry) return;
+    root.querySelectorAll("[data-bib-key]").forEach((reference) => {
+      const entry = entries.get(reference.dataset.bibKey);
+      const href = reference.querySelector('a[href^="#"]')?.getAttribute("href");
+      const target = href && document.getElementById(decodeURIComponent(href.slice(1)));
+      const item = target?.closest("li");
+      if (!entry || !item || !bibliography?.contains(item)) return;
       item.appendChild(createPublicationCiteMenu(entry));
     });
   });

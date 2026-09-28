@@ -174,6 +174,10 @@
       "data-bib-filename": filename,
     ))[
       #_elem("script", attrs: (type: "application/x-bibtex", class: "publication-bib-source"))[#bib-source]
+      #for entry in bib-source.matches(regex("@\\w+\\s*[\\{\\(]\\s*([^,\\s]+)\\s*,")) {
+        let key = entry.captures.first()
+        _elem("span", attrs: ("data-bib-key": key))[#cite(label(key))]
+      }
     ]
   }
 }

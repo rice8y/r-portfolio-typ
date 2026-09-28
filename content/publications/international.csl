@@ -182,7 +182,10 @@
       </group>
     </layout>
   </citation>
-  <bibliography et-al-min="20" et-al-use-first="19">
+  <bibliography et-al-min="20" et-al-use-first="19" hanging-indent="true" entry-spacing="0" line-spacing="1">
+    <sort>
+      <key variable="issued" sort="descending"/>
+    </sort>
     <layout>
       <!-- author -->
       <choose>

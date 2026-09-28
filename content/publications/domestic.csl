@@ -65,6 +65,9 @@
   </citation>
 
   <bibliography et-al-min="100" et-al-use-first="100" hanging-indent="true" entry-spacing="0" line-spacing="1">
+    <sort>
+      <key variable="issued" sort="descending"/>
+    </sort>
     <layout suffix=".">
       <group delimiter=". ">
         <group delimiter=". ">

@@ -10,9 +10,12 @@
 #let _publication-bibliography-deps = (
   read("domestic.bib"),
   read("international.bib"),
+  read("domestic.csl"),
+  read("international.csl"),
+  read("/content/_prelude.typ"),
 )
 
-=== 国内会議
+=== Domestic Conferences
 
 #bibtex-entry-data(
   "/content/publications/domestic.bib",
@@ -26,7 +29,7 @@
   full: true,
 )
 
-=== 国際会議
+=== International Conferences
 
 #bibtex-entry-data(
   "/content/publications/international.bib",

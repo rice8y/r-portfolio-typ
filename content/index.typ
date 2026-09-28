@@ -8,6 +8,9 @@
 #let _publication-bibliography-deps = (
   read("publications/domestic.bib"),
   read("publications/international.bib"),
+  read("_home_publications.typ"),
+  read("publications/domestic.csl"),
+  read("publications/international.csl"),
 )
 
 // Track the partial and helper used by the home template for incremental builds.

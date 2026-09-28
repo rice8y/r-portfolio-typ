@@ -1,21 +1,17 @@
 #import "/content/_prelude.typ": *
 
-=== 国内会議
+#let publications(group: body => body) = {
+  for section in (
+    (title: "Domestic Conferences", name: "domestic", lang: "ja"),
+    (title: "International Conferences", name: "international", lang: "en"),
+  ) {
+    heading(level: 3, section.title)
+    let base = "/content/publications/" + section.name
+    group[
+      #set text(lang: section.lang)
+      #bibliography(base + ".bib", style: base + ".csl", title: none, full: true)
+    ]
+  }
+}
 
-#bibliography(
-  "/content/publications/domestic.bib",
-  style: "/content/publications/domestic.csl",
-  title: none,
-  full: true,
-)
-
-=== 国際会議
-
-#text(lang: "en")[
-  #bibliography(
-    "/content/publications/international.bib",
-    style: "/content/publications/international.csl",
-    title: none,
-    full: true,
-  )
-]
+#publications()
