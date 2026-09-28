@@ -4,6 +4,7 @@
   title: "glotter",
   description: "A Typst package for detecting the language of text fragments and applying language-aware settings to content.",
   date: "2026-05-23",
+  start_date: "2026-05-15",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

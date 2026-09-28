@@ -5,6 +5,7 @@
   description: "A Typst package for creating pixel art directly in your documents. Convert images to pixel art or design custom pixel graphics using simple text maps.",
   date: "2026-02-20",
   updated: "2026-06-21",
+  start_date: "2026-01-22",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

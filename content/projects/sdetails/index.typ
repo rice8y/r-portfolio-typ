@@ -4,6 +4,7 @@
   title: "SDetails",
   description: "SDetails is a Python-based CLI utility designed to improve the visibility of SLURM cluster resources.",
   date: "2025-08-29",
+  start_date: "2025-06-28",
   section: "projects",
   toc: false,
   languages: ("Python",),

@@ -4,6 +4,7 @@
   title: "CaleTZ",
   description: "A Typst package for visualizing Calabi-Yau manifolds using CeTZ 3D drawing primitives.",
   date: "2025-10-22",
+  start_date: "2025-10-20",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

@@ -1,6 +1,7 @@
 #let collections = (
   projects: collection.with(schema: (
     languages: array(str),
+    start_date: str,
     links: array(object((label: str, url: url))),
     has_math: optional(bool),
   )),

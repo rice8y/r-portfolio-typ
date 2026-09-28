@@ -5,6 +5,7 @@
   description: "A fast, beautiful, and highly customizable Typst package for rendering Universal Dependencies (CoNLL-U) trees, powered by Rust/WASM and CeTZ.",
   date: "2026-02-27",
   updated: "2026-05-24",
+  start_date: "2026-02-24",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

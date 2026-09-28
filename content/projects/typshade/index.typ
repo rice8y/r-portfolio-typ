@@ -5,6 +5,7 @@
   description: "A Typst package for visualizing multiple-sequence alignments in bioinformatics.",
   date: "2026-05-23",
   updated: "2026-08-08",
+  start_date: "2026-04-29",
   section: "projects",
   toc: false,
   languages: ("Typst",),

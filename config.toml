@@ -54,6 +54,8 @@ path = "cv.pdf"
 title = "Eito Yoneyama - Curriculum Vitae"
 template = "cv.typ"
 pages = ["index.typ"]
+sections = ["projects"]
+sort_by = "date_desc"
 include_future = true
 
 # Keep the starter minimal. Enable search when you add a search page.

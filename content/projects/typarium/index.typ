@@ -5,6 +5,7 @@
   description: "A Typst package for building expressive font specimen cards from system fonts, local font files, and mixed metadata dictionaries.",
   date: "2026-05-24",
   updated: "2026-06-21",
+  start_date: "2026-04-01",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

@@ -4,6 +4,7 @@
   title: "dtree",
   description: "A Typst package for visualizing directory trees and file structures using indented text.",
   date: "2026-02-20",
+  start_date: "2026-02-13",
   section: "projects",
   toc: false,
   languages: ("Typst",),

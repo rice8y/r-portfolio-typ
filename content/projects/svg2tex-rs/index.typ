@@ -4,6 +4,7 @@
   title: "svg2tex-rs",
   description: "Convert SVGs into PDF literals or LaTeX source for TeX workflows — preserving vector quality with robust hybrid rendering for real-world files.",
   date: "2026-05-24",
+  start_date: "2026-04-17",
   section: "projects",
   toc: false,
   languages: ("Rust",),

@@ -4,6 +4,7 @@
   title: "jlreq-tcf",
   description: "A LaTeX package providing two-column footnotes compatible with the jlreq class.",
   date: "2026-02-20",
+  start_date: "2026-01-07",
   section: "projects",
   toc: false,
   languages: ("TeX",),

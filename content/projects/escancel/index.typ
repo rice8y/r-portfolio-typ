@@ -4,6 +4,7 @@
   title: "escansel",
   description: "A simple and convenient CLI tool to cancel your SLURM jobs — essentially an easy scancel.",
   date: "2025-10-22",
+  start_date: "2025-10-17",
   section: "projects",
   toc: false,
   languages: ("Python",),

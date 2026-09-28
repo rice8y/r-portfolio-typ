@@ -5,6 +5,7 @@
   description: "A Typst package for validating, analyzing, transforming, and rendering neuronal morphologies from SWC data, with publication-ready figures, quantitative measurements, and document-native annotations through a concise API.",
   date: "2026-08-09",
   updated: "2026-09-11",
+  start_date: "2026-08-05",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

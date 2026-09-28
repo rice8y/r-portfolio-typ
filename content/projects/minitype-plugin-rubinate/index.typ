@@ -4,6 +4,7 @@
   title: "minitype-plugin-rubinate",
   description: "A minitype plugin for automatic Japanese ruby, using Lindera and reading correspondence dictionaries.",
   date: "2026-09-11",
+  start_date: "2026-09-10",
   section: "projects",
   toc: false,
   languages: ("Rust", "TypeScript", "JavaScript"),

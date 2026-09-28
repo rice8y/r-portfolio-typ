@@ -5,6 +5,7 @@
   description: "A Typst package that provides automatic Japanese morphological analysis and furigana (ruby) insertion.",
   date: "2026-01-02",
   updated: "2026-02-20",
+  start_date: "2025-12-07",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

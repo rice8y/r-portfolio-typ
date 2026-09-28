@@ -4,6 +4,7 @@
   title: "torch-check",
   description: "Inspect your Linux/Python/NVIDIA environment and recommend a compatible, officially available PyTorch wheel.",
   date: "2026-08-08",
+  start_date: "2026-07-15",
   section: "projects",
   toc: false,
   languages: ("Rust",),

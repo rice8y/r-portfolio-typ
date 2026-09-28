@@ -5,6 +5,7 @@
   description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
   date: "2026-03-03",
   updated: "2026-09-11",
+  start_date: "2026-03-03",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust", "C++"),

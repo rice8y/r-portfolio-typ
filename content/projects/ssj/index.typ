@@ -4,6 +4,7 @@
   title: "SSJ",
   description: "SSJ (Scontrol Show Job) is a Python-based CLI utility that enhances the readability and interactivity of SLURM job inspection.",
   date: "2025-08-29",
+  start_date: "2025-08-03",
   section: "projects",
   toc: false,
   languages: ("Python",),

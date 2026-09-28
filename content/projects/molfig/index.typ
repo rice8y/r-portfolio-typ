@@ -5,6 +5,7 @@
   description: "A Typst package for rendering molecular structure files in static documents.",
   date: "2026-06-21",
   updated: "2026-09-11",
+  start_date: "2026-06-16",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),

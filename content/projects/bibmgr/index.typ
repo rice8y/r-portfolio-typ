@@ -4,6 +4,7 @@
   title: "BibMgR",
   description: "A BibTeX reference manager for collecting, validating, editing, and exporting bibliography data.",
   date: "2026-08-20",
+  start_date: "2026-04-07",
   section: "projects",
   toc: false,
   languages: ("Python", "Rust", "TypeScript", "Vue"),

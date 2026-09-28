@@ -4,6 +4,7 @@
   title: "CeTZuron",
   description: "A Typst package for drawing neural network diagrams.",
   date: "2025-08-30",
+  start_date: "2024-10-06",
   section: "projects",
   toc: false,
   languages: ("Typst",),

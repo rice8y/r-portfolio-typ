@@ -4,6 +4,7 @@
   title: "ribon",
   description: "A Typst package for predicting, visualizing, and analyzing RNA secondary structures.",
   date: "2026-08-14",
+  start_date: "2026-08-13",
   section: "projects",
   toc: false,
   languages: ("Typst", "Rust"),
