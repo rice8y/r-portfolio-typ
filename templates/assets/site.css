@@ -1263,7 +1263,7 @@ article.prose :where(ul, ol) + :where(h2, h3, h4) {
 article.prose .experience-entry {
   display: grid;
   grid-template-columns: 10rem minmax(0, 1fr);
-  column-gap: 1.5rem;
+  column-gap: 1rem;
   line-height: 1.65;
   overflow-wrap: anywhere;
 }
@@ -1276,11 +1276,19 @@ article.prose .experience-period {
 article.prose .experience-title { color: var(--fg-strong); font-weight: 600; }
 article.prose .experience-department { color: var(--muted); font-size: 0.85rem; }
 article.prose .experience-description { margin-top: 0.35rem; font-size: 0.875rem; }
-article.prose .experience-content { min-width: 0; }
-article.prose .experience-entry + .experience-entry { margin-top: 1.25rem !important; }
-article.prose .experience-entry + :where(h2, h3, h4) { margin-top: 2rem !important; }
+article.prose .experience-content {
+  min-width: 0;
+  border-left: 1px solid var(--line);
+  padding-left: 1rem;
+}
+article.prose .experience-entry + .experience-entry {
+  margin-top: 1.25rem !important;
+}
+article.prose .experience-entry + :where(h2, h3, h4) {
+  margin-top: 2.25rem !important;
+}
 @media (max-width: 480px) {
-  article.prose .experience-entry { grid-template-columns: minmax(0, 1fr); row-gap: 0.2rem; }
+  article.prose .experience-entry { grid-template-columns: minmax(0, 1fr); row-gap: 0.5rem; }
   article.prose .experience-period { padding-top: 0; }
 }
 
