@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "bash scripts/vercel-install.sh",
-  "buildCommand": "PATH=\"$PWD/.bin:$PATH\" typage build --force --jobs 0",
+  "buildCommand": "PATH=\"$PWD/.bin:$PATH\" TYPST_FONT_PATHS=\"$PWD/.cache/fonts\" typage build --force --jobs 0",
   "outputDirectory": "dist",
   "cleanUrls": true
 }

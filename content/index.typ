@@ -18,3 +18,9 @@
   read("_home_experience.typ"),
   read("_prelude.typ"),
 )
+
+// The CV uses Home as its PDF source; track its shared content as well.
+#let _cv-deps = (
+  read("_cv.typ"),
+  read("_home_awards.typ"),
+)

@@ -32,6 +32,15 @@ tar -xJf "$typst_archive" -C "$typst_dir"
 cp "${typst_dir}/typst-${typst_target}/typst" .bin/typst
 chmod +x .bin/typst
 
+# Pin the Japanese fonts used by the CV so Linux builds match local output.
+font_dir=".cache/fonts"
+font_base_url="https://raw.githubusercontent.com/notofonts/noto-cjk/Serif2.003/Serif"
+mkdir -p "$font_dir"
+for weight in Regular Bold; do
+  curl -fsSL --retry 3 "${font_base_url}/OTF/Japanese/NotoSerifCJKjp-${weight}.otf" -o "${font_dir}/NotoSerifCJKjp-${weight}.otf"
+done
+curl -fsSL --retry 3 "${font_base_url}/LICENSE" -o "${font_dir}/LICENSE"
+
 if [[ -n "$typage_path" ]]; then
   echo "[setup] installing Typage from ${typage_path}"
   cargo install --path "$typage_path" --locked

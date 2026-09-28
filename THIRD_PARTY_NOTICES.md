@@ -2,6 +2,12 @@
 
 This project is a Typst HTML exporter-based portfolio site inspired by and partially ported from [Astro Nano](https://github.com/markhorn-dev/astro-nano).
 
+## CV Template and Fonts
+
+The CV uses [basic-resume](https://typst.app/universe/package/basic-resume/), version 0.2.9, by Stephen Xu, distributed under the Unlicense.
+
+Vercel builds download Noto Serif CJK JP Regular and Bold from the [Noto CJK Serif2.003 release](https://github.com/notofonts/noto-cjk/tree/Serif2.003/Serif). These fonts are distributed under the SIL Open Font License 1.1; the install step retains the accompanying license with the fonts.
+
 ## Astro Nano
 
 Astro Nano is a portfolio and blog theme for Astro created by Mark Horn.

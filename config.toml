@@ -49,6 +49,13 @@ include_drafts = false
 include_future = true
 include_expired = false
 
+[[pdf_documents]]
+path = "cv.pdf"
+title = "Eito Yoneyama - Curriculum Vitae"
+template = "cv.typ"
+pages = ["index.typ"]
+include_future = true
+
 # Keep the starter minimal. Enable search when you add a search page.
 [search]
 enabled = false
@@ -72,6 +79,7 @@ favorites_description = "A collection of my favorites."
 email = "yoneyama@ai.cs.ehime-u.ac.jp"
 copyright_year = "2026"
 print_path = "/print.pdf"
+cv_path = "/cv.pdf"
 num_posts_on_homepage = 3
 num_projects_on_homepage = 3
 interests = [

@@ -7,6 +7,21 @@
 
 #let _pdf-src(src) = if type(src) == str and src.starts-with("/") { "/static" + src } else { src }
 
+#let experience-group(body) = context {
+  if target() == "html" {
+    body
+  } else {
+    block(
+      width: 100%,
+      stroke: (left: 0.6pt + luma(170)),
+      inset: (left: 10pt, top: 2pt, bottom: 2pt),
+      above: 0pt,
+      below: 0pt,
+      body,
+    )
+  }
+}
+
 #let experience(period: none, title: none, department: none, description: none) = context {
   assert(period != none and title != none, message: "experience requires period and title")
   if target() == "html" {
@@ -23,15 +38,21 @@
       ]
     ]
   } else {
-    block(breakable: false, above: 0.8em, below: 0.8em)[
-      #grid(columns: (auto, 1fr), gutter: 1.5em,
-        text(size: 0.85em, fill: luma(100))[#period],
-        [
-          #strong[#title]
-          #if department != none [#linebreak()#department]
-          #if description != none [#linebreak()#description]
-        ],
-      )
+    import "@preview/basic-resume:0.2.9": work
+    let entry = work(
+      title: title,
+      dates: period,
+      company: if department == none { "" } else { department },
+    )
+    // work always emits two rows; omit its empty second row when no department is supplied.
+    if department == none or department == "" {
+      let row-end = entry.children.position(child => child.func() == linebreak)
+      if row-end != none { entry = entry.children.slice(0, row-end).join() }
+    }
+    block(breakable: false, above: 9pt, below: 9pt)[
+      #set par(leading: 0.35em, spacing: 0.4em)
+      #entry
+      #if description != none { par(description) }
     ]
   }
 }
