@@ -100,7 +100,7 @@ Run with `npx tsx index.tsx`. `AutoRuby` performs its analysis synchronously whi
 
 Pass `dictionary`, `kana`, `granularity`, `readings`, `correspondence`, `userDictionary` or `userDictionaryPath` as props. For shared defaults, import `createAutoRuby` and create a component such as `const UnidicRuby = createAutoRuby({ dictionary: "unidic" })`; element props override those defaults. Synchronous custom tokenizers are also supported by `createAutoRuby`. The normal `createRubinate`/`autoRuby` API remains asynchronous and continues to accept async custom tokenizers. `AutoRuby` accepts text, interpolated numbers, arrays of text and conditional empty values. Place styled elements around it and manual ruby elements beside it. Nested JSX elements inside `AutoRuby` are rejected.
 
-A complete example is in [examples/tsx.tsx](examples/tsx.tsx); run it from this checkout with `npm run example:tsx`.
+A complete example is in #link("examples/tsx.tsx")[examples/tsx.tsx]; run it from this checkout with `npm run example:tsx`.
 
 == API
 

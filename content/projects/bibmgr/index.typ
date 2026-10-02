@@ -15,7 +15,7 @@
 
 #img("/images/projects/bibmgr/bibmgr-logo.svg", alt: "BibMgR Logo", class: "content-image-wide")
 
-**BibMgR** is a BibTeX reference manager for collecting, validating, editing, and exporting bibliography data. It provides a shared authenticated web library with revision history, a CLI, and a Socket Mode Slack app built on the same source-preserving Rust core.
+*BibMgR* is a BibTeX reference manager for collecting, validating, editing, and exporting bibliography data. It provides a shared authenticated web library with revision history, a CLI, and a Socket Mode Slack app built on the same source-preserving Rust core.
 
 == Prerequisites
 
@@ -150,7 +150,7 @@ See #link("https://github.com/EhimeNLP/bibmgr/blob/v0.1.0/docs/slack.md")[`docs/
 
 == Initialization pipelines
 
-The optional out-of-band initialization pipeline is separate from the application dependency graph. See the [pipeline overview](pipeline/README.md) for the two-stage workflow, shared contracts, and boundaries; the stage-specific guides cover [metadata extraction](pipeline/metadata_extraction/README.md) and [BibTeX reconstruction](pipeline/bibtex_reconstruction/README.md). Neither stage registers records in the shared BibMgR library automatically.
+The optional out-of-band initialization pipeline is separate from the application dependency graph. See the #link("https://github.com/EhimeNLP/bibmgr/blob/v0.1.0/pipeline/README.md")[pipeline overview] for the two-stage workflow, shared contracts, and boundaries; the stage-specific guides cover #link("https://github.com/EhimeNLP/bibmgr/blob/v0.1.0/pipeline/metadata_extraction/README.md")[metadata extraction] and #link("https://github.com/EhimeNLP/bibmgr/blob/v0.1.0/pipeline/bibtex_reconstruction/README.md")[BibTeX reconstruction]. Neither stage registers records in the shared BibMgR library automatically.
 
 == Development
 
