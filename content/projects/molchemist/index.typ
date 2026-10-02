@@ -2,7 +2,7 @@
 
 #show: project.with(
   title: "molchemist",
-  description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings..",
+  description: "A Typst package for rendering chemical structures from Molfile / SDF data and from SMILES strings.",
   date: "2026-03-03",
   updated: "2026-10-02",
   start_date: "2026-03-03",

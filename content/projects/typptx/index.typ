@@ -1,0 +1,113 @@
+#import "/content/_prelude.typ": *
+
+#show: project.with(
+  title: "typptx",
+  description: "A command-line tool that converts Typst to PowerPoint with editable text, lists, tables, equations, and vector shapes.",
+  date: "2026-10-02",
+  start_date: "2026-10-02",
+  section: "projects",
+  toc: false,
+  languages: ("Rust",),
+  links: (
+    (label: "GitHub", url: "https://github.com/rice8y/typptx"),
+    (label: "crates.io", url: "https://crates.io/crates/typptx"),
+  ),
+)
+
+#img("/images/projects/typptx/logo.svg", alt: "Typptx")
+
+Typptx is a command-line tool that converts Typst to PowerPoint with editable text, lists, tables, equations, and vector shapes.
+
+Typptx has the following features:
+
+- Editable text, lists, and tables
+- Native click animations for Touying and Polylux overlays
+- Editable vector shapes from Typst and CeTZ drawings
+- Editable Office Math or Typst-rendered SVG equations
+- SVG and PDF images with vector graphics preserved
+- Hyperlinks and speaker notes
+- Font embedding with support for variable fonts
+
+== Installation
+
+=== From crates.io
+
+Requires Rust 1.93+ and a C++17 compiler (MSVC on Windows). HarfBuzz is bundled in the crate.
+
+```sh
+cargo install typptx --locked
+```
+
+=== From prebuilt binaries
+
+Download from #link("https://github.com/rice8y/typptx/releases")[Releases] and add the executable to your `PATH`.
+
+- macOS: Apple Silicon / Intel
+- Linux: x86_64, glibc 2.35+
+- Windows: x86_64
+
+=== From source
+
+```sh
+git clone https://github.com/rice8y/typptx.git
+cd typptx
+cargo install --path . --locked
+```
+
+== Usage
+
+```sh
+typptx slides.typ -o slides.pptx
+```
+
+#table(
+  columns: (auto, 1fr),
+  inset: 8pt,
+  align: (left, left),
+
+  [*Option*], [*Description*],
+
+  [`--math-format office|svg`],
+  [Editable Office Math (default) or SVG equations],
+
+  [`--animations native|slides`],
+  [Click animations (default) or separate static slides for each overlay],
+
+  [`--image-dpi DPI`],
+  [Limit embedded image resolution],
+
+  [`--root PATH`],
+  [Typst project root],
+
+  [`--font-path PATH`],
+  [Additional font directory],
+
+  [`--input KEY=VALUE`],
+  [Typst `sys.inputs` value],
+
+  [`--report PATH`],
+  [JSON diagnostics],
+
+  [`--strict`],
+  [Fail on any diagnostic],
+
+  [`--allow-image-fallback`],
+  [Export only unsupported content as images and report each fallback],
+)
+
+See `typptx --help` for all options.
+
+== Limitations
+
+- Layout may differ from Typst; all pages must have the same dimensions.
+- Centered or complex lists use separate text boxes without automatic renumbering. Complex table cells may also use separate objects.
+- Inline graphics and highlights do not follow text edits.
+- Rotated and simple horizontally reflected tables use editable text and shapes instead of table cells.
+- Other table transforms and some equations require image fallback. Enable it with `--allow-image-fallback`.
+- Fonts that cannot be embedded must be installed locally.
+- Animations use discrete states. Changed content uses separate objects that overlap in editing and print views and must be edited independently.
+- Links target slides, not individual animation steps.
+
+== License
+
+This project is distributed under the MIT License. See #link("https://github.com/rice8y/typptx/blob/main/LICENSE")[LICENSE] for details.
