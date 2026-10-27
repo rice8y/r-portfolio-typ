@@ -1,144 +1,47 @@
 # r-Portfolio
 
-A Typage-powered implementation of `r-portfolio`. The site keeps articles and project pages in Typst, renders them with Typst HTML export, and publishes the generated static files from `dist/`.
+A personal portfolio built with [Typage](https://github.com/rice8y/typage) and Typst.
 
-## Requirements
+## Setup
 
-- Rust `1.92` or newer and Cargo
-- Typage `0.2.1` (includes Typst `0.15.1`; no separate Typst CLI required)
-
-Install Typage from crates.io:
+Requires Rust 1.92+, Node.js 22+, and Noto Serif CJK JP for Japanese PDFs. Typage 0.2.1 includes Typst 0.15.1.
 
 ```bash
 cargo install typage --version 0.2.1 --locked
 ```
 
-For Typage development, you can still point the build at a local checkout:
-
-```bash
-cargo install --path ../typage --locked
-```
-
 ## Commands
 
 ```bash
-typage build --force --jobs 0
-typage serve --live-reload --jobs 0
-typage doctor
-typage clean
+typage serve --live-reload --jobs 0  # Preview at http://127.0.0.1:1111
+typage build --jobs 0               # Build into dist/
+typage doctor                      # Validate configuration and content
 ```
 
-`typage serve --live-reload --jobs 0` builds the site, serves it at `http://127.0.0.1:1111`, watches source files, and injects live reload into served HTML.
-`typage build --force --jobs 0` also writes the combined print PDF to `dist/print.pdf` and page-level PDFs as `index.pdf` next to each content page.
+Builds generate HTML, per-page PDFs, `print.pdf`, and `cv.pdf`. Add `--force` for a full rebuild.
 
-The Vercel build uses the same static output model:
+## Editing
 
-```bash
-typage build --force --jobs 0
-```
+| Content | Location |
+| --- | --- |
+| Site settings, navigation, contact details | `config.toml` |
+| Blog and project pages | `content/blog/`, `content/projects/` |
+| Publications | `content/publications/*.bib` |
+| Experience and awards | `content/_home_experience.typ`, `content/_home_awards.typ` |
+| CV content and layout | `content/_cv.typ`, `templates/cv.typ` |
+| Shared helpers and schemas | `content/_prelude.typ`, `content/config.typ` |
+| Static assets | `static/` |
 
-By default, Vercel installs Typage `0.2.1` from crates.io. For testing an unreleased Typage change, point the install step at a source checkout or branch:
+Use existing pages as examples. Projects require a manually maintained `start_date: "YYYY-MM-DD"` in addition to their publication date.
 
-```bash
-TYPAGE_PATH=../typage bash scripts/vercel-install.sh
-TYPAGE_GIT=https://github.com/rice8y/typage.git TYPAGE_BRANCH=main bash scripts/vercel-install.sh
-```
+For Experience, use level-three category headings and wrap entries in `#experience-group[...]`. Each `experience` requires `period` and `title`; `department` and `description` are optional. Experience, awards, and publications are shared with the CV.
 
-## Project Structure
+## Deployment
 
-```txt
-config.toml
-content/
-templates/
-static/
-scripts/
-dist/
-```
+Vercel uses `scripts/vercel-install.sh` and `vercel.json` to install Typage and fonts, build the site, and publish `dist/`.
 
-- `config.toml` defines Typage settings, site metadata, navigation, feeds, and deployment scripts.
-- `content/` contains Typst source pages and entries.
-- `templates/` contains the Typage templates, the print PDF template, and the r-Portfolio visual system.
-- `static/` contains files copied as-is into the generated site.
-- `dist/` is generated output for local preview and static deployment.
-
-## Content
-
-Each content file uses Typst-native metadata followed by Typst markup:
-
-```typ
-#import "/content/_prelude.typ": *
-
-#show: page.with(
-  title: "Example",
-  description: "Short description.",
-  date: "2026-05-23",
-  section: "blog",
-  toc: false,
-)
-
-Write Typst content here.
-```
-
-Project entries use `#show: project.with(...)`, keep `section: "projects"` for the flat project listing, and declare project fields such as `languages` and `links` directly. Collection schemas live in `content/config.typ`.
-
-The Projects root page displays a descending language bar chart above the footer. The template embeds evaluated project links as JSON in the generated HTML. The `post_build` hook runs `scripts/build-project-languages.mjs` (Node.js 22+) to read those links, fetch the GitHub languages API for each unique project repository, and embed the chart in `dist/projects/index.html`. Percentages use summed code bytes, not repository averages. The browser makes no API requests and needs no JavaScript to display the chart. Every build fetches fresh data; repositories returning 404 are excluded with a visible note, while other failed or rate-limited requests fail the build. Set `GITHUB_TOKEN` or `GH_TOKEN` in the build environment for authenticated API limits; tokens are never included in the output. Run `node scripts/test-project-languages.mjs` to check aggregation.
-
-Publications are registered in `content/publications/domestic.bib` and `content/publications/international.bib`. Domestic entries use the ENLP-inspired CSL, international entries use the ACL/Blinky-derived CSL, and the publications page exposes per-entry BibTeX clipboard copy and `.bib` download controls.
-
-The home-only Experience section is maintained in `content/_home_experience.typ`. Add categories with `=== Internship`, `=== Teaching Assistant`, or other level-three headings, then add `experience` entries beneath them. This partial does not generate a dedicated page. `period` and `title` are required; `department` and `description` are optional. Text or Typst content (including links) can be used for each field.
-
-For PDF output, `experience` uses `basic-resume`'s `work` component: `title` maps to `title`, `period` to `dates`, and `department` to `company`. Optional descriptions follow the entry. HTML retains the responsive layout with a vertical divider.
-
-Wrap each category's entries in `#experience-group[...]` beneath its heading. The CV renders the group with a subtle left rule and indentation; the heading stays outside the rule. HTML renders the entries without an additional wrapper.
-
-```typ
-#experience(
-  period: "2026.08 - 2026.09",
-  title: "Company name or assistant role",
-  department: "Research team",
-  description: [Research and development.],
-)
-```
-
-Writer-facing helpers live in `content/_prelude.typ`, including:
-
-```typ
-#img("/path/to/image.png", alt: "Alt text")
-#link-preview(
-  title: "Title",
-  description: "Description",
-  link: "https://example.com",
-  image: "/image.png",
-)
-#instagram("https://www.instagram.com/p/...")
-#data-table(headers: ([Name], [Description]), rows: (([foo], [bar]),))
-#details(summary: "Details")[...]
-#image-row(((src: "/a.png", alt: "A"), (src: "/b.png", alt: "B")))
-```
-
-## Rendering
-
-The CV also lists all published Projects, newest start date first, using `basic-resume`'s `project` component. Each entry shows the role `Maintainer`, a linked project title, and `Mon YYYY - Present`, followed by bullets for its description and a sentence such as "Built with Typst and Rust." derived from its languages. Project bodies are not included. The project list starts on a new page, and each entry stays together across page breaks.
-
-Each project's `index.typ` must declare `start_date: "YYYY-MM-DD"` alongside its existing metadata. The initial values were populated once from the oldest root commit on each GitHub repository's default branch, using the commit's author date. These dates are stored as editable content, independently of the page's publication `date`. Maintain `start_date` manually for future entries; builds never query commit history, and the initialization script is not part of the repository.
-
-The footer's CV link opens `/cv.pdf`, generated by Typage's `pdf_documents` configuration on each applicable build. `templates/cv.typ` uses `@preview/basic-resume:0.2.9`; edit `content/_cv.typ` for the CV structure and affiliation. Experience, awards, and publications reuse the home partials, and interests and email come from `config.toml`. No separate HTML CV page is generated. The `[extra].cv_path` setting controls the footer link. Local builds need Noto Serif CJK JP for Japanese text. Vercel installs the Regular and Bold fonts from Noto CJK's pinned `Serif2.003` release and supplies them through `TYPST_FONT_PATHS`.
-
-Typage reads `config.toml`, routes the files in `content/`, applies templates from `templates/`, copies `static/`, and writes the final site to `dist/`. The templates preserve the existing r-Portfolio experience, including theme switching, RSS links, project cards, article layouts, link previews, and Giscus theme synchronization.
-
-`[[pdf_documents]]` in `config.toml` defines `print.pdf`. It combines Awards, Publications, Blog, and Projects in that order; Blog entries are listed explicitly so they are not interleaved with Projects by date, while `section_headings` keeps Blog and Projects as top-level PDF sections. `build_pdf = true` enables per-page PDFs, and the HTML footer exposes a compact PDF menu with full-site and current-page choices. HTML-only writing helpers in `content/_prelude.typ` provide PDF fallbacks so the same content can be used for both targets.
-
-Generated files and local-only files are ignored by Git:
-
-```txt
-.typage/
-dist/
-.vercel/
-push.sh
-```
+Each build fetches GitHub language data for the Projects chart, weighted by code bytes. Set `GITHUB_TOKEN` or `GH_TOKEN` for authenticated API limits. Repositories returning 404 are excluded; other API errors fail the build.
 
 ## License
 
-This project is distributed under the MIT License. See `LICENSE` for details.
-
-Third-party attribution and license notes are documented in `THIRD_PARTY_NOTICES.md`.
+This project is distributed under the [MIT License](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for dependencies and attribution.
