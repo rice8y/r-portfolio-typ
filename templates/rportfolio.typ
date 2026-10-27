@@ -699,7 +699,12 @@
   }
 }
 
-#let project-language-chart() = {
+#let project-language-chart(pages) = {
+  let links = pages.filter(page => page.section == "projects")
+    .map(page => page.at("links", default: ()).map(item => item.url)).flatten()
+  elem("script", attrs: (id: "project-language-links", type: "application/json"))[
+    #json.encode(links).replace("<", "\\u003c")
+  ]
   elem("section", attrs: (id: "project-language-chart", "aria-labelledby": "project-language-title"))[
     #elem("h2", attrs: (id: "project-language-title", class: "section-title"))[Languages]
     #elem("p", attrs: (class: "language-chart-status"))[Language data is generated during the build.]
@@ -724,7 +729,7 @@
           #card-list(page.items)
           #elem("p", attrs: (class: "project-filter-empty hidden"))[No projects match this language.]
         ]
-        #if path == "/projects/" { project-language-chart() }
+        #if path == "/projects/" { project-language-chart(pages) }
       ]
     ]
   } else if path.starts-with("/blog/") {

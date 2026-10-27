@@ -1,5 +1,4 @@
 import { readFile, writeFile, rename } from "node:fs/promises";
-import { execFileSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
 
 export function repositoriesFrom(links) {
@@ -31,12 +30,20 @@ export function aggregate(responses) {
 
 const escape = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
+export function projectLinksFromHtml(html) {
+  const source = html.match(/<script\b[^>]*\bid="project-language-links"[^>]*>([\s\S]*?)<\/script>/);
+  if (!source) throw new Error("Project language links not found");
+  const links = JSON.parse(source[1]);
+  if (!Array.isArray(links) || !links.every(link => typeof link === "string")) {
+    throw new Error("Invalid project language links");
+  }
+  return links;
+}
+
 async function build() {
-  // Query freshly generated Typage metadata, so links are evaluated by Typst.
-  const query = ".typage/project-language-links.typ";
-  await writeFile(query, '#import "site.typ": pages\n#metadata(pages.filter(p => p.section == "projects").map(p => p.at("links", default: ()).map(l => l.url)).flatten()) <project-links>\n');
-  const links = JSON.parse(execFileSync("typst", ["query", "--root", ".", query, "<project-links>", "--field", "value", "--one"], { encoding: "utf8" }));
-  const repositories = repositoriesFrom(links);
+  const path = "dist/projects/index.html";
+  const html = await readFile(path, "utf8");
+  const repositories = repositoriesFrom(projectLinksFromHtml(html));
   const responses = [];
   const unavailable = [];
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
@@ -58,8 +65,6 @@ async function build() {
     `<li title="${escape(language)}: ${bytes} bytes"><span class="language-chart-label">${escape(language)}</span><span class="language-chart-track" aria-hidden="true"><span style="width:${percentage}%"></span></span><span class="language-chart-value">${percentage < 0.1 ? "&lt;0.1" : percentage.toFixed(1)}%</span></li>`).join("");
   const note = unavailable.length ? ` Unavailable repositories excluded: ${unavailable.map(escape).join(", ")}.` : "";
   const chart = `<section id="project-language-chart" aria-labelledby="project-language-title"><h2 id="project-language-title" class="section-title">Languages</h2><p class="language-chart-status">${rows.length ? `Share of code bytes across ${responses.length} GitHub repositories.` : "No GitHub language data available."}${note}</p><ol class="language-chart-bars" aria-label="Language share by code bytes">${bars}</ol></section>`;
-  const path = "dist/projects/index.html";
-  const html = await readFile(path, "utf8");
   const pattern = /<section\b[^>]*\bid="project-language-chart"[^>]*>[\s\S]*?<\/section>/;
   if (!pattern.test(html)) throw new Error("Project language chart placeholder not found");
   await writeFile(`${path}.tmp`, html.replace(pattern, () => chart));

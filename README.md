@@ -5,13 +5,12 @@ A Typage-powered implementation of `r-portfolio`. The site keeps articles and pr
 ## Requirements
 
 - Rust `1.92` or newer and Cargo
-- Typst `0.15.0` or newer
-- Typage `0.1.3`
+- Typage `0.2.1` (includes Typst `0.15.1`; no separate Typst CLI required)
 
 Install Typage from crates.io:
 
 ```bash
-cargo install typage --version 0.1.3 --locked
+cargo install typage --version 0.2.1 --locked
 ```
 
 For Typage development, you can still point the build at a local checkout:
@@ -38,7 +37,7 @@ The Vercel build uses the same static output model:
 typage build --force --jobs 0
 ```
 
-By default, Vercel installs Typage `0.1.3` from crates.io. For testing an unreleased Typage change, point the install step at a source checkout or branch:
+By default, Vercel installs Typage `0.2.1` from crates.io. For testing an unreleased Typage change, point the install step at a source checkout or branch:
 
 ```bash
 TYPAGE_PATH=../typage bash scripts/vercel-install.sh
@@ -82,7 +81,7 @@ Write Typst content here.
 
 Project entries use `#show: project.with(...)`, keep `section: "projects"` for the flat project listing, and declare project fields such as `languages` and `links` directly. Collection schemas live in `content/config.typ`.
 
-The Projects root page displays a descending language bar chart above the footer. The `post_build` hook runs `scripts/build-project-languages.mjs` (Node.js 22+) to read freshly generated Typage metadata, fetch the GitHub languages API for each unique project repository, and embed the chart in `dist/projects/index.html`. Percentages use summed code bytes, not repository averages. The browser makes no API requests and needs no JavaScript to display the chart. Every build fetches fresh data; repositories returning 404 are excluded with a visible note, while other failed or rate-limited requests fail the build. Set `GITHUB_TOKEN` or `GH_TOKEN` in the build environment for authenticated API limits; tokens are never included in the output. Run `node scripts/test-project-languages.mjs` to check aggregation.
+The Projects root page displays a descending language bar chart above the footer. The template embeds evaluated project links as JSON in the generated HTML. The `post_build` hook runs `scripts/build-project-languages.mjs` (Node.js 22+) to read those links, fetch the GitHub languages API for each unique project repository, and embed the chart in `dist/projects/index.html`. Percentages use summed code bytes, not repository averages. The browser makes no API requests and needs no JavaScript to display the chart. Every build fetches fresh data; repositories returning 404 are excluded with a visible note, while other failed or rate-limited requests fail the build. Set `GITHUB_TOKEN` or `GH_TOKEN` in the build environment for authenticated API limits; tokens are never included in the output. Run `node scripts/test-project-languages.mjs` to check aggregation.
 
 Publications are registered in `content/publications/domestic.bib` and `content/publications/international.bib`. Domestic entries use the ENLP-inspired CSL, international entries use the ACL/Blinky-derived CSL, and the publications page exposes per-entry BibTeX clipboard copy and `.bib` download controls.
 

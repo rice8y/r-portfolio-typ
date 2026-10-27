@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
-import { aggregate, repositoriesFrom } from "./build-project-languages.mjs";
+import { aggregate, projectLinksFromHtml, repositoriesFrom } from "./build-project-languages.mjs";
+
+assert.deepEqual(projectLinksFromHtml('<script id="project-language-links" type="application/json">["https://github.com/owner/repo?x=1&y=2", "\\u003ctest>"]</script>'), [
+  "https://github.com/owner/repo?x=1&y=2", "<test>",
+]);
+assert.deepEqual(projectLinksFromHtml('<script type="application/json" id="project-language-links">[]</script>'), []);
+assert.throws(() => projectLinksFromHtml("<html></html>"));
+assert.throws(() => projectLinksFromHtml('<script id="project-language-links">invalid</script>'));
+assert.throws(() => projectLinksFromHtml('<script id="project-language-links">{}</script>'));
+assert.throws(() => projectLinksFromHtml('<script id="project-language-links">[42]</script>'));
 
 assert.deepEqual(repositoriesFrom([
   "https://github.com/owner/repo/tree/main", "https://github.com/OWNER/repo.git",
@@ -13,4 +22,4 @@ assert.deepEqual(aggregate([{}]), []);
 assert.deepEqual(aggregate([{ Z: 1, A: 1 }]).map(row => row.language), ["A", "Z"]);
 assert.throws(() => aggregate([{ message: "rate limited" }]));
 assert.throws(() => aggregate([{ Rust: -1 }]));
-console.log("PASS: repository normalization, byte weighting, sorting, empty and invalid responses");
+console.log("PASS: HTML metadata, repository normalization, byte weighting, sorting, empty and invalid responses");
