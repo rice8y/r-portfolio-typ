@@ -4,7 +4,7 @@
   title: "molfig",
   description: "A Typst package for rendering molecular structure files in static documents.",
   date: "2026-06-21",
-  updated: "2026-09-11",
+  updated: "2026-10-27",
   start_date: "2026-06-16",
   section: "projects",
   toc: false,
@@ -26,7 +26,7 @@ You can try the #link("https://bernsteining.github.io/maquette/?a=9R1O")[web dem
 == Quickstart
 
 ```typst
-#import "@preview/molfig:0.1.5"
+#import "@preview/molfig:0.1.6"
 #set page(width: auto, height: auto, margin: 0mm)
 
 // Uses structural data from RCSB PDB / wwPDB.
@@ -62,7 +62,7 @@ Structural data source: RCSB PDB / wwPDB, PDB ID `9R1O`, DOI #link("https://doi.
 == XYZ Example
 
 ```typst
-#import "@preview/molfig:0.1.5"
+#import "@preview/molfig:0.1.6"
 
 // Uses coordinate data from PubChem.
 // PubChem CID: 702 (ethanol)
@@ -98,7 +98,7 @@ Use `format: "mmcif"`, `format: "bcif"`, or `format: "xyz"` for text mmCIF, Bina
 
 The #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/examples")[`package/examples`] directory contains complete example sources, rendered PDFs, and their accompanying structural data files. The example data files are kept under #link("https://github.com/rice8y/molfig/tree/v0.1.3/package/examples/data")[`package/examples/data`], together with attribution metadata.
 
-The #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/examples")[`package/examples`] directory contains complete example sources, rendered PDFs, and their accompanying structural data files. The example data files are kept under #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/examples/data")[`package/examples/data`], together with attribution metadata.
+The #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/examples")[`package/examples`] directory contains complete example sources, rendered PDFs, and their accompanying structural data files. The example data files are kept under #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/examples/data")[`package/examples/data`], together with attribution metadata.
 
 == Public API
 
@@ -122,7 +122,7 @@ OBJ output can be paired with `to-mtl`. During `render`, OBJ material colors are
 
 == Documentation
 
-The full Molfig manual is available at #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/docs/documentation.pdf")[`package/docs/documentation.pdf`]. It documents:
+The full Molfig manual is available at #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/docs/documentation.pdf")[`package/docs/documentation.pdf`]. It documents:
 
 - installation and import conventions;
 - input format handling, XYZ model behavior, and BinaryCIF block selection;
@@ -134,7 +134,7 @@ The full Molfig manual is available at #link("https://github.com/rice8y/molfig/t
 - troubleshooting and development commands;
 - embedded 9R1O and PubChem ethanol XYZ renderings.
 
-The manual source is #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/docs/documentation.typ")[`package/docs/documentation.typ`], and it reads the package version from #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/typst.toml")[`package/typst.toml`].
+The manual source is #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/docs/documentation.typ")[`package/docs/documentation.typ`], and it reads the package version from #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/typst.toml")[`package/typst.toml`].
 
 == Notes And Limits
 
@@ -144,17 +144,17 @@ IHM coarse sphere and gaussian rows remain available as coarse model units and p
 
 == License And Notices
 
-Molfig project code is licensed under the MIT License. See #link("https://github.com/rice8y/molfig/tree/v0.1.5/LICENSE")[`LICENSE`].
+Molfig project code is licensed under the MIT License. See #link("https://github.com/rice8y/molfig/tree/v0.1.6/LICENSE")[`LICENSE`].
 
 Molfig ports or adapts #link("https://github.com/molstar/molstar")[Mol#super[#sym.ast]] behavior and includes Mol#super[#sym.ast]-derived reference data in the Rust/WASM implementation. Mol#super[#sym.ast] is licensed under the MIT License, copyright (c) 2017 - now, Mol#super[#sym.ast] contributors.
 
-Bundled example structure files under #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/examples/data")[`examples/data`] are PDB archive data from RCSB PDB / wwPDB and are available under CC0 1.0. Per-file PDB IDs, DOIs, and recommended attributions are listed in #link("https://github.com/rice8y/molfig/tree/v0.1.5/package/examples/data/README.md")[`examples/data/README.md`].
+Bundled example structure files under #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/examples/data")[`examples/data`] are PDB archive data from RCSB PDB / wwPDB and are available under CC0 1.0. Per-file PDB IDs, DOIs, and recommended attributions are listed in #link("https://github.com/rice8y/molfig/tree/v0.1.6/package/examples/data/README.md")[`examples/data/README.md`].
 
-See #link("https://github.com/rice8y/molfig/tree/v0.1.5/NOTICE.md")[`NOTICE.md`] and #link("https://github.com/rice8y/molfig/tree/v0.1.3/THIRD_PARTY_NOTICES.md")[`THIRD_PARTY_NOTICES.md`] for the full distribution notice.
+See #link("https://github.com/rice8y/molfig/tree/v0.1.6/NOTICE.md")[`NOTICE.md`] and #link("https://github.com/rice8y/molfig/tree/v0.1.3/THIRD_PARTY_NOTICES.md")[`THIRD_PARTY_NOTICES.md`] for the full distribution notice.
 
 == Benchmarks
 
-The #link("https://github.com/rice8y/molfig/tree/v0.1.5/benchmarks")[`benchmarks`] suite compiles the published PDB, mmCIF, and BinaryCIF examples in isolated Typst processes. It measures Molfig's OBJ export pipeline by default and can include maquette rendering with `--mode render`. The runner provides pinned Nix builds of Typst 0.14.0, 0.14.1, 0.14.2, and 0.15.0 with a common hyperfine 1.20.0. The default shell uses Typst 0.15.0. The Molfig version defaults to `package/typst.toml` and can be changed without editing the benchmark source:
+The #link("https://github.com/rice8y/molfig/tree/v0.1.6/benchmarks")[`benchmarks`] suite compiles the published PDB, mmCIF, and BinaryCIF examples in isolated Typst processes. It measures Molfig's OBJ export pipeline by default and can include maquette rendering with `--mode render`. The runner provides pinned Nix builds of Typst 0.14.0, 0.14.1, 0.14.2, and 0.15.0 with a common hyperfine 1.20.0. The default shell uses Typst 0.15.0. The Molfig version defaults to `package/typst.toml` and can be changed without editing the benchmark source:
 
 ```sh
 nix develop ./benchmarks --command \
@@ -163,7 +163,7 @@ nix develop ./benchmarks --command \
 
 Pass `--baseline-version` together with `--version` to compare two Molfig releases on the same workload and receive hyperfine's relative performance summary.
 
-See #link("https://github.com/rice8y/molfig/tree/v0.1.5/benchmarks/README.md")[`benchmarks/README.md`] for case selection and runner options.
+See #link("https://github.com/rice8y/molfig/tree/v0.1.6/benchmarks/README.md")[`benchmarks/README.md`] for case selection and runner options.
 
 == Development
 
