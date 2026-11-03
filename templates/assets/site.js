@@ -7,6 +7,7 @@ function initPortfolio() {
   initNoCopyEmail();
   initCodeCopyButtons();
   initProjectControls();
+  initProjectStars();
   initPublicationBibTools();
 
   const backToTop = document.getElementById("back-to-top");
@@ -258,6 +259,32 @@ function initProjectControls() {
 
   const initialSort = params.get("sort") === "updated" ? "updated" : "published";
   setSort(initialSort, false);
+}
+
+async function initProjectStars() {
+  const counters = document.querySelectorAll("[data-github-stars]");
+  if (!counters.length) return;
+
+  try {
+    const response = await fetch("/api/github-stars", { signal: AbortSignal.timeout(10000) });
+    if (!response.ok) return;
+    const { stars } = await response.json();
+    const format = new Intl.NumberFormat("en-US");
+    counters.forEach((counter) => {
+      const [owner, name] = new URL(counter.dataset.githubStars).pathname.split("/").filter(Boolean);
+      if (!owner || !name) return;
+      const repo = `${owner}/${name.replace(/\.git$/, "")}`.toLowerCase();
+      const count = stars?.[repo];
+      if (!Number.isSafeInteger(count) || count < 0) return;
+      counter.querySelector("[data-star-count]").textContent = format.format(count);
+      const label = `${repo}: ${format.format(count)} GitHub ${count === 1 ? "star" : "stars"}`;
+      counter.setAttribute("aria-label", label);
+      counter.title = label;
+      counter.hidden = false;
+    });
+  } catch {
+    // Leave counters hidden when the API is unavailable, including static previews.
+  }
 }
 
 function initPublicationBibTools() {

@@ -8,6 +8,24 @@ The CV uses [basic-resume](https://typst.app/universe/package/basic-resume/), ve
 
 Vercel builds download Noto Serif CJK JP Regular and Bold from the [Noto CJK Serif2.003 release](https://github.com/notofonts/noto-cjk/tree/Serif2.003/Serif). These fonts are distributed under the SIL Open Font License 1.1; the install step retains the accompanying license with the fonts.
 
+## Lucide
+
+The project star icon is from [Lucide](https://lucide.dev/), distributed under the ISC License.
+
+Copyright (c) 2026 Lucide Icons and Contributors
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
 ## Astro Nano
 
 Astro Nano is a portfolio and blog theme for Astro created by Mark Horn.

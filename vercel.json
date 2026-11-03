@@ -3,5 +3,11 @@
   "installCommand": "bash scripts/vercel-install.sh",
   "buildCommand": "PATH=\"$PWD/.bin:$PATH\" TYPST_FONT_PATHS=\"$PWD/.cache/fonts\" typage build --force --jobs 0",
   "outputDirectory": "dist",
+  "functions": {
+    "api/github-stars.mjs": {
+      "includeFiles": "generated/project-repositories.json",
+      "maxDuration": 15
+    }
+  },
   "cleanUrls": true
 }

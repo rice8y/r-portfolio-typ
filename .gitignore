@@ -1,5 +1,6 @@
 .typage/
 dist/
+generated/
 .DS_Store
 .vercel/
 push.sh

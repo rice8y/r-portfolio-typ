@@ -42,6 +42,8 @@ Vercel uses `scripts/vercel-install.sh` and `vercel.json` to install Typage and 
 
 Each build fetches GitHub language data for the Projects chart, weighted by code bytes. Set `GITHUB_TOKEN` or `GH_TOKEN` for authenticated API limits. Repositories returning 404 are excluded; other API errors fail the build.
 
+Project cards fetch GitHub stars through `/api/github-stars`, cached on Vercel's CDN for five minutes. Set `GITHUB_TOKEN` or `GH_TOKEN` in Vercel's runtime environment to avoid shared unauthenticated limits. Stars stay hidden if the API is unavailable; `typage serve` alone does not run Vercel Functions.
+
 ## License
 
 This project is distributed under the [MIT License](LICENSE). See [third-party notices](THIRD_PARTY_NOTICES.md) for dependencies and attribution.

@@ -1,4 +1,4 @@
-import { readFile, writeFile, rename } from "node:fs/promises";
+import { mkdir, readFile, writeFile, rename } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
 export function repositoriesFrom(links) {
@@ -44,6 +44,8 @@ async function build() {
   const path = "dist/projects/index.html";
   const html = await readFile(path, "utf8");
   const repositories = repositoriesFrom(projectLinksFromHtml(html));
+  await mkdir("generated", { recursive: true });
+  await writeFile("generated/project-repositories.json", JSON.stringify(repositories));
   const responses = [];
   const unavailable = [];
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
